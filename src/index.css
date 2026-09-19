@@ -34,6 +34,27 @@
   transform: translateY(-4px);
 }
 
+/* Apple Liquid Glass Styling */
+.apple-liquid-glass {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18);
+  border-radius: 1.75rem;
+  transition: all 0.35s ease;
+}
+
+.apple-liquid-glass:hover {
+  background: rgba(15, 23, 42, 0.55);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
 .glass-badge {
   background: rgba(0, 180, 216, 0.12);
   backdrop-filter: blur(8px);
@@ -45,15 +66,30 @@
 }
 
 .text-gradient-ocean {
-  background: linear-gradient(135deg, #ffffff 0%, #00f5d4 50%, #00b4d8 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #38bdf8 30%, #818cf8 70%, #34d399 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.text-gradient-cyan {
-  background: linear-gradient(135deg, #70e000 0%, #00f5d4 100%);
+/* Interactive Hover Multi-Color Classic Deep Gradient for Name */
+.name-hover-word {
+  color: #ffffff;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  display: inline-block;
+  padding-bottom: 0.15em;
+  padding-top: 0.05em;
+  margin-bottom: -0.15em;
+  line-height: 1.15;
+}
+
+.name-hover-word:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #38bdf8 25%, #818cf8 50%, #34d399 75%, #a855f7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 10px rgba(56, 189, 248, 0.25));
+  transform: translateY(-1px);
 }
 
 /* Custom Scrollbar */
@@ -71,5 +107,5 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00f5d4;
+  background: #38bdf8;
 }

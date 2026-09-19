@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 
 export const App: React.FC = () => {
@@ -19,15 +18,8 @@ export const App: React.FC = () => {
 
   return (
     <div className="h-screen w-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-teal-500 selection:text-slate-950 overflow-hidden">
-      
-      {/* Fixed Header */}
-      <Header 
-        onReplayVideo={handleReplayVideo}
-        isVideoFinished={isVideoEnded}
-      />
-
-      {/* Main Single Hero Screen View */}
-      <main className="flex-grow relative h-full w-full">
+      {/* Main Single Hero Screen View without top header */}
+      <main className="relative h-full w-full flex-grow">
         <Hero 
           videoRef={videoRef}
           isVideoEnded={isVideoEnded}
@@ -35,7 +27,6 @@ export const App: React.FC = () => {
           handleReplay={handleReplayVideo}
         />
       </main>
-
     </div>
   );
 };

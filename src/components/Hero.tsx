@@ -22,7 +22,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, isVideoEnded, setIsVideoEn
   }, [videoRef]);
 
   return (
-    <section className="relative w-full h-full min-h-screen flex items-center justify-center pt-20 pb-10 px-6 overflow-hidden bg-slate-950">
+    <section className="relative w-full h-full min-h-screen flex items-center justify-center py-6 px-6 overflow-hidden bg-slate-950">
       
       {/* Video Background Layer */}
       <div className="absolute inset-0 z-0 overflow-hidden">

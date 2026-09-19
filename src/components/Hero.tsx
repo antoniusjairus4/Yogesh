@@ -171,27 +171,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded }) => {
           </div>
         </motion.div>
 
-        {/* Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.45 }}
-          className="flex flex-wrap items-center justify-center gap-4"
-        >
-          <button
-            className="px-6 py-3 rounded-xl font-semibold text-xs sm:text-sm bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-950/50 border border-blue-400/30 hover:scale-[1.02] active:scale-95 transition-all duration-300"
-            id="explore-focus-btn"
-          >
-            <span>Explore Research Focus</span>
-          </button>
 
-          <button
-            className="px-6 py-3 rounded-xl font-semibold text-xs sm:text-sm bg-slate-900/90 text-slate-200 border border-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-500 transition-all duration-300 backdrop-blur-md"
-            id="scuba-master-btn"
-          >
-            <span>SCUBA Dive Master</span>
-          </button>
-        </motion.div>
       </div>
 
     </section>

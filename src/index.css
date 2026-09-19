@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-outfit: 'Outfit', sans-serif;
+    --font-jakarta: 'Plus Jakarta Sans', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+  }
+
+  html {
+    font-family: var(--font-jakarta);
+    background-color: #030712;
+    color: #f8fafc;
+  }
+}
+
+/* Custom Glassmorphism & Oceanic Aesthetic Utilities */
+.glass-panel {
+  background: rgba(11, 23, 43, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 245, 212, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(15, 30, 56, 0.75);
+  border-color: rgba(0, 245, 212, 0.4);
+  box-shadow: 0 12px 40px 0 rgba(0, 245, 212, 0.15);
+  transform: translateY(-4px);
+}
+
+.glass-badge {
+  background: rgba(0, 180, 216, 0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 245, 212, 0.25);
+}
+
+.glow-teal {
+  box-shadow: 0 0 25px -5px rgba(0, 245, 212, 0.4);
+}
+
+.text-gradient-ocean {
+  background: linear-gradient(135deg, #ffffff 0%, #00f5d4 50%, #00b4d8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #70e000 0%, #00f5d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00f5d4;
+}

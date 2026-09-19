@@ -1,12 +1,12 @@
-# Dr. J.S. Yogesh Kumar — Scientific Portfolio & Research Portal
+# Dr. J.S. Yogesh Kumar — Scientific Research Portfolio
 
-A high-profile, cinematic, video-driven scientific research portal for **Dr. J.S. Yogesh Kumar**, Officer / Scientist at the **Zoological Survey of India (ZSI)**.
+A high-profile, cinematic, video-driven scientific research portfolio for **Dr. J.S. Yogesh Kumar**, Officer / Scientist at the **Zoological Survey of India (ZSI)**.
 
 ---
 
 ## 📌 Project Overview
 
-This project is an A-list scientific research portfolio designed to showcase Dr. Yogesh's work in marine biodiversity, species discoveries, taxonomical research, and field expeditions. It combines high-definition video streams, Google Flow animations, interactive specimen inspectors, and real-time paper search into an immersive web experience.
+This project is an A-list scientific research portfolio designed to showcase Dr. Yogesh's personal scientific achievements, marine biodiversity research, species discoveries, taxonomical work, and field expeditions. It combines high-definition video streams, Google Flow animations, interactive specimen inspectors, and real-time paper search into an immersive personal web experience.
 
 ---
 
@@ -27,7 +27,7 @@ This project is an A-list scientific research portfolio designed to showcase Dr.
 1. **Hero Section (Cinematic Ocean Video)**
    - Ambient video loop player with Google Flow integration, sound/video toggles, and live research impact counter.
 
-2. **Google Flow & Scientific Video Theater**
+2. **Google Flow & Scientific Video Showcase**
    - Interactive grid showcasing underwater marine surveys, lab research reels, and field documentaries.
 
 3. **Taxonomic Species Discovery Gallery**
@@ -42,7 +42,7 @@ This project is an A-list scientific research portfolio designed to showcase Dr.
    - Abstract expanders, DOI direct links, and downloadable PDFs.
 
 6. **ZSI Affiliation & Academic Connect**
-   - Official credentials, research form connect, and verified badges (Google Scholar, ResearchGate, ORCID).
+   - Official credentials, research inquiry form, and verified badges (Google Scholar, ResearchGate, ORCID).
 
 ---
 

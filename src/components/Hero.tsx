@@ -28,7 +28,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded }) => {
         clearInterval(timer);
         setIsTypingDone(true);
       }
-    }, 70);
+    }, 75);
 
     return () => clearInterval(timer);
   }, []);
@@ -42,9 +42,9 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded }) => {
     }
   }, [videoRef]);
 
-  // Split typed substring into words for hover effect
-  const typedString = FULL_NAME.slice(0, displayedLength);
-  const words = typedString.split(" ");
+  // Compute words and global character indices
+  const words = FULL_NAME.split(" ");
+  let globalCharIndexTracker = 0;
 
   return (
     <section className="relative w-full h-full min-h-screen flex items-center justify-center py-8 px-4 sm:px-6 overflow-hidden bg-slate-950">
@@ -73,7 +73,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded }) => {
       {/* Hero Content Overlay */}
       <div className="relative z-10 max-w-5xl mx-auto w-full flex flex-col justify-center items-center text-center my-auto">
         
-        {/* Name Heading with Typewriter Typing Animation */}
+        {/* Name Heading with 3-Letter Active Wave Typewriter Typing Animation */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -81,11 +81,37 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded }) => {
           className="mb-4 w-full text-center"
         >
           <h1 className="font-outfit font-black text-5xl xs:text-6xl sm:text-8xl md:text-9xl text-white tracking-tight leading-[1.05] flex flex-wrap justify-center items-center gap-x-3.5 sm:gap-x-6">
-            {words.map((word, wIdx) => (
-              <span key={wIdx} className="name-hover-word">
-                {word}
-              </span>
-            ))}
+            {words.map((word, wIdx) => {
+              const wordStartIdx = globalCharIndexTracker;
+              globalCharIndexTracker += word.length + 1;
+
+              return (
+                <span key={wIdx} className="inline-block whitespace-nowrap">
+                  {word.split("").map((char, cIdx) => {
+                    const globalCharIdx = wordStartIdx + cIdx;
+                    const isTyped = globalCharIdx < displayedLength;
+
+                    if (!isTyped) return null;
+
+                    // Calculate distance from active typing head
+                    const distFromHead = (displayedLength - 1) - globalCharIdx;
+                    const isWaveActive = !isTypingDone && distFromHead >= 0 && distFromHead < 3;
+
+                    return (
+                      <span
+                        key={cIdx}
+                        className={`transition-all duration-500 ease-in-out ${
+                          isWaveActive ? "char-wave-active" : "name-hover-word"
+                        }`}
+                      >
+                        {char}
+                      </span>
+                    );
+                  })}
+                </span>
+              );
+            })}
+
             {!isTypingDone && (
               <span className="inline-block w-1 sm:w-2 h-10 sm:h-16 md:h-20 bg-sky-400 animate-pulse ml-1 align-middle rounded-full" />
             )}
@@ -106,17 +132,6 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded }) => {
           <span>PADI Dive Master (DM-494151)</span>
         </motion.div>
 
-        {/* Subheading Tagline */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.25 }}
-          className="max-w-3xl mb-6"
-        >
-          <p className="text-base sm:text-xl font-serif text-slate-200 font-normal leading-relaxed">
-            {PROFILE_DATA.heroTagline}
-          </p>
-        </motion.div>
 
         {/* Apple Liquid Glass Unified Wrapper Container (Bio Paragraph + 4 Metrics) */}
         <motion.div

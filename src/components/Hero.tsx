@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { PROFILE_DATA } from '../data/portfolioData';
+import { ScrollIndicator } from './ScrollIndicator';
 
 interface HeroProps {
   videoRef: React.RefObject<HTMLVideoElement | null>;
@@ -117,7 +118,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded }) => {
   let globalCharIndexTracker = 0;
 
   return (
-    <section className="relative w-full h-full min-h-screen flex items-center justify-center py-8 px-4 sm:px-6 overflow-hidden bg-slate-950">
+    <section id="hero" className="relative w-full h-full min-h-screen flex items-center justify-center py-16 sm:py-20 px-4 sm:px-6 overflow-hidden bg-slate-950">
       
       {/* Video Background Layer */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -223,8 +224,10 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded }) => {
           </div>
         </motion.div>
 
-
       </div>
+
+      {/* Bottom Scroll Indicator */}
+      <ScrollIndicator targetId="about" />
 
     </section>
   );

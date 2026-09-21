@@ -52,7 +52,7 @@ export const PROFILE_DATA: ProfileData = {
   padiId: "DM – 494151",
   padiYear: "PADI Certified Dive Master (2007)",
   heroTagline: "Pioneering Marine Octocoral Taxonomy, Coral Reef Resilience & Sunderbans Fauna",
-  bioSummary: "Scientist E & Officer-in-Charge at the Zoological Survey of India (ZSI), Sunderban Regional Centre. Dedicated to coastal ecosystem conservation, marine invertebrate taxonomy (Octocorallia/Gorgonians), climate change resilience in coral reefs, and SCUBA-based benthic transect assessments across Indian seas."
+  bioSummary: "Dedicated to coastal ecosystem conservation, marine invertebrate taxonomy (Octocorallia/Gorgonians), climate change resilience in coral reefs, and SCUBA-based benthic transect assessments across Indian seas."
 };
 
 export const METRICS: MetricItem[] = [

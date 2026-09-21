@@ -7,23 +7,22 @@ export interface NavItem {
   label: string;
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { id: 'about', label: 'About' },
+export const NAV_ITEMS: NavItem[] = [
+  { id: 'career', label: 'Career' },
   { id: 'research', label: 'Research' },
   { id: 'publications', label: 'Publications' },
-  { id: 'projects', label: 'Projects' },
   { id: 'contact', label: 'Contact' },
 ];
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>('hero');
+  const [activeTab, setActiveTab] = useState<string>('career');
 
-  // Track scroll position for glass background switch at 40px
+  // Track scroll position if scrolled
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      setIsScrolled(window.scrollY > 20);
     };
 
     handleScroll();
@@ -52,51 +51,17 @@ export const Navbar: React.FC = () => {
     };
   }, [isMobileOpen]);
 
-  // Track active section via IntersectionObserver
-  useEffect(() => {
-    const sectionIds = ['hero', ...NAV_ITEMS.map((item) => item.id)];
-    const observerOptions: IntersectionObserverInit = {
-      root: null,
-      rootMargin: '-20% 0px -60% 0px',
-      threshold: 0,
-    };
-
-    const handleIntersect: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersect, observerOptions);
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Smooth scroll handler
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setIsMobileOpen(false);
-
-    const targetEl = document.getElementById(id);
-    if (targetEl) {
-      targetEl.scrollIntoView({ behavior: 'smooth' });
-    } else if (id === 'hero') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    setActiveTab(id);
   };
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-out pt-[env(safe-area-inset-top)] ${
         isScrolled
-          ? 'bg-[#060c1e]/75 backdrop-blur-md border-b border-white/[0.08] shadow-lg shadow-black/20'
+          ? 'bg-[#060c1e]/85 backdrop-blur-md border-b border-white/[0.08] shadow-lg shadow-black/20'
           : 'bg-transparent border-b border-transparent'
       }`}
     >
@@ -104,8 +69,11 @@ export const Navbar: React.FC = () => {
         
         {/* Brand / Wordmark */}
         <a
-          href="#hero"
-          onClick={(e) => handleNavClick(e, 'hero')}
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            setActiveTab('career');
+          }}
           className="group flex items-center gap-2 min-w-0 pr-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 rounded-md"
         >
           <span className="font-outfit font-bold text-base sm:text-lg text-white tracking-tight truncate transition-colors group-hover:text-sky-400">
@@ -116,7 +84,7 @@ export const Navbar: React.FC = () => {
         {/* Desktop Navigation (min-width: 768px) */}
         <nav aria-label="Primary" className="hidden md:flex items-center gap-8">
           {NAV_ITEMS.map((item) => {
-            const isActive = activeSection === item.id;
+            const isActive = activeTab === item.id;
             return (
               <a
                 key={item.id}
@@ -185,7 +153,7 @@ export const Navbar: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               {NAV_ITEMS.map((item, index) => {
-                const isActive = activeSection === item.id;
+                const isActive = activeTab === item.id;
                 return (
                   <motion.a
                     key={item.id}

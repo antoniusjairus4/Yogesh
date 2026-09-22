@@ -124,10 +124,10 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
           muted
           playsInline
           loop={false}
-          poster="./poster.png"
+          poster="/poster.png"
           onEnded={() => setIsVideoEnded(true)}
         >
-          <source src="./Yogesh_landing.mp4" type="video/mp4" />
+          <source src="/Yogesh_landing.mp4" type="video/mp4" />
           Your browser does not support HTML5 video background.
         </video>
 
@@ -139,22 +139,19 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
       {/* Hero Content Container (2-Column Flex Layout on Desktop) */}
       <div className="relative z-10 max-w-[1120px] mx-auto w-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 my-auto px-2 sm:px-0 pt-10 lg:pt-0">
         
-        {/* Left Column: Executive Portrait Meshed into Background (No Borders) */}
+        {/* Left Column: Executive Portrait Raw Image */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
           className="shrink-0 flex justify-center items-center relative group"
         >
-          <div className="relative overflow-hidden rounded-3xl [mask-image:radial-gradient(ellipse_at_center,black_65%,transparent_98%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_65%,transparent_98%)]">
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl">
             <img
-              src="./landing_img.JPG"
+              src="/landing_img.JPG"
               alt="Dr. J.S. Yogesh Kumar"
-              className="w-56 h-72 sm:w-68 sm:h-88 md:w-76 md:h-96 lg:w-84 lg:h-[26rem] xl:w-96 xl:h-[30rem] object-cover object-top filter brightness-105 contrast-105 transform hover:scale-105 transition-transform duration-500"
+              className="w-56 h-72 sm:w-68 sm:h-88 md:w-76 md:h-96 lg:w-84 lg:h-[26rem] xl:w-96 xl:h-[30rem] object-cover object-top transform hover:scale-105 transition-transform duration-500"
             />
-            {/* Soft Ambient Blend Overlay */}
-            <div className="absolute inset-0 pointer-events-none rounded-3xl bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/30" />
-            <div className="absolute inset-0 pointer-events-none rounded-3xl bg-gradient-to-r from-slate-950/50 via-transparent to-slate-950/50" />
           </div>
         </motion.div>
 

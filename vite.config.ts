@@ -9,4 +9,11 @@ export default defineConfig({
     tailwindcss(),
   ],
   base: './',
+  server: {
+    port: 5173,
+    strictPort: true,
+    host: true,
+    allowedHosts: true,
+  },
 });
+

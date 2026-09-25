@@ -268,6 +268,22 @@ export const ThinkingOrbPage: React.FC = () => {
             height={540}
             className="relative w-full h-full rounded-full shadow-[0_0_90px_rgba(168,85,247,0.45),_inset_0_0_45px_rgba(255,255,255,0.4)]"
           />
+
+          {/* Centered Loading Indicator Inside Orb Core */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none select-none font-mono text-center">
+            {/* Spinning Neon Micro-Ring */}
+            <div className="w-10 h-10 sm:w-12 sm:h-12 mb-2 rounded-full border-2 border-cyan-400/20 border-t-[#00f5d4] border-r-[#f72585] animate-spin shadow-[0_0_15px_rgba(0,245,212,0.6)]" />
+
+            {/* Live Count-Up Percentage (0% -> 100%) */}
+            <div className="text-xl sm:text-2xl font-extrabold text-white tracking-widest drop-shadow-[0_0_12px_rgba(0,245,212,0.9)]">
+              {Math.min(100, Math.floor(animProgress * 100))}%
+            </div>
+
+            {/* Dynamic Status Text */}
+            <div className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-cyan-200 uppercase mt-1 drop-shadow-[0_0_8px_rgba(0,180,216,0.8)]">
+              {animProgress < 0.35 ? 'LOADING...' : animProgress < 0.75 ? 'INITIALIZING...' : 'EXPANDING'}
+            </div>
+          </div>
         </div>
       </div>
     </section>

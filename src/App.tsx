@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { ThinkingOrbPage } from './components/ThinkingOrbPage';
 
 export const App: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -23,15 +22,14 @@ export const App: React.FC = () => {
       {/* Top Navigation Bar */}
       <Navbar />
 
-      {/* Main Snap-Scroll Container */}
-      <main className="relative h-full w-full flex-grow overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth">
+      {/* Main Single Screen Landing Page */}
+      <main className="relative h-full w-full flex-grow overflow-hidden">
         <Hero 
           videoRef={videoRef}
           isVideoEnded={isVideoEnded}
           setIsVideoEnded={setIsVideoEnded}
           handleReplay={handleReplayVideo}
         />
-        <ThinkingOrbPage />
       </main>
     </div>
   );

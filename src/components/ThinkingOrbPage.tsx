@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { RotateCcw, Sparkles } from 'lucide-react';
 
 export const ThinkingOrbPage: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -8,8 +6,7 @@ export const ThinkingOrbPage: React.FC = () => {
 
   const [isVisible, setIsVisible] = useState(false);
   const [animProgress, setAnimProgress] = useState(0); // 0 to 1 over 5 seconds
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [key, setKey] = useState(0);
+  const [, setIsCompleted] = useState(false);
 
   // Intersection Observer strictly scoped to Page 2
   useEffect(() => {
@@ -21,15 +18,20 @@ export const ThinkingOrbPage: React.FC = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
             setIsVisible(true);
+          } else if (!entry.isIntersecting) {
+            // Reset when leaving view so scrolling down to Page 2 always triggers fresh
+            setIsVisible(false);
+            setAnimProgress(0);
+            setIsCompleted(false);
           }
         });
       },
-      { threshold: [0.1, 0.3, 0.7] }
+      { threshold: [0, 0.1, 0.3, 0.7] }
     );
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, [key]);
+  }, []);
 
   // Animation Sequence (2 Heartbeats followed by Expansion & Fade)
   useEffect(() => {
@@ -59,9 +61,9 @@ export const ThinkingOrbPage: React.FC = () => {
     return () => {
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
-  }, [isVisible, key]);
+  }, [isVisible]);
 
-  // High-fidelity Canvas Renderer matching the attached Plasma Ring Orb image
+  // High-Precision Canvas Renderer matching the attached Plasma Silk Ring Orb image
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -72,101 +74,123 @@ export const ThinkingOrbPage: React.FC = () => {
     let time = 0;
 
     const render = () => {
-      time += 0.025;
+      time += 0.02;
       const w = canvas.width;
       const h = canvas.height;
       const cx = w / 2;
       const cy = h / 2;
-      const baseRadius = w * 0.36;
+      const R = w * 0.38;
 
       ctx.clearRect(0, 0, w, h);
 
-      // Additive glowing composite mode for vivid energy ribbons
-      ctx.globalCompositeOperation = 'screen';
+      // 1. Ambient Outer Halo (Neon Purple & Magenta Glow)
+      const outerHalo = ctx.createRadialGradient(cx, cy, R * 0.6, cx, cy, R * 1.3);
+      outerHalo.addColorStop(0, 'rgba(168, 85, 247, 0.28)'); // Violet
+      outerHalo.addColorStop(0.5, 'rgba(236, 72, 153, 0.18)'); // Magenta Pink
+      outerHalo.addColorStop(0.85, 'rgba(59, 130, 246, 0.12)'); // Sapphire Blue
+      outerHalo.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
-      // 1. Outer Neon Aura Glow
-      const bgGlow = ctx.createRadialGradient(cx, cy, baseRadius * 0.5, cx, cy, baseRadius * 1.25);
-      bgGlow.addColorStop(0, 'rgba(123, 44, 191, 0.25)'); // Violet
-      bgGlow.addColorStop(0.5, 'rgba(0, 180, 216, 0.2)'); // Sapphire
-      bgGlow.addColorStop(0.85, 'rgba(247, 37, 133, 0.15)'); // Magenta
-      bgGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-
-      ctx.fillStyle = bgGlow;
+      ctx.fillStyle = outerHalo;
       ctx.beginPath();
-      ctx.arc(cx, cy, baseRadius * 1.25, 0, Math.PI * 2);
+      ctx.arc(cx, cy, R * 1.3, 0, Math.PI * 2);
       ctx.fill();
 
-      // 2. Multilayered Swirling Energy Waves (Ribbons & Plasma Filaments)
-      const ribbons = [
-        { color: 'rgba(0, 180, 216, 0.85)', speed: 1.2, freq: 4, amp: 18, width: 3.5 }, // Electric Sapphire
-        { color: 'rgba(123, 44, 191, 0.85)', speed: -0.9, freq: 6, amp: 22, width: 3.0 }, // Deep Violet
-        { color: 'rgba(247, 37, 133, 0.75)', speed: 1.5, freq: 5, amp: 15, width: 2.5 }, // Neon Magenta
-        { color: 'rgba(0, 245, 212, 0.9)', speed: -1.4, freq: 8, amp: 12, width: 2.0 }, // Cyan White
-        { color: 'rgba(255, 255, 255, 0.95)', speed: 2.0, freq: 10, amp: 8, width: 1.5 }, // White Core Pulse
-      ];
+      // Set screen blend mode for luminous neon overlap
+      ctx.globalCompositeOperation = 'screen';
 
-      ribbons.forEach((r, idx) => {
-        ctx.strokeStyle = r.color;
-        ctx.lineWidth = r.width;
+      // 2. Glowing Silk Aurora Wave Curtains (Top Right Magenta & Top Left Electric Cyan/Blue)
+      const numCurtains = 60;
+      for (let i = 0; i < numCurtains; i++) {
+        const offset = (i / numCurtains) * Math.PI * 2;
+        const waveAmp = 14 + Math.sin(time * 1.5 + i * 0.2) * 8;
+        const freq = 3 + (i % 3);
+
         ctx.beginPath();
+        for (let a = 0; a <= 360; a += 4) {
+          const rad = (a * Math.PI) / 180;
+          const rMod = R + Math.sin(rad * freq + time * 1.8 + offset) * waveAmp * Math.sin(rad);
 
-        const steps = 360;
-        for (let i = 0; i <= steps; i++) {
-          const angle = (i * Math.PI) / 180;
-          const wave1 = Math.sin(angle * r.freq + time * r.speed + idx);
-          const wave2 = Math.cos(angle * (r.freq * 0.5) - time * 0.8);
-          const currentR = baseRadius + wave1 * r.amp + wave2 * (r.amp * 0.5);
+          const x = cx + Math.cos(rad) * rMod;
+          const y = cy + Math.sin(rad) * rMod;
 
-          const x = cx + Math.cos(angle) * currentR;
-          const y = cy + Math.sin(angle) * currentR;
-
-          if (i === 0) {
-            ctx.moveTo(x, y);
-          } else {
-            ctx.lineTo(x, y);
-          }
+          if (a === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.closePath();
-        ctx.stroke();
-      });
 
-      // 3. Dense Inner Plasma Filament Mesh (Fine lines connecting perimeter)
-      ctx.lineWidth = 0.5;
-      const numFilaments = 40;
-      for (let i = 0; i < numFilaments; i++) {
-        const angle1 = (i * Math.PI * 2) / numFilaments + time * 0.3;
-        const angle2 = angle1 + Math.PI * 0.75 + Math.sin(time + i) * 0.4;
+        // Gradient color along curtain sweep (Top-Right = Hot Pink/Magenta, Top-Left = Cyan/Electric Blue)
+        const curtainGrad = ctx.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
+        curtainGrad.addColorStop(0, 'rgba(0, 245, 212, 0.08)'); // Cyan
+        curtainGrad.addColorStop(0.35, 'rgba(59, 130, 246, 0.12)'); // Electric Blue
+        curtainGrad.addColorStop(0.7, 'rgba(168, 85, 247, 0.15)'); // Violet Purple
+        curtainGrad.addColorStop(1, 'rgba(247, 37, 133, 0.18)'); // Magenta Pink
 
-        const r1 = baseRadius + Math.sin(angle1 * 3 + time) * 12;
-        const r2 = baseRadius + Math.cos(angle2 * 4 - time) * 14;
-
-        const x1 = cx + Math.cos(angle1) * r1;
-        const y1 = cy + Math.sin(angle1) * r1;
-        const x2 = cx + Math.cos(angle2) * r2;
-        const y2 = cy + Math.sin(angle2) * r2;
-
-        const grad = ctx.createLinearGradient(x1, y1, x2, y2);
-        grad.addColorStop(0, 'rgba(0, 180, 216, 0.35)');
-        grad.addColorStop(0.5, 'rgba(123, 44, 191, 0.25)');
-        grad.addColorStop(1, 'rgba(247, 37, 133, 0.35)');
-
-        ctx.strokeStyle = grad;
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.quadraticCurveTo(cx + Math.sin(time + i) * 30, cy + Math.cos(time + i) * 30, x2, y2);
+        ctx.strokeStyle = curtainGrad;
+        ctx.lineWidth = 0.8 + (i % 2) * 0.6;
         ctx.stroke();
       }
 
-      // 4. Dark Specular Hollow Center
-      ctx.globalCompositeOperation = 'source-over';
-      const centerCore = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseRadius * 0.75);
-      centerCore.addColorStop(0, 'rgba(3, 7, 18, 0.95)');
-      centerCore.addColorStop(0.7, 'rgba(5, 11, 24, 0.7)');
-      centerCore.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      // 3. Dense Interior Silk Threads (Curving across upper & lower hemispheres)
+      const threads = 35;
+      for (let t = 0; t < threads; t++) {
+        const angle1 = (t * Math.PI * 2) / threads + time * 0.2;
+        const angle2 = angle1 + Math.PI * 0.8 + Math.sin(time + t) * 0.3;
 
-      ctx.fillStyle = centerCore;
+        const x1 = cx + Math.cos(angle1) * (R * 0.96);
+        const y1 = cy + Math.sin(angle1) * (R * 0.96);
+        const x2 = cx + Math.cos(angle2) * (R * 0.96);
+        const y2 = cy + Math.sin(angle2) * (R * 0.96);
+
+        const controlX = cx + Math.sin(time * 0.8 + t) * R * 0.45;
+        const controlY = cy + Math.cos(time * 0.8 + t) * R * 0.45;
+
+        const threadGrad = ctx.createLinearGradient(x1, y1, x2, y2);
+        threadGrad.addColorStop(0, 'rgba(0, 212, 255, 0.22)');
+        threadGrad.addColorStop(0.5, 'rgba(192, 132, 252, 0.28)');
+        threadGrad.addColorStop(1, 'rgba(244, 63, 94, 0.25)');
+
+        ctx.strokeStyle = threadGrad;
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(controlX, controlY, x2, y2);
+        ctx.stroke();
+      }
+
+      // 4. Razor-Sharp Luminous Perimeter Ring with White-Hot Accent Flares
+      ctx.globalCompositeOperation = 'source-over';
+
+      // Perimeter Stroke Gradient
+      const ringGrad = ctx.createConicGradient(time * 0.5, cx, cy);
+      ringGrad.addColorStop(0, '#f72585'); // Magenta
+      ringGrad.addColorStop(0.25, '#7209b7'); // Purple
+      ringGrad.addColorStop(0.5, '#3a0ca3'); // Royal Blue
+      ringGrad.addColorStop(0.75, '#00f5d4'); // Cyan
+      ringGrad.addColorStop(0.9, '#ffffff'); // White Accent Flare
+      ringGrad.addColorStop(1, '#f72585'); // Back to Magenta
+
+      ctx.strokeStyle = ringGrad;
+      ctx.lineWidth = 3.5;
       ctx.beginPath();
-      ctx.arc(cx, cy, baseRadius * 0.75, 0, Math.PI * 2);
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Outer Specular Neon Edge Glow
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 0.995, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 5. Translucent Dark Core Vignette
+      const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.72);
+      coreGrad.addColorStop(0, 'rgba(2, 6, 23, 0.94)');
+      coreGrad.addColorStop(0.65, 'rgba(5, 11, 24, 0.75)');
+      coreGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+      ctx.fillStyle = coreGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 0.72, 0, Math.PI * 2);
       ctx.fill();
 
       frameId = requestAnimationFrame(render);
@@ -179,16 +203,6 @@ export const ThinkingOrbPage: React.FC = () => {
     };
   }, []);
 
-  const handleReplay = () => {
-    setIsVisible(false);
-    setAnimProgress(0);
-    setIsCompleted(false);
-    setKey((prev) => prev + 1);
-    setTimeout(() => {
-      setIsVisible(true);
-    }, 50);
-  };
-
   // Timeline Calculation: 2 Heartbeats followed by Exponential Scale & Fade
   // Total duration: 5.0 seconds (5000ms)
   let orbScale = 1.0;
@@ -196,13 +210,13 @@ export const ThinkingOrbPage: React.FC = () => {
   const rotation = animProgress * 720; // 2 smooth rotations
 
   if (animProgress <= 0.16) {
-    // HEARTBEAT 1 (0ms to 800ms) -> Lub-Dub pulse (1.0 -> 1.3 -> 1.0)
+    // HEARTBEAT 1 (0ms to 800ms) -> Lub-Dub pulse (1.0 -> 1.28 -> 1.0)
     const t = animProgress / 0.16; // 0 to 1
     const pulse = Math.sin(t * Math.PI);
     orbScale = 1.0 + pulse * 0.28;
     orbOpacity = Math.min(1.0, t * 2.5); // Fade in on entrance
   } else if (animProgress <= 0.36) {
-    // HEARTBEAT 2 (800ms to 1800ms) -> Stronger thump pulse (1.0 -> 1.55 -> 1.15)
+    // HEARTBEAT 2 (800ms to 1800ms) -> Stronger thump pulse (1.0 -> 1.52 -> 1.15)
     const t = (animProgress - 0.16) / 0.2; // 0 to 1
     const pulse = Math.sin(t * Math.PI);
     orbScale = 1.0 + pulse * 0.52;
@@ -226,7 +240,7 @@ export const ThinkingOrbPage: React.FC = () => {
       id="page-2"
       ref={containerRef}
       className="relative w-full h-screen snap-start flex-shrink-0 overflow-hidden select-none bg-gradient-to-b from-[#020408] via-[#001b3a] to-[#040a17]"
-      aria-label="Heartbeat Plasma Orb Page"
+      aria-label="Heartbeat Silk Orb Page"
     >
       {/* Deep Sea / Prussian Blue Ambient Background (Strictly contained in Page 2) */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#003153]/35 via-[#050b18] to-[#020408] pointer-events-none" />
@@ -247,41 +261,14 @@ export const ThinkingOrbPage: React.FC = () => {
           {/* Outer Liquid Neon Glass Glow */}
           <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#00b4d8]/40 via-[#7b2cbf]/40 to-[#f72585]/40 blur-3xl opacity-80 animate-pulse" />
 
-          {/* High-Fidelity Plasma Wave Canvas */}
+          {/* High-Fidelity Plasma Silk Wave Canvas */}
           <canvas
             ref={canvasRef}
             width={540}
             height={540}
-            className="relative w-full h-full rounded-full shadow-[0_0_90px_rgba(0,180,216,0.45),_inset_0_0_45px_rgba(255,255,255,0.4)]"
+            className="relative w-full h-full rounded-full shadow-[0_0_90px_rgba(168,85,247,0.45),_inset_0_0_45px_rgba(255,255,255,0.4)]"
           />
         </div>
-      </div>
-
-      {/* REPLAY CONTROLLER & BLANK SCREEN BADGE */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3">
-        <AnimatePresence>
-          {isCompleted && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="flex items-center gap-3 bg-[#060d24]/90 backdrop-blur-xl border border-sky-400/30 px-5 py-2.5 rounded-full shadow-2xl shadow-sky-950/70"
-            >
-              <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-sky-200 uppercase">
-                <Sparkles className="w-4 h-4 text-sky-400" />
-                Heartbeat Orb Expanded • Screen Blank
-              </div>
-
-              <button
-                onClick={handleReplay}
-                className="flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-sky-400 to-indigo-500 hover:from-sky-300 hover:to-indigo-400 text-slate-950 text-xs font-bold rounded-full transition-all shadow-md active:scale-95 cursor-pointer"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                Replay Heartbeat
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );

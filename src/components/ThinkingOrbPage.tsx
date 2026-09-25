@@ -9,9 +9,9 @@ export const ThinkingOrbPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [animProgress, setAnimProgress] = useState(0); // 0 to 1 over 5 seconds
   const [isCompleted, setIsCompleted] = useState(false);
-  const [key, setKey] = useState(0); // To allow replaying
+  const [key, setKey] = useState(0);
 
-  // Intersection Observer to trigger animation when Page 2 enters full view
+  // Intersection Observer strictly scoped to Page 2
   useEffect(() => {
     const element = containerRef.current;
     if (!element) return;
@@ -19,25 +19,25 @@ export const ThinkingOrbPage: React.FC = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.4) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
             setIsVisible(true);
           }
         });
       },
-      { threshold: [0.1, 0.4, 0.8] }
+      { threshold: [0.1, 0.3, 0.7] }
     );
 
     observer.observe(element);
     return () => observer.disconnect();
   }, [key]);
 
-  // 5-Second Animation Sequence Loop
+  // Animation Sequence (2 Heartbeats followed by Expansion & Fade)
   useEffect(() => {
     if (!isVisible) return;
 
     let animationFrameId: number;
     const startTime = performance.now();
-    const DURATION = 5000; // 5 seconds exact
+    const DURATION = 5000; // 5 seconds
 
     setIsCompleted(false);
 
@@ -61,7 +61,7 @@ export const ThinkingOrbPage: React.FC = () => {
     };
   }, [isVisible, key]);
 
-  // Canvas Shader-like Plasma Orb Renderer
+  // High-fidelity Canvas Renderer matching the attached Plasma Ring Orb image
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -72,60 +72,102 @@ export const ThinkingOrbPage: React.FC = () => {
     let time = 0;
 
     const render = () => {
-      time += 0.03;
+      time += 0.025;
       const w = canvas.width;
       const h = canvas.height;
       const cx = w / 2;
       const cy = h / 2;
-      const radius = w * 0.42;
+      const baseRadius = w * 0.36;
 
       ctx.clearRect(0, 0, w, h);
 
-      // Base spherical glow gradient
-      const outerGlow = ctx.createRadialGradient(cx, cy, radius * 0.2, cx, cy, radius);
-      outerGlow.addColorStop(0, 'rgba(0, 245, 212, 0.9)'); // Prussian Cyan
-      outerGlow.addColorStop(0.3, 'rgba(0, 180, 216, 0.7)'); // Azure Sapphire
-      outerGlow.addColorStop(0.6, 'rgba(0, 49, 83, 0.8)'); // Prussian Blue
-      outerGlow.addColorStop(0.85, 'rgba(123, 44, 191, 0.5)'); // Deep Violet
-      outerGlow.addColorStop(1, 'rgba(5, 11, 24, 0)');
+      // Additive glowing composite mode for vivid energy ribbons
+      ctx.globalCompositeOperation = 'screen';
 
-      ctx.fillStyle = outerGlow;
+      // 1. Outer Neon Aura Glow
+      const bgGlow = ctx.createRadialGradient(cx, cy, baseRadius * 0.5, cx, cy, baseRadius * 1.25);
+      bgGlow.addColorStop(0, 'rgba(123, 44, 191, 0.25)'); // Violet
+      bgGlow.addColorStop(0.5, 'rgba(0, 180, 216, 0.2)'); // Sapphire
+      bgGlow.addColorStop(0.85, 'rgba(247, 37, 133, 0.15)'); // Magenta
+      bgGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+      ctx.fillStyle = bgGlow;
       ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.arc(cx, cy, baseRadius * 1.25, 0, Math.PI * 2);
       ctx.fill();
 
-      // Swirling internal fluid energy nodes
-      const colors = [
-        'rgba(0, 245, 212, 0.65)',
-        'rgba(0, 180, 216, 0.6)',
-        'rgba(123, 44, 191, 0.55)',
-        'rgba(247, 37, 133, 0.45)',
-        'rgba(0, 49, 83, 0.8)',
+      // 2. Multilayered Swirling Energy Waves (Ribbons & Plasma Filaments)
+      const ribbons = [
+        { color: 'rgba(0, 180, 216, 0.85)', speed: 1.2, freq: 4, amp: 18, width: 3.5 }, // Electric Sapphire
+        { color: 'rgba(123, 44, 191, 0.85)', speed: -0.9, freq: 6, amp: 22, width: 3.0 }, // Deep Violet
+        { color: 'rgba(247, 37, 133, 0.75)', speed: 1.5, freq: 5, amp: 15, width: 2.5 }, // Neon Magenta
+        { color: 'rgba(0, 245, 212, 0.9)', speed: -1.4, freq: 8, amp: 12, width: 2.0 }, // Cyan White
+        { color: 'rgba(255, 255, 255, 0.95)', speed: 2.0, freq: 10, amp: 8, width: 1.5 }, // White Core Pulse
       ];
 
-      for (let i = 0; i < 5; i++) {
-        const angle = time * (0.8 + i * 0.3) + (i * Math.PI * 2) / 5;
-        const dist = radius * 0.35 * Math.sin(time * 0.5 + i);
-        const ox = cx + Math.cos(angle) * dist;
-        const oy = cy + Math.sin(angle) * dist;
-        const nodeRadius = radius * (0.35 + 0.1 * Math.cos(time + i));
-
-        const nodeGrad = ctx.createRadialGradient(ox, oy, 0, ox, oy, nodeRadius);
-        nodeGrad.addColorStop(0, colors[i]);
-        nodeGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-
-        ctx.fillStyle = nodeGrad;
+      ribbons.forEach((r, idx) => {
+        ctx.strokeStyle = r.color;
+        ctx.lineWidth = r.width;
         ctx.beginPath();
-        ctx.arc(ox, oy, nodeRadius, 0, Math.PI * 2);
-        ctx.fill();
+
+        const steps = 360;
+        for (let i = 0; i <= steps; i++) {
+          const angle = (i * Math.PI) / 180;
+          const wave1 = Math.sin(angle * r.freq + time * r.speed + idx);
+          const wave2 = Math.cos(angle * (r.freq * 0.5) - time * 0.8);
+          const currentR = baseRadius + wave1 * r.amp + wave2 * (r.amp * 0.5);
+
+          const x = cx + Math.cos(angle) * currentR;
+          const y = cy + Math.sin(angle) * currentR;
+
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+        ctx.closePath();
+        ctx.stroke();
+      });
+
+      // 3. Dense Inner Plasma Filament Mesh (Fine lines connecting perimeter)
+      ctx.lineWidth = 0.5;
+      const numFilaments = 40;
+      for (let i = 0; i < numFilaments; i++) {
+        const angle1 = (i * Math.PI * 2) / numFilaments + time * 0.3;
+        const angle2 = angle1 + Math.PI * 0.75 + Math.sin(time + i) * 0.4;
+
+        const r1 = baseRadius + Math.sin(angle1 * 3 + time) * 12;
+        const r2 = baseRadius + Math.cos(angle2 * 4 - time) * 14;
+
+        const x1 = cx + Math.cos(angle1) * r1;
+        const y1 = cy + Math.sin(angle1) * r1;
+        const x2 = cx + Math.cos(angle2) * r2;
+        const y2 = cy + Math.sin(angle2) * r2;
+
+        const grad = ctx.createLinearGradient(x1, y1, x2, y2);
+        grad.addColorStop(0, 'rgba(0, 180, 216, 0.35)');
+        grad.addColorStop(0.5, 'rgba(123, 44, 191, 0.25)');
+        grad.addColorStop(1, 'rgba(247, 37, 133, 0.35)');
+
+        ctx.strokeStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(cx + Math.sin(time + i) * 30, cy + Math.cos(time + i) * 30, x2, y2);
+        ctx.stroke();
       }
 
-      // Outer glassy specular rim highlight
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-      ctx.lineWidth = 3;
+      // 4. Dark Specular Hollow Center
+      ctx.globalCompositeOperation = 'source-over';
+      const centerCore = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseRadius * 0.75);
+      centerCore.addColorStop(0, 'rgba(3, 7, 18, 0.95)');
+      centerCore.addColorStop(0.7, 'rgba(5, 11, 24, 0.7)');
+      centerCore.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+      ctx.fillStyle = centerCore;
       ctx.beginPath();
-      ctx.arc(cx, cy, radius * 0.98, -Math.PI * 0.75, -Math.PI * 0.25);
-      ctx.stroke();
+      ctx.arc(cx, cy, baseRadius * 0.75, 0, Math.PI * 2);
+      ctx.fill();
 
       frameId = requestAnimationFrame(render);
     };
@@ -147,53 +189,75 @@ export const ThinkingOrbPage: React.FC = () => {
     }, 50);
   };
 
-  // Math for 5-second scale & rotation
-  // Cubic ease-in curve for exponential expansion
-  const easeInExp = Math.pow(animProgress, 3);
-  // Scale expands from 1.0x to 45.0x (completely engulfs 4K screens)
-  const orbScale = 1 + easeInExp * 45;
-  // Rotates 3 full turns (1080 deg) in 5 seconds
-  const orbRotation = animProgress * 1080;
-  // Opacity fades smoothly near the 4.8s mark so screen is blank dark navy/black
-  const orbOpacity = animProgress > 0.92 ? 1 - (animProgress - 0.92) / 0.08 : 1;
+  // Timeline Calculation: 2 Heartbeats followed by Exponential Scale & Fade
+  // Total duration: 5.0 seconds (5000ms)
+  let orbScale = 1.0;
+  let orbOpacity = 1.0;
+  const rotation = animProgress * 720; // 2 smooth rotations
+
+  if (animProgress <= 0.16) {
+    // HEARTBEAT 1 (0ms to 800ms) -> Lub-Dub pulse (1.0 -> 1.3 -> 1.0)
+    const t = animProgress / 0.16; // 0 to 1
+    const pulse = Math.sin(t * Math.PI);
+    orbScale = 1.0 + pulse * 0.28;
+    orbOpacity = Math.min(1.0, t * 2.5); // Fade in on entrance
+  } else if (animProgress <= 0.36) {
+    // HEARTBEAT 2 (800ms to 1800ms) -> Stronger thump pulse (1.0 -> 1.55 -> 1.15)
+    const t = (animProgress - 0.16) / 0.2; // 0 to 1
+    const pulse = Math.sin(t * Math.PI);
+    orbScale = 1.0 + pulse * 0.52;
+    orbOpacity = 1.0;
+  } else {
+    // EXPANSION & FADE OUT (1800ms to 5000ms) -> Exponential swell + Smooth Fade Out
+    const t = (animProgress - 0.36) / 0.64; // 0 to 1
+    const easeExp = Math.pow(t, 2.8);
+    orbScale = 1.15 + easeExp * 48; // Expands outward from 1.15x to 49.0x
+
+    // Smooth fade out so screen becomes completely blank
+    if (t > 0.4) {
+      orbOpacity = Math.max(0, 1 - (t - 0.4) / 0.6);
+    } else {
+      orbOpacity = 1.0;
+    }
+  }
 
   return (
     <section
       id="page-2"
       ref={containerRef}
       className="relative w-full h-screen snap-start flex-shrink-0 overflow-hidden select-none bg-gradient-to-b from-[#020408] via-[#001b3a] to-[#040a17]"
-      aria-label="Thinking Orb Page"
+      aria-label="Heartbeat Plasma Orb Page"
     >
-      {/* Background Ambient Layers (Black + Prussian Blue + Deep Navy) */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#003153]/30 via-[#050b18] to-[#020408] pointer-events-none" />
+      {/* Deep Sea / Prussian Blue Ambient Background (Strictly contained in Page 2) */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#003153]/35 via-[#050b18] to-[#020408] pointer-events-none" />
 
-      {/* Floating Deep-Sea Background Grid / Particle Accents */}
-      <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#00f5d4_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none" />
+      {/* Subtle Background Particle Grid */}
+      <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#00b4d8_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none" />
 
-      {/* CENTERED ANIMATED THINKING ORB CONTAINER */}
-      <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-10 overflow-hidden">
+      {/* CENTERED ORB CONTAINER - STRICTLY ABSOLUTE & SCOPED TO PAGE 2 */}
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-10 overflow-hidden">
         <div
           style={{
-            transform: `rotate(${orbRotation}deg) scale(${orbScale})`,
+            transform: `rotate(${rotation}deg) scale(${orbScale})`,
             opacity: orbOpacity,
             willChange: 'transform, opacity',
           }}
-          className="relative w-[320px] h-[320px] sm:w-[420px] sm:h-[420px] flex items-center justify-center transition-transform ease-linear"
+          className="relative w-[340px] h-[340px] sm:w-[460px] sm:h-[460px] flex items-center justify-center transition-transform duration-75 ease-out"
         >
-          {/* Glass Outer Glow Aura */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#00f5d4]/40 via-[#00b4d8]/30 to-[#7b2cbf]/50 blur-3xl opacity-80 animate-pulse" />
+          {/* Outer Liquid Neon Glass Glow */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#00b4d8]/40 via-[#7b2cbf]/40 to-[#f72585]/40 blur-3xl opacity-80 animate-pulse" />
 
-          {/* Canvas Orb Core */}
+          {/* High-Fidelity Plasma Wave Canvas */}
           <canvas
             ref={canvasRef}
-            width={500}
-            height={500}
-            className="relative w-full h-full rounded-full shadow-[0_0_100px_rgba(0,245,212,0.5),_inset_0_0_50px_rgba(255,255,255,0.4)]"
+            width={540}
+            height={540}
+            className="relative w-full h-full rounded-full shadow-[0_0_90px_rgba(0,180,216,0.45),_inset_0_0_45px_rgba(255,255,255,0.4)]"
           />
         </div>
       </div>
 
-      {/* SCREEN BLANK INDICATOR & REPLAY CONTROLLER */}
+      {/* REPLAY CONTROLLER & BLANK SCREEN BADGE */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3">
         <AnimatePresence>
           {isCompleted && (
@@ -201,19 +265,19 @@ export const ThinkingOrbPage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
-              className="flex items-center gap-3 bg-[#060d24]/90 backdrop-blur-xl border border-[#00f5d4]/30 px-5 py-2.5 rounded-full shadow-2xl shadow-cyan-950/60"
+              className="flex items-center gap-3 bg-[#060d24]/90 backdrop-blur-xl border border-sky-400/30 px-5 py-2.5 rounded-full shadow-2xl shadow-sky-950/70"
             >
-              <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-cyan-200 uppercase">
-                <Sparkles className="w-4 h-4 text-[#00f5d4]" />
-                Orb Expanded • Screen Blank
+              <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-sky-200 uppercase">
+                <Sparkles className="w-4 h-4 text-sky-400" />
+                Heartbeat Orb Expanded • Screen Blank
               </div>
 
               <button
                 onClick={handleReplay}
-                className="flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-[#00b4d8] to-[#00f5d4] hover:from-[#00f5d4] hover:to-[#00b4d8] text-slate-950 text-xs font-bold rounded-full transition-all shadow-md active:scale-95 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-sky-400 to-indigo-500 hover:from-sky-300 hover:to-indigo-400 text-slate-950 text-xs font-bold rounded-full transition-all shadow-md active:scale-95 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                Replay (5s)
+                Replay Heartbeat
               </button>
             </motion.div>
           )}

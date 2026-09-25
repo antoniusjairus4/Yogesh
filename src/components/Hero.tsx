@@ -113,7 +113,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
   let globalCharIndexTracker = 0;
 
   return (
-    <section id="hero" className="relative w-full h-full min-h-screen flex items-center justify-center py-16 sm:py-20 px-4 sm:px-8 overflow-hidden bg-slate-950">
+    <section id="hero" className="relative w-full h-screen min-h-screen snap-start flex-shrink-0 flex items-center justify-center py-16 sm:py-20 px-4 sm:px-8 overflow-hidden bg-slate-950">
       
       {/* Video Background Layer */}
       <div className="absolute inset-0 z-0 overflow-hidden">

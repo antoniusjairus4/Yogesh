@@ -42,13 +42,6 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
           onScrollBackToHero();
         }
       }
-      // Scroll down to Featured Media when at bottom of About page
-      else if (e.deltaY > 15 && contentEl.scrollTop + contentEl.clientHeight >= contentEl.scrollHeight - 25) {
-        if (onScrollToNextPage) {
-          e.preventDefault();
-          onScrollToNextPage();
-        }
-      }
     };
 
     contentEl.addEventListener('wheel', handleWheel, { passive: false });
@@ -114,9 +107,9 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
       return 'blur-[6px] opacity-40 scale-[0.97] brightness-75 grayscale-[20%] border-white/10 transition-all duration-500 ease-out cursor-pointer';
     }
     if (isHovered) {
-      return 'blur-none opacity-100 scale-[1.03] border-orange-500/90 shadow-[0_0_50px_rgba(234,88,12,0.4)] z-20 transition-all duration-500 ease-out cursor-pointer';
+      return 'blur-none opacity-100 scale-[1.03] border-white/50 shadow-[0_0_35px_rgba(255,255,255,0.12)] z-20 transition-all duration-500 ease-out cursor-pointer';
     }
-    return 'blur-none opacity-100 scale-100 border-white/15 hover:border-orange-500/60 transition-all duration-500 ease-out cursor-pointer';
+    return 'blur-none opacity-100 scale-100 border-white/15 hover:border-white/40 transition-all duration-500 ease-out cursor-pointer';
   };
 
   return (
@@ -324,7 +317,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                     {/* Unboxed Obsidian Glass Card */}
                     <div className={`p-7 sm:p-8 rounded-3xl bg-slate-900/85 backdrop-blur-2xl border flex flex-col justify-between h-full min-h-[250px] transition-all duration-400 ease-out ${
                       isUnblurredCard
-                        ? 'blur-none border-orange-500/90 shadow-[0_0_40px_rgba(234,88,12,0.4)] bg-slate-900/95 cursor-default'
+                        ? 'blur-none border-white/40 shadow-[0_0_30px_rgba(255,255,255,0.08)] bg-slate-900/95 cursor-default'
                         : 'blur-[5px] brightness-75 grayscale-[20%] border-white/10 hover:blur-none hover:brightness-100 hover:border-white/30 cursor-pointer'
                     }`}>
                       <div>
@@ -377,7 +370,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
               </p>
               <button
                 onClick={onScrollToNextPage}
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-orange-600 hover:bg-orange-500 text-white font-outfit font-black text-base tracking-wide transition-all shadow-[0_0_30px_rgba(234,88,12,0.4)] hover:shadow-[0_0_45px_rgba(234,88,12,0.6)] cursor-pointer hover:scale-105"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-base tracking-wide transition-all shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_45px_rgba(255,255,255,0.4)] cursor-pointer hover:scale-105 border border-white/80"
               >
                 <span>View Featured Newspaper Clippings</span>
                 <span className="text-lg">→</span>

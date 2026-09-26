@@ -9,20 +9,20 @@ export const App: React.FC = () => {
   const [isVideoEnded, setIsVideoEnded] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Measure scroll through a 200vh track while keeping the viewport locked at 100vh
+  // Smooth scroll progress mapped strictly between Page 1 (0) and Page 2 (1)
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"]
   });
 
-  // Page 1 (Hero): Recedes back into depth, blurs, and fades out
-  const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.82]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const heroBlur = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(30px)"]);
+  // Page 1 (Hero): Recedes back into depth, blurs, and fades out cleanly
+  const heroScale = useTransform(scrollYProgress, [0, 0.9], [1, 0.8], { clamp: true });
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.9], [1, 0], { clamp: true });
+  const heroBlur = useTransform(scrollYProgress, [0, 0.9], ["blur(0px)", "blur(30px)"], { clamp: true });
 
-  // Page 2 (2nd Page Video): Emerges from inside (scale 0.65 -> 1, opacity 0 -> 1)
-  const secondPageScale = useTransform(scrollYProgress, [0.1, 0.6], [0.65, 1]);
-  const secondPageOpacity = useTransform(scrollYProgress, [0.1, 0.6], [0, 1]);
+  // Page 2 (2nd Page Video): Emerges from inside center and locks at 100% full screen
+  const secondPageScale = useTransform(scrollYProgress, [0.1, 0.95], [0.65, 1], { clamp: true });
+  const secondPageOpacity = useTransform(scrollYProgress, [0.1, 0.95], [0, 1], { clamp: true });
 
   const handleReplayVideo = () => {
     if (videoRef.current) {
@@ -40,10 +40,10 @@ export const App: React.FC = () => {
       {/* Top Navigation Bar */}
       <Navbar />
 
-      {/* Outer 200vh Scroll Track */}
+      {/* Track capped strictly at 200vh so scrolling terminates cleanly at Page 2 */}
       <div ref={trackRef} className="relative h-[200vh] w-full">
         
-        {/* Sticky 100vh Viewport Window */}
+        {/* Pinned 100vh Viewport */}
         <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
           
           {/* Page 1: Hero Section (Background Depth Layer) */}
@@ -63,13 +63,13 @@ export const App: React.FC = () => {
             />
           </motion.div>
 
-          {/* Page 2: 2nd Page Video (Emerges from inside center - Pure Video, No Text) */}
+          {/* Page 2: 2nd Page Video (Emerges from inside center and locks at full screen) */}
           <motion.div
             style={{
               scale: secondPageScale,
               opacity: secondPageOpacity,
             }}
-            className="absolute inset-0 z-20 w-full h-full overflow-hidden origin-center rounded-none shadow-2xl"
+            className="absolute inset-0 z-20 w-full h-full overflow-hidden origin-center"
           >
             <SecondPageVideo />
           </motion.div>

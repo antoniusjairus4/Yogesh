@@ -40,6 +40,19 @@ export interface CareerHighlight {
   focus: string;
 }
 
+export interface AcademicQualification {
+  degree: string;
+  year: string;
+  institution: string;
+  field: string;
+}
+
+export interface ScubaCredential {
+  title: string;
+  details: string;
+  iconName: string;
+}
+
 export const PROFILE_DATA: ProfileData = {
   name: "Dr. J.S. Yogesh Kumar",
   title: "Scientist E & Officer-in-Charge",
@@ -140,29 +153,122 @@ export const RESEARCH_PILLARS: ResearchPillar[] = [
   }
 ];
 
-export const CAREER_SNAPSHOT: CareerHighlight[] = [
+export const FULL_CAREER_TIMELINE: CareerHighlight[] = [
   {
-    period: "June 2022 – Present",
+    period: "27 June 2022 – Present",
     title: "Scientist E & Officer-in-Charge",
-    location: "ZSI Sunderban Regional Centre (SbRC), Canning",
-    focus: "Leading regional research directives & Sunderbans mangrove ecosystem exploration."
+    location: "ZSI Sunderban Regional Centre (SbRC), Canning, West Bengal",
+    focus: "Leading regional research directives & Sunderbans mangrove-associated faunal exploration."
   },
   {
-    period: "May 2021 – June 2022",
+    period: "1 May 2021 – 26 June 2022",
     title: "Scientist D & Officer-in-Charge",
-    location: "ZSI Sunderban Regional Centre (SbRC), Canning",
+    location: "ZSI Sunderban Regional Centre (SbRC), Canning, West Bengal",
     focus: "Administrative leadership and coastal faunal monitoring."
   },
   {
-    period: "April 2017 – April 2021",
+    period: "7 April 2017 – 30 April 2021",
     title: "Scientist D",
-    location: "ZSI Marine Aquarium and Regional Centre (MARC), Digha",
-    focus: "Soft coral taxonomy along Digha coast and East Coast of India."
+    location: "ZSI Marine Aquarium and Regional Centre (MARC), Digha, West Bengal",
+    focus: "Marine Cnidarian & Octocoral taxonomy along Digha coast and East Coast of India."
   },
   {
-    period: "June 2013 – July 2016",
-    title: "Young Scientist (DST-SERB Fast Track)",
+    period: "13 July 2016 – 6 April 2017",
+    title: "Post-Doctoral Fellow (PDF)",
+    location: "ZSI Headquarters, Kolkata",
+    focus: "Advanced Octocoral taxonomy."
+  },
+  {
+    period: "1 June 2013 – 12 July 2016",
+    title: "Young Scientist (DST-SERB Fast Track Scheme)",
     location: "ZSI Andaman & Nicobar Regional Centre, Port Blair",
-    focus: "Comprehensive research on Gorgonian diversity & distribution."
+    focus: "Comprehensive research on Gorgonian diversity & spatial distribution."
+  },
+  {
+    period: "1 June 2013 – 31 July 2015",
+    title: "Administrative In-Charge",
+    location: "ZSI Andaman & Nicobar Regional Centre, Port Blair",
+    focus: "Coral transplantation & restoration at Jamnagar, Gujarat."
+  },
+  {
+    period: "19 August 2012 – 31 May 2013",
+    title: "Research Associate",
+    location: "ZSI Gujarat",
+    focus: "Coral transplantation & reef restoration."
+  },
+  {
+    period: "1 December 2011 – 31 July 2012",
+    title: "Senior Research Fellow (SRF)",
+    location: "ZSI Andaman & Nicobar Islands",
+    focus: "Coral reef & associated fauna monitoring."
+  },
+  {
+    period: "17 July 2009 – 30 November 2011",
+    title: "Junior Research Fellow (JRF)",
+    location: "ZSI Andaman & Nicobar Islands",
+    focus: "Coral reef fauna survey & underwater sampling."
+  },
+  {
+    period: "6 May 2006 – 10 July 2009",
+    title: "Research Associate",
+    location: "Peoples Action for Development (PAD), Thoothukudi",
+    focus: "ICT program, mangrove plantation with M. S. Swaminathan Research Foundation (MSSRF)."
+  },
+  {
+    period: "5 January 2006 – 5 May 2006",
+    title: "Junior Research Fellow (JRF)",
+    location: "Suganthi Devadason Marine Research Institute (SDMRI), Thoothukudi",
+    focus: "Coral recruitment & reproductive biology."
   }
 ];
+
+export const ACADEMIC_QUALIFICATIONS: AcademicQualification[] = [
+  {
+    degree: "Ph.D. in Zoology",
+    year: "2012",
+    institution: "V.O.C. College, Manonmaniam Sundaranar University, Tirunelveli, Tamil Nadu",
+    field: "Marine Zoology & Coral Taxonomy"
+  },
+  {
+    degree: "M.Phil. in Zoology",
+    year: "2006",
+    institution: "V.O.C. College, Manonmaniam Sundaranar University, Tirunelveli",
+    field: "Zoological Research & Invertebrates"
+  },
+  {
+    degree: "M.Sc. in Zoology",
+    year: "2004",
+    institution: "V.O.C. College, Manonmaniam Sundaranar University, Tirunelveli",
+    field: "Advanced Zoology"
+  },
+  {
+    degree: "B.Sc. in Zoology",
+    year: "2001",
+    institution: "Kamaraj College, Manonmaniam Sundaranar University, Tirunelveli",
+    field: "Biological Sciences & Zoology"
+  }
+];
+
+export const SCUBA_CREDENTIALS: ScubaCredential[] = [
+  {
+    title: "PADI Certified Dive Master",
+    details: "Certification No. DM – 494151 (Certified Dec 2007, Barracuda Dive Centre, Goa)",
+    iconName: "Award"
+  },
+  {
+    title: "SCUBA Levels & Emergency Response",
+    details: "Open Water & Advanced Open Water (2006), Rescue Diver & Emergency First Responder (EFR, 2007)",
+    iconName: "ShieldCheck"
+  },
+  {
+    title: "Technical Underwater Assessment",
+    details: "Line Intersect Transect (LIT) & Quadrat methods, professional HD underwater photo & videography",
+    iconName: "Camera"
+  },
+  {
+    title: "Honors & Scientific Fellowships",
+    details: "DST-SERB Young Scientist Award, ZSI Post-Doctoral Fellowship (PDF)",
+    iconName: "Medal"
+  }
+];
+

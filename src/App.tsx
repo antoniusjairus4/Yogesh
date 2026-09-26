@@ -13,7 +13,7 @@ export const App: React.FC = () => {
   const touchStartY = useRef<number | null>(null);
   const TRANSITION_DURATION = 1100;
 
-  // Intercept wheel/touch gestures for Page 1 -> Page 2 transition & top-boundary scroll back
+  // Intercept wheel/touch gestures on Page 1 -> Page 2 transition
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       if (isTransitioning) return;
@@ -66,15 +66,23 @@ export const App: React.FC = () => {
     }
   };
 
+  const handleReturnToHero = () => {
+    if (!isTransitioning) {
+      setIsTransitioning(true);
+      setActivePage(1);
+      setTimeout(() => setIsTransitioning(false), TRANSITION_DURATION);
+    }
+  };
+
   return (
     <div className="h-screen w-screen bg-slate-950 text-slate-100 font-sans selection:bg-teal-500 selection:text-slate-950 overflow-hidden fixed inset-0">
-      {/* Top Navigation Bar */}
+      {/* Top Navigation Bar (z-50) */}
       <Navbar />
 
       {/* Locked 100vh Viewport Container */}
       <main className="relative w-full h-full overflow-hidden flex items-center justify-center">
         
-        {/* Page 1: Hero Section */}
+        {/* Page 1: Hero Section (z-10) */}
         <motion.div
           initial={false}
           animate={{
@@ -106,7 +114,7 @@ export const App: React.FC = () => {
           />
         </motion.div>
 
-        {/* Hardware-Accelerated Frosted Blur Overlay */}
+        {/* Hardware-Accelerated Frosted Blur Overlay (z-15) */}
         <motion.div
           initial={false}
           animate={{
@@ -117,7 +125,7 @@ export const App: React.FC = () => {
           className="absolute inset-0 z-15 bg-slate-950/40 pointer-events-none transform-gpu"
         />
 
-        {/* Page 2: About & Field Portfolio (Stationary Background Video + Scrollable Content & 5 Photos) */}
+        {/* Page 2: About & Career Portfolio (z-20) */}
         <motion.div
           initial={false}
           animate={{
@@ -133,7 +141,7 @@ export const App: React.FC = () => {
             activePage === 2 ? 'pointer-events-auto' : 'pointer-events-none'
           }`}
         >
-          <About />
+          <About onScrollBackToHero={handleReturnToHero} />
         </motion.div>
 
       </main>

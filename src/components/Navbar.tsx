@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Waves } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 export interface NavItem {
   id: string;
   label: string;
+  page: 1 | 2 | 3;
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { id: 'career', label: 'Career' },
-  { id: 'research', label: 'Research' },
-  { id: 'publications', label: 'Publications' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'career', label: 'Career', page: 2 },
+  { id: 'featured', label: 'Featured in...', page: 3 },
+  { id: 'research', label: 'Research', page: 2 },
+  { id: 'publications', label: 'Publications', page: 2 },
+  { id: 'contact', label: 'Contact', page: 2 },
 ];
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  activePage?: 1 | 2 | 3;
+  onNavigatePage?: (page: 1 | 2 | 3) => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>('career');
 
   // Track scroll position
   useEffect(() => {
@@ -51,31 +57,30 @@ export const Navbar: React.FC = () => {
     };
   }, [isMobileOpen]);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, item: NavItem) => {
     e.preventDefault();
     setIsMobileOpen(false);
-    setActiveTab(id);
+    if (onNavigatePage) {
+      onNavigatePage(item.page);
+    }
   };
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-out pt-[env(safe-area-inset-top)] bg-[#040917]/95 backdrop-blur-xl border-b border-sky-400/30 shadow-[0_8px_30px_rgba(0,0,0,0.7)]"
+      className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-out pt-[env(safe-area-inset-top)] bg-[#040917]/95 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.7)]"
     >
       <div className="max-w-[1240px] mx-auto px-4 sm:px-8 w-full h-16 sm:h-18 flex items-center justify-between">
         
-        {/* Brand / Wordmark with Oceanic Crest Icon */}
+        {/* Brand / Wordmark */}
         <a
           href="#"
           onClick={(e) => {
             e.preventDefault();
-            setActiveTab('career');
+            if (onNavigatePage) onNavigatePage(1);
           }}
-          className="group flex items-center gap-2.5 min-w-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg py-1 px-2 -ml-2 hover:bg-white/5 transition-colors"
+          className="group flex items-center min-w-0 focus:outline-none rounded-lg py-1 px-2 -ml-2 transition-colors"
         >
-          <div className="p-1.5 rounded-lg bg-sky-500/20 border border-sky-400/40 shrink-0 text-sky-400 group-hover:scale-105 transition-transform">
-            <Waves className="w-5 h-5" />
-          </div>
-          <span className="font-outfit font-black text-base sm:text-xl text-white tracking-tight truncate transition-colors group-hover:text-sky-300">
+          <span className="font-outfit font-black text-base sm:text-xl text-white tracking-tight truncate">
             Dr. J.S. Yogesh Kumar
           </span>
         </a>
@@ -83,14 +88,14 @@ export const Navbar: React.FC = () => {
         {/* Desktop Navigation */}
         <nav aria-label="Primary" className="hidden md:flex items-center gap-8 sm:gap-10">
           {NAV_ITEMS.map((item) => {
-            const isActive = activeTab === item.id;
+            const isActive = activePage === item.page;
             return (
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                onClick={(e) => handleNavClick(e, item.id)}
-                className={`relative text-base font-bold tracking-wide transition-colors duration-200 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 rounded ${
-                  isActive ? 'text-sky-300' : 'text-slate-200 hover:text-white'
+                onClick={(e) => handleNavClick(e, item)}
+                className={`relative text-base font-bold tracking-wide transition-colors duration-200 py-2 focus:outline-none rounded ${
+                  isActive ? 'text-white font-black' : 'text-white/75 hover:text-white'
                 }`}
               >
                 {item.label}
@@ -106,9 +111,9 @@ export const Navbar: React.FC = () => {
           aria-expanded={isMobileOpen}
           aria-controls="mobile-menu-overlay"
           aria-label={isMobileOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-          className="md:hidden p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-100 hover:text-white bg-white/10 rounded-xl hover:bg-white/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+          className="md:hidden p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-100 hover:text-white bg-white/10 rounded-xl hover:bg-white/20 transition-colors focus:outline-none"
         >
-          {isMobileOpen ? <X className="w-6 h-6 text-sky-400" /> : <Menu className="w-6 h-6 text-sky-400" />}
+          {isMobileOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
         </button>
       </div>
 
@@ -128,7 +133,7 @@ export const Navbar: React.FC = () => {
               type="button"
               onClick={() => setIsMobileOpen(false)}
               aria-label="Close menu"
-              className="absolute top-5 right-5 p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+              className="absolute top-5 right-5 p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors focus:outline-none"
             >
               <X className="w-6 h-6" />
             </button>
@@ -139,7 +144,7 @@ export const Navbar: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               {NAV_ITEMS.map((item, index) => {
-                const isActive = activeTab === item.id;
+                const isActive = activePage === item.page;
                 return (
                   <motion.a
                     key={item.id}
@@ -147,10 +152,10 @@ export const Navbar: React.FC = () => {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.05 * index, duration: 0.3 }}
-                    onClick={(e) => handleNavClick(e, item.id)}
+                    onClick={(e) => handleNavClick(e, item)}
                     className={`text-2xl font-outfit font-bold tracking-wide transition-colors py-2.5 px-6 rounded-xl w-full ${
                       isActive
-                        ? 'text-sky-300 bg-sky-500/20 border border-sky-400/40 shadow-[0_0_15px_rgba(56,189,248,0.2)]'
+                        ? 'text-white bg-white/10 border border-white/20 font-black'
                         : 'text-slate-200 hover:text-white hover:bg-white/10'
                     }`}
                   >

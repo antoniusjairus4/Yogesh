@@ -13,10 +13,10 @@ export const SecondPageVideo: React.FC = () => {
 
   return (
     <div className="relative w-full h-full min-h-screen bg-slate-950 overflow-hidden flex items-center justify-center">
-      {/* Background Video for Page 2 */}
+      {/* Background Video for Page 2 - Full Edge-to-Edge with scaling to remove black void bars */}
       <video
         ref={videoRef}
-        className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
+        className="w-full h-full object-cover object-center transform scale-105 sm:scale-110 origin-center filter brightness-100 contrast-105"
         autoPlay
         muted
         loop
@@ -25,9 +25,6 @@ export const SecondPageVideo: React.FC = () => {
         <source src="/2nd_page.mp4" type="video/mp4" />
         Your browser does not support HTML5 video background.
       </video>
-
-      {/* Subtle Oceanic Dark Vignette Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/60 pointer-events-none" />
     </div>
   );
 };

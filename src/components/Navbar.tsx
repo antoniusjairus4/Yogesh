@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Waves } from 'lucide-react';
 
 export interface NavItem {
   id: string;
@@ -19,7 +19,7 @@ export const Navbar: React.FC = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('career');
 
-  // Track scroll position if scrolled
+  // Track scroll position
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -59,30 +59,29 @@ export const Navbar: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-out pt-[env(safe-area-inset-top)] ${
-        isScrolled
-          ? 'bg-[#060c1e]/85 backdrop-blur-md border-b border-white/[0.08] shadow-lg shadow-black/20'
-          : 'bg-transparent border-b border-transparent'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-out pt-[env(safe-area-inset-top)] bg-[#040917]/95 backdrop-blur-xl border-b border-sky-400/30 shadow-[0_8px_30px_rgba(0,0,0,0.7)]"
     >
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 w-full h-16 flex items-center justify-between">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-8 w-full h-16 sm:h-18 flex items-center justify-between">
         
-        {/* Brand / Wordmark */}
+        {/* Brand / Wordmark with Oceanic Crest Icon */}
         <a
           href="#"
           onClick={(e) => {
             e.preventDefault();
             setActiveTab('career');
           }}
-          className="group flex items-center gap-2 min-w-0 pr-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 rounded-md"
+          className="group flex items-center gap-2.5 min-w-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg py-1 px-2 -ml-2 hover:bg-white/5 transition-colors"
         >
-          <span className="font-outfit font-bold text-base sm:text-lg text-white tracking-tight truncate transition-colors group-hover:text-sky-400">
+          <div className="p-1.5 rounded-lg bg-sky-500/20 border border-sky-400/40 shrink-0 text-sky-400 group-hover:scale-105 transition-transform">
+            <Waves className="w-5 h-5" />
+          </div>
+          <span className="font-outfit font-black text-base sm:text-xl text-white tracking-tight truncate transition-colors group-hover:text-sky-300">
             Dr. J.S. Yogesh Kumar
           </span>
         </a>
 
-        {/* Desktop Navigation (min-width: 768px) */}
-        <nav aria-label="Primary" className="hidden md:flex items-center gap-8">
+        {/* Desktop Navigation */}
+        <nav aria-label="Primary" className="hidden md:flex items-center gap-8 sm:gap-10">
           {NAV_ITEMS.map((item) => {
             const isActive = activeTab === item.id;
             return (
@@ -90,37 +89,26 @@ export const Navbar: React.FC = () => {
                 key={item.id}
                 href={`#${item.id}`}
                 onClick={(e) => handleNavClick(e, item.id)}
-                className={`relative text-[15px] font-medium transition-colors duration-200 py-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 rounded ${
-                  isActive ? 'text-white' : 'text-white/80 hover:text-white'
+                className={`relative text-base font-bold tracking-wide transition-colors duration-200 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 rounded ${
+                  isActive ? 'text-sky-300' : 'text-slate-200 hover:text-white'
                 }`}
               >
                 {item.label}
-
-                {/* Animated Ocean-Blue Underline */}
-                {isActive ? (
-                  <motion.span
-                    layoutId="activeNavUnderline"
-                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#38bdf8] rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)]"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                ) : (
-                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#38bdf8]/90 rounded-full scale-x-0 transition-transform duration-300 origin-left hover:scale-x-100" />
-                )}
               </a>
             );
           })}
         </nav>
 
-        {/* Mobile Hamburger Button (Base / ~375px) */}
+        {/* Mobile Hamburger Button */}
         <button
           type="button"
           onClick={() => setIsMobileOpen((prev) => !prev)}
           aria-expanded={isMobileOpen}
           aria-controls="mobile-menu-overlay"
           aria-label={isMobileOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-          className="md:hidden p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-200 hover:text-white rounded-lg hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+          className="md:hidden p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-100 hover:text-white bg-white/10 rounded-xl hover:bg-white/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
         >
-          {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {isMobileOpen ? <X className="w-6 h-6 text-sky-400" /> : <Menu className="w-6 h-6 text-sky-400" />}
         </button>
       </div>
 
@@ -134,9 +122,8 @@ export const Navbar: React.FC = () => {
             exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
             transition={{ duration: 0.25 }}
             onClick={() => setIsMobileOpen(false)}
-            className="fixed inset-0 z-50 bg-[#060c1e]/90 flex flex-col justify-center items-center px-6 md:hidden"
+            className="fixed inset-0 z-50 bg-[#040917]/95 flex flex-col justify-center items-center px-6 md:hidden"
           >
-            {/* Close Button Inside Modal */}
             <button
               type="button"
               onClick={() => setIsMobileOpen(false)}
@@ -146,7 +133,6 @@ export const Navbar: React.FC = () => {
               <X className="w-6 h-6" />
             </button>
 
-            {/* Stacked Navigation Links */}
             <nav
               aria-label="Primary Mobile"
               className="flex flex-col items-center gap-6 text-center w-full max-w-sm"
@@ -162,10 +148,10 @@ export const Navbar: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.05 * index, duration: 0.3 }}
                     onClick={(e) => handleNavClick(e, item.id)}
-                    className={`text-2xl font-outfit font-semibold tracking-wide transition-colors py-2 px-6 rounded-xl w-full ${
+                    className={`text-2xl font-outfit font-bold tracking-wide transition-colors py-2.5 px-6 rounded-xl w-full ${
                       isActive
-                        ? 'text-sky-400 bg-sky-500/10 border border-sky-400/30'
-                        : 'text-slate-200 hover:text-white hover:bg-white/5'
+                        ? 'text-sky-300 bg-sky-500/20 border border-sky-400/40 shadow-[0_0_15px_rgba(56,189,248,0.2)]'
+                        : 'text-slate-200 hover:text-white hover:bg-white/10'
                     }`}
                   >
                     {item.label}

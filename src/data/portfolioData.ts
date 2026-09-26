@@ -153,60 +153,12 @@ export const RESEARCH_PILLARS: ResearchPillar[] = [
   }
 ];
 
-export const FULL_CAREER_TIMELINE: CareerHighlight[] = [
+export const CHRONOLOGICAL_CAREER_PAST_TO_PRESENT: CareerHighlight[] = [
   {
-    period: "27 June 2022 – Present",
-    title: "Scientist E & Officer-in-Charge",
-    location: "ZSI Sunderban Regional Centre (SbRC), Canning, West Bengal",
-    focus: "Leading regional research directives & Sunderbans mangrove-associated faunal exploration."
-  },
-  {
-    period: "1 May 2021 – 26 June 2022",
-    title: "Scientist D & Officer-in-Charge",
-    location: "ZSI Sunderban Regional Centre (SbRC), Canning, West Bengal",
-    focus: "Administrative leadership and coastal faunal monitoring."
-  },
-  {
-    period: "7 April 2017 – 30 April 2021",
-    title: "Scientist D",
-    location: "ZSI Marine Aquarium and Regional Centre (MARC), Digha, West Bengal",
-    focus: "Marine Cnidarian & Octocoral taxonomy along Digha coast and East Coast of India."
-  },
-  {
-    period: "13 July 2016 – 6 April 2017",
-    title: "Post-Doctoral Fellow (PDF)",
-    location: "ZSI Headquarters, Kolkata",
-    focus: "Advanced Octocoral taxonomy."
-  },
-  {
-    period: "1 June 2013 – 12 July 2016",
-    title: "Young Scientist (DST-SERB Fast Track Scheme)",
-    location: "ZSI Andaman & Nicobar Regional Centre, Port Blair",
-    focus: "Comprehensive research on Gorgonian diversity & spatial distribution."
-  },
-  {
-    period: "1 June 2013 – 31 July 2015",
-    title: "Administrative In-Charge",
-    location: "ZSI Andaman & Nicobar Regional Centre, Port Blair",
-    focus: "Coral transplantation & restoration at Jamnagar, Gujarat."
-  },
-  {
-    period: "19 August 2012 – 31 May 2013",
-    title: "Research Associate",
-    location: "ZSI Gujarat",
-    focus: "Coral transplantation & reef restoration."
-  },
-  {
-    period: "1 December 2011 – 31 July 2012",
-    title: "Senior Research Fellow (SRF)",
-    location: "ZSI Andaman & Nicobar Islands",
-    focus: "Coral reef & associated fauna monitoring."
-  },
-  {
-    period: "17 July 2009 – 30 November 2011",
+    period: "5 Jan 2006 – 5 May 2006",
     title: "Junior Research Fellow (JRF)",
-    location: "ZSI Andaman & Nicobar Islands",
-    focus: "Coral reef fauna survey & underwater sampling."
+    location: "Suganthi Devadason Marine Research Institute (SDMRI), Thoothukudi",
+    focus: "Coral recruitment & reproductive biology."
   },
   {
     period: "6 May 2006 – 10 July 2009",
@@ -215,12 +167,63 @@ export const FULL_CAREER_TIMELINE: CareerHighlight[] = [
     focus: "ICT program, mangrove plantation with M. S. Swaminathan Research Foundation (MSSRF)."
   },
   {
-    period: "5 January 2006 – 5 May 2006",
+    period: "17 July 2009 – 30 Nov 2011",
     title: "Junior Research Fellow (JRF)",
-    location: "Suganthi Devadason Marine Research Institute (SDMRI), Thoothukudi",
-    focus: "Coral recruitment & reproductive biology."
+    location: "ZSI Andaman & Nicobar Islands",
+    focus: "Coral reef fauna survey & underwater sampling."
+  },
+  {
+    period: "1 Dec 2011 – 31 July 2012",
+    title: "Senior Research Fellow (SRF)",
+    location: "ZSI Andaman & Nicobar Islands",
+    focus: "Coral reef & associated fauna monitoring."
+  },
+  {
+    period: "19 Aug 2012 – 31 May 2013",
+    title: "Research Associate",
+    location: "ZSI Gujarat",
+    focus: "Coral transplantation & reef restoration."
+  },
+  {
+    period: "1 June 2013 – 31 July 2015",
+    title: "Administrative In-Charge",
+    location: "ZSI Andaman & Nicobar Regional Centre, Port Blair",
+    focus: "Coral transplantation & restoration at Jamnagar, Gujarat."
+  },
+  {
+    period: "1 June 2013 – 12 July 2016",
+    title: "Young Scientist (DST-SERB Scheme)",
+    location: "ZSI Andaman & Nicobar Regional Centre, Port Blair",
+    focus: "Comprehensive research on Gorgonian diversity & spatial distribution."
+  },
+  {
+    period: "13 July 2016 – 6 April 2017",
+    title: "Post-Doctoral Fellow (PDF)",
+    location: "ZSI Headquarters, Kolkata",
+    focus: "Advanced Octocoral taxonomy."
+  },
+  {
+    period: "7 April 2017 – 30 April 2021",
+    title: "Scientist D",
+    location: "ZSI Marine Aquarium and Regional Centre (MARC), Digha, West Bengal",
+    focus: "Marine Cnidarian & Octocoral taxonomy along Digha coast and East Coast of India."
+  },
+  {
+    period: "1 May 2021 – 26 June 2022",
+    title: "Scientist D & Officer-in-Charge",
+    location: "ZSI Sunderban Regional Centre (SbRC), Canning, West Bengal",
+    focus: "Administrative leadership and coastal faunal monitoring."
+  },
+  {
+    period: "27 June 2022 – Present",
+    title: "Scientist E & Officer-in-Charge",
+    location: "ZSI Sunderban Regional Centre (SbRC), Canning, West Bengal",
+    focus: "Leading regional research directives & Sunderbans mangrove-associated faunal exploration."
   }
 ];
+
+export const FULL_CAREER_TIMELINE: CareerHighlight[] = CHRONOLOGICAL_CAREER_PAST_TO_PRESENT;
+
 
 export const ACADEMIC_QUALIFICATIONS: AcademicQualification[] = [
   {
@@ -271,4 +274,45 @@ export const SCUBA_CREDENTIALS: ScubaCredential[] = [
     iconName: "Medal"
   }
 ];
+
+export interface FieldPhoto {
+  url: string;
+  title: string;
+  caption: string;
+  tag: string;
+}
+
+export const FIELD_PHOTOS: FieldPhoto[] = [
+  {
+    url: "/DSC04638.JPG",
+    title: "Official Media & Field Briefing",
+    caption: "Dr. Yogesh addressing national scientific media during coastal marine conservation & coral restoration directives.",
+    tag: "ZSI Leadership"
+  },
+  {
+    url: "/DSC00260.JPG",
+    title: "Deep Sea SCUBA Survey",
+    caption: "PADI Master underwater benthic transect assessment and coral reef monitoring along Indian coral reefs.",
+    tag: "SCUBA Field Survey"
+  },
+  {
+    url: "/29.jpg",
+    title: "Marine Invertebrate Exploration",
+    caption: "Taxonomic field research on Octocorallia, Gorgonians, and Cnidarians across coastal ecosystems.",
+    tag: "Taxonomy & Systematics"
+  },
+  {
+    url: "/DSC09721.JPG",
+    title: "Sunderbans Faunal Assessment",
+    caption: "Field exploration of mangrove-associated fauna and threatened species across Sunderban Biosphere Reserve.",
+    tag: "Mangrove Exploration"
+  },
+  {
+    url: "/DSCN0271.JPG",
+    title: "Benthic Quadrat Sampling",
+    caption: "Quantitative Line Intersect Transect (LIT) and underwater photography of coral reef ecosystems.",
+    tag: "Underwater Methodology"
+  }
+];
+
 

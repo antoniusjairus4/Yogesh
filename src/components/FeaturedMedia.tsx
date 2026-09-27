@@ -18,7 +18,8 @@ import {
   Sparkles,
   ScrollText,
   RotateCw,
-  MousePointerClick
+  MousePointerClick,
+  FastForward
 } from 'lucide-react';
 
 interface FeaturedMediaProps {
@@ -30,7 +31,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
   const [isZoomedImage, setIsZoomedImage] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollableRef = useRef<HTMLDivElement>(null);
+  const wallScrollRef = useRef<HTMLDivElement>(null);
 
   // Scroll progress state continuous from 0.0 (0%) to 1.0 (100%)
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -52,71 +53,114 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // Track scroll position of scrollableRef to drive scrollProgress (0.0 to 1.0)
+  // Direct Wheel & Touch Scroll Controller driving 0.0 -> 1.0 un-crumpling
   useEffect(() => {
-    const el = scrollableRef.current;
+    const el = containerRef.current;
     if (!el) return;
 
-    const handleScroll = () => {
-      if (isReducedMotion) {
-        setScrollProgress(1);
-        return;
-      }
-      // Total scroll distance (in pixels) required for complete 3D paper un-crumpling
-      const maxUnfoldScroll = 700;
-      const currentScroll = el.scrollTop;
-      const progress = Math.min(1, Math.max(0, currentScroll / maxUnfoldScroll));
-      setScrollProgress(progress);
-    };
-
-    handleScroll();
-    el.addEventListener('scroll', handleScroll, { passive: true });
-    return () => el.removeEventListener('scroll', handleScroll);
-  }, [isReducedMotion]);
-
-  // Backward navigation listener when user scrolls UP at top of Page 3
-  useEffect(() => {
-    const el = scrollableRef.current;
-    if (!el) return;
+    let touchStartY = 0;
 
     const handleWheel = (e: WheelEvent) => {
-      if (selectedFeature) return; // Don't trigger page transition when modal is open
+      if (selectedFeature) return; // Don't intercept when article modal is open
 
-      // If scrolling UP at top of Page 3 -> navigate back to Page 2 (About)
-      if (e.deltaY < -15 && el.scrollTop <= 5) {
-        if (onScrollBackToAbout) {
+      // If paper is currently un-crumpling (progress < 1.0)
+      if (scrollProgress < 1.0) {
+        if (e.deltaY > 0) {
+          // Scroll down -> un-crumple paper towards 1.0
           e.preventDefault();
-          onScrollBackToAbout();
+          const step = Math.max(0.04, Math.abs(e.deltaY) / 500);
+          setScrollProgress((prev) => Math.min(1.0, prev + step));
+        } else if (e.deltaY < 0) {
+          // Scroll up -> re-crumple towards 0.0, or back to Page 2
+          if (scrollProgress > 0.02) {
+            e.preventDefault();
+            const step = Math.max(0.04, Math.abs(e.deltaY) / 500);
+            setScrollProgress((prev) => Math.max(0, prev - step));
+          } else if (onScrollBackToAbout) {
+            e.preventDefault();
+            onScrollBackToAbout();
+          }
+        }
+      } else {
+        // Paper is 100% fully un-crumpled & flat
+        // If user scrolls UP and wall content is at top, start folding paper back
+        const wallEl = wallScrollRef.current;
+        if (wallEl && wallEl.scrollTop <= 5 && e.deltaY < -20) {
+          e.preventDefault();
+          setScrollProgress(0.95);
+        }
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (selectedFeature) return;
+      const currentY = e.touches[0].clientY;
+      const diffY = touchStartY - currentY; // positive = swipe up / scroll down
+
+      if (scrollProgress < 1.0) {
+        if (diffY > 8) {
+          setScrollProgress((prev) => Math.min(1.0, prev + 0.06));
+          touchStartY = currentY;
+        } else if (diffY < -8) {
+          if (scrollProgress > 0.02) {
+            setScrollProgress((prev) => Math.max(0, prev - 0.06));
+            touchStartY = currentY;
+          } else if (onScrollBackToAbout) {
+            onScrollBackToAbout();
+          }
         }
       }
     };
 
     el.addEventListener('wheel', handleWheel, { passive: false });
+    el.addEventListener('touchstart', handleTouchStart, { passive: true });
+    el.addEventListener('touchmove', handleTouchMove, { passive: true });
+
     return () => {
       el.removeEventListener('wheel', handleWheel);
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [onScrollBackToAbout, selectedFeature]);
+  }, [scrollProgress, selectedFeature, onScrollBackToAbout]);
 
-  // Keyboard shortcut listener (Escape, Arrow Left, Arrow Right)
+  // Keyboard shortcut listener (Escape, Arrow Left, Arrow Right, Down, Up)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!selectedFeature) return;
-      if (e.key === 'Escape') {
-        if (isZoomedImage) {
-          setIsZoomedImage(false);
-        } else {
-          setSelectedFeature(null);
+      if (selectedFeature) {
+        if (e.key === 'Escape') {
+          if (isZoomedImage) {
+            setIsZoomedImage(false);
+          } else {
+            setSelectedFeature(null);
+          }
+        } else if (e.key === 'ArrowLeft') {
+          navigateFeature('prev');
+        } else if (e.key === 'ArrowRight') {
+          navigateFeature('next');
         }
-      } else if (e.key === 'ArrowLeft') {
-        navigateFeature('prev');
-      } else if (e.key === 'ArrowRight') {
-        navigateFeature('next');
+        return;
+      }
+
+      if (scrollProgress < 1.0) {
+        if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+          setScrollProgress((prev) => Math.min(1.0, prev + 0.15));
+        } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+          if (scrollProgress > 0.05) {
+            setScrollProgress((prev) => Math.max(0, prev - 0.15));
+          } else if (onScrollBackToAbout) {
+            onScrollBackToAbout();
+          }
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedFeature, isZoomedImage]);
+  }, [selectedFeature, isZoomedImage, scrollProgress, onScrollBackToAbout]);
 
   const navigateFeature = (direction: 'prev' | 'next') => {
     if (!selectedFeature) return;
@@ -131,55 +175,59 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
     setIsZoomedImage(false);
   };
 
-  // Click handler to advance un-folding step smoothly
-  const handleUnfoldStepClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!scrollableRef.current) return;
-    const current = scrollableRef.current.scrollTop;
-    const targetScroll = current >= 650 ? 0 : current + 350;
-    scrollableRef.current.scrollTo({
-      top: Math.min(700, targetScroll),
-      behavior: 'smooth'
-    });
+  // Click handlers for interactive step un-folding
+  const handleUnfoldStepClick = () => {
+    if (scrollProgress >= 1.0) {
+      setScrollProgress(0);
+    } else {
+      setScrollProgress((prev) => Math.min(1.0, prev + 0.25));
+    }
+  };
+
+  const handleSkipToWall = () => {
+    setScrollProgress(1.0);
   };
 
   // Continuous 1% -> 100% scroll values:
-  const p = isReducedMotion ? 1 : scrollProgress;
+  const p = isReducedMotion ? 1.0 : scrollProgress;
   const progressPercent = Math.round(p * 100);
 
-  // Unfolding progress phase (0.0 to 1.0 until 85% scroll)
-  const unfoldPhase = isReducedMotion ? 1 : Math.min(1, p / 0.85);
+  // Background desk image is pitch black during un-crumpling, then fades in smoothly as paper flattens (0.75 -> 1.00)
+  const bgImageOpacity = isReducedMotion ? 1 : Math.max(0, Math.min(1, (p - 0.70) / 0.30));
 
   // 3D Crumpled Paper mesh transformation math:
   // Starts as a 3D crushed ball (scale 0.35, high 3D angles, rounded orb shape), flattens smoothly to crisp paper sheet
-  const paperScale = isReducedMotion ? 1 : 0.35 + 0.65 * Math.pow(unfoldPhase, 0.8);
-  const paperRotateX = isReducedMotion ? 0 : (1 - unfoldPhase) * 72; // 72deg -> 0deg
-  const paperRotateY = isReducedMotion ? 0 : (1 - unfoldPhase) * -42; // -42deg -> 0deg
-  const paperRotateZ = isReducedMotion ? 0 : (1 - unfoldPhase) * 28; // 28deg -> 0deg
-  const paperRadius = isReducedMotion ? 16 : 16 + (1 - unfoldPhase) * 110; // 126px (crumpled orb) -> 16px (sheet)
+  const paperScale = isReducedMotion ? 1 : 0.35 + 0.65 * Math.pow(p, 0.8);
+  const paperRotateX = isReducedMotion ? 0 : (1 - p) * 72; // 72deg -> 0deg
+  const paperRotateY = isReducedMotion ? 0 : (1 - p) * -42; // -42deg -> 0deg
+  const paperRotateZ = isReducedMotion ? 0 : (1 - p) * 28; // 28deg -> 0deg
+  const paperRadius = isReducedMotion ? 16 : 16 + (1 - p) * 110; // 126px (crumpled orb) -> 16px (sheet)
 
   // 3D Origami Panels (unfold from 140deg inward fold down to 0deg flat)
-  const panelAngle = isReducedMotion ? 0 : (1 - unfoldPhase) * 140;
-  const panelTranslateZ = isReducedMotion ? 0 : (1 - unfoldPhase) * 65;
-  const panelOpacity = isReducedMotion ? 0 : Math.max(0, 1 - unfoldPhase * 1.15);
+  const panelAngle = isReducedMotion ? 0 : (1 - p) * 140;
+  const panelTranslateZ = isReducedMotion ? 0 : (1 - p) * 65;
+  const panelOpacity = isReducedMotion ? 0 : Math.max(0, 1 - p * 1.15);
 
   // Creases & Crinkle shadow line opacity
-  const creaseOpacity = isReducedMotion ? 0 : Math.max(0, (1 - unfoldPhase) * 0.95);
+  const creaseOpacity = isReducedMotion ? 0 : Math.max(0, (1 - p) * 0.95);
 
   // Stage Fade out when paper reaches 100% flat (0.85 -> 1.00)
-  const stageOpacity = isReducedMotion ? 0 : (p >= 0.85 ? Math.max(0, 1 - (p - 0.85) / 0.15) : 1);
+  const stageOpacity = isReducedMotion ? 0 : (p >= 0.88 ? Math.max(0, 1 - (p - 0.88) / 0.12) : 1);
 
-  // Press Archive Wall reveal (ONLY visible when paper reaches 75% -> 100%, ZERO overlap before!)
-  const wallOpacity = isReducedMotion ? 1 : (p >= 0.75 ? Math.min(1, (p - 0.75) / 0.25) : 0);
+  // Press Archive Wall reveal (ONLY visible when paper reaches 85% -> 100%, ZERO overlap before!)
+  const wallOpacity = isReducedMotion ? 1 : (p >= 0.85 ? Math.min(1, (p - 0.85) / 0.15) : 0);
 
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden text-stone-200 z-20 font-sans select-none bg-[#070605]"
+      className="relative w-full h-screen overflow-hidden text-stone-200 z-20 font-sans select-none bg-[#050505] touch-none"
     >
       
-      {/* RICH ARCHIVAL RESEARCH DESK WORKSPACE BACKGROUND IMAGE */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      {/* RICH ARCHIVAL RESEARCH DESK WORKSPACE BACKGROUND IMAGE (PITCH BLACK UNTIL PAPER UN-CRUMPLES) */}
+      <div 
+        style={{ opacity: bgImageOpacity }}
+        className="absolute inset-0 z-0 pointer-events-none overflow-hidden transition-opacity duration-700 ease-out"
+      >
         <img 
           src="/research_table_bg.jpg" 
           alt="Research Desk Workspace Surface" 
@@ -189,7 +237,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
       </div>
 
       {/* FIXED TOP NAVIGATION BAR & REALTIME SCROLL PROGRESS BADGE */}
-      <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-between px-4 sm:px-8 py-4 bg-gradient-to-b from-[#070605]/95 via-[#070605]/70 to-transparent pointer-events-auto">
+      <div className="absolute top-0 left-0 right-0 z-40 flex flex-wrap items-center justify-between gap-3 px-4 sm:px-8 py-4 bg-gradient-to-b from-[#050505]/95 via-[#050505]/70 to-transparent pointer-events-auto">
         {onScrollBackToAbout ? (
           <button
             onClick={onScrollBackToAbout}
@@ -200,49 +248,55 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
           </button>
         ) : <div />}
 
-        {/* Realtime 1% -> 100% Un-crumpling Progress Badge */}
+        {/* Realtime 1% -> 100% Un-crumpling Progress Badge & Skip Control */}
         {!isReducedMotion && (
-          <button
-            onClick={handleUnfoldStepClick}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#161410]/95 hover:bg-[#201d17] border border-[#c5a880]/50 text-[#c5a880] text-xs font-mono tracking-wider shadow-xl backdrop-blur-md transition-colors cursor-pointer"
-          >
-            <span className={`w-2.5 h-2.5 rounded-full ${p >= 0.95 ? 'bg-emerald-400' : 'bg-[#c5a880] animate-pulse'}`} />
-            <span className="font-bold">
-              {p >= 0.95 
-                ? 'ARCHIVAL NEWSPAPER UN-CRUMPLED (100%)' 
-                : `UN-CRUMPLING NEWSPAPER: ${progressPercent}% (SCROLL DOWN OR CLICK HERE ↓)`}
-            </span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleUnfoldStepClick}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#161410]/95 hover:bg-[#201d17] border border-[#c5a880]/50 text-[#c5a880] text-xs font-mono tracking-wider shadow-xl backdrop-blur-md transition-colors cursor-pointer"
+            >
+              <span className={`w-2.5 h-2.5 rounded-full ${p >= 0.95 ? 'bg-emerald-400' : 'bg-[#c5a880] animate-pulse'}`} />
+              <span className="font-bold">
+                {p >= 0.95 
+                  ? 'ARCHIVAL NEWSPAPER UN-CRUMPLED (100%)' 
+                  : `UN-CRUMPLING NEWSPAPER: ${progressPercent}% (SCROLL OR CLICK HERE ↓)`}
+              </span>
+            </button>
+
+            {p < 0.95 && (
+              <button
+                onClick={handleSkipToWall}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#201c16]/90 hover:bg-[#2c261e] border border-stone-700 text-stone-300 hover:text-white text-xs font-mono transition-colors cursor-pointer shadow-md backdrop-blur-md"
+                title="Skip un-crumpling animation"
+              >
+                <span>Skip to Wall</span>
+                <FastForward className="w-3.5 h-3.5 text-[#c5a880]" />
+              </button>
+            )}
+          </div>
         )}
       </div>
 
       {/* ========================================================================= */}
-      {/* 3D CRUMPLED PAPER STAGE (STICKY VIEWPORT - 100% PASS-THROUGH POINTERS)     */}
+      {/* 3D CRUMPLED PAPER STAGE (PITCH BLACK BACKGROUND ACTIVE 0% -> 85%)          */}
       {/* ========================================================================= */}
       {stageOpacity > 0 && (
         <div 
           style={{ opacity: stageOpacity }}
-          className="fixed inset-0 z-10 flex flex-col items-center justify-center pointer-events-none perspective-[1400px] px-4 pt-10"
+          className="fixed inset-0 z-10 flex flex-col items-center justify-center perspective-[1400px] px-4 pt-10"
         >
           {/* Scroll Guidance Header */}
           {p < 0.85 && (
             <div className="text-center mb-6 z-30 pointer-events-none">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1a1714]/90 border border-[#c5a880]/40 text-[#c5a880] text-xs font-mono tracking-widest uppercase mb-3 shadow-lg">
-                <ScrollText className="w-4 h-4 text-[#c5a880]" />
-                <span>3D CRUMPLED ARCHIVAL PRESS SHEET</span>
-              </div>
-              <h2 className="font-serif font-bold text-2xl sm:text-4xl text-[#f3f1ec] tracking-tight">
-                Dr. J.S. Yogesh Kumar&apos;s Press Archive
+              <h2 className="font-serif font-bold text-3xl sm:text-5xl text-[#f3f1ec] tracking-tight">
+                Press Archive
               </h2>
-              <div className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#c5a880]/20 border border-[#c5a880]/50 text-[#c5a880] text-xs font-mono">
-                <RotateCw className="w-3.5 h-3.5 animate-spin text-[#c5a880]" />
-                <span>Scroll down or click anywhere to un-crumple paper (1% → 100%)</span>
-              </div>
             </div>
           )}
 
-          {/* 3D CRUMPLED PAPER CONTAINER (PASS THROUGH POINTER EVENTS TO SCROLLBAR) */}
+          {/* 3D CRUMPLED PAPER CONTAINER (CLICKABLE TO UN-FOLD) */}
           <motion.div
+            onClick={handleUnfoldStepClick}
             style={{
               scale: paperScale,
               rotateX: paperRotateX,
@@ -252,16 +306,16 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
               transformStyle: 'preserve-3d',
               willChange: 'transform, opacity, border-radius',
             }}
-            className="relative w-[340px] sm:w-[560px] lg:w-[760px] h-[360px] sm:h-[490px] bg-[#1a1713] border-2 border-[#c5a880]/70 shadow-[0_40px_120px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-6 sm:p-8 transition-shadow duration-300 pointer-events-none"
+            className="relative w-[340px] sm:w-[560px] lg:w-[760px] h-[360px] sm:h-[490px] bg-[#1a1713] border-2 border-[#c5a880]/70 shadow-[0_40px_120px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col p-6 sm:p-8 transition-shadow duration-300 pointer-events-auto cursor-pointer"
           >
-            {/* Scanned Landmark Newspaper Image Backdrop */}
+            {/* Heavily Blurred Archival Paper Texture (Newspaper obscured until 100% unfolded) */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
               <img 
                 src={featuredSpotlight.image} 
                 alt="Archival Press Clipping Preview" 
-                className="w-full h-full object-cover object-top filter brightness-[0.75] contrast-[1.1] sepia-[0.35]"
+                className="w-full h-full object-cover object-top filter blur-3xl brightness-[0.45] contrast-[1.15] sepia-[0.5] scale-125"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0e0c0a] via-[#161410]/70 to-[#241f19]/80 mix-blend-multiply" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0e0c0a] via-[#161410]/80 to-[#241f19]/90 mix-blend-multiply" />
             </div>
 
             {/* Deep Crumple Crease & Shadow Overlay */}
@@ -346,39 +400,36 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
               </div>
             </motion.div>
 
-            {/* REAL NEWSPAPER HEADLINES PRINTED ON THE SHEET */}
-            <div className="relative z-10 h-full flex flex-col justify-between text-left p-2 pointer-events-none">
-              <div className="flex items-center justify-between border-b border-[#c5a880]/40 pb-3">
+            {/* ABSTRACT ARCHIVAL STAMP & PROGRESS SEAL (No text overlays) */}
+            <div className="relative z-10 h-full flex flex-col justify-between text-left p-4 pointer-events-none">
+              <div className="flex items-center justify-between border-b border-[#c5a880]/30 pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-1 rounded bg-[#09090b]/90 border border-[#c5a880]/60 text-[#c5a880] font-mono text-[10px] sm:text-xs tracking-wider uppercase font-bold">
-                    Official ZSI Press Record
-                  </span>
-                  <span className="text-[10px] font-mono text-stone-300 hidden sm:inline">
-                    {featuredSpotlight.date}
+                  <span className="px-3 py-1 rounded bg-[#09090b]/90 border border-[#c5a880]/50 text-[#c5a880] font-mono text-[10px] sm:text-xs tracking-widest uppercase font-bold">
+                    Official Archival Seal
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] font-mono text-[#c5a880] block font-bold">
-                    {featuredSpotlight.newspaper}
+                  <span className="text-[10px] font-mono text-[#c5a880]/70 block font-bold">
+                    2006–2022 Records
                   </span>
                 </div>
               </div>
 
-              <div className="my-auto py-2">
-                <h3 className="font-serif font-bold text-xl sm:text-3xl text-amber-50 drop-shadow-md leading-tight mb-2">
-                  {featuredSpotlight.headlineTamil}
-                </h3>
-                <h4 className="font-serif italic text-xs sm:text-base text-[#c5a880] font-medium leading-snug max-w-xl">
-                  {featuredSpotlight.headlineEnglish}
-                </h4>
+              <div className="my-auto text-center py-4">
+                <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#c5a880]/40 mx-auto mb-3 flex items-center justify-center">
+                  <ScrollText className="w-8 h-8 text-[#c5a880]/60" />
+                </div>
+                <p className="font-serif italic text-lg sm:text-2xl text-[#c5a880] font-medium tracking-wide">
+                  Press Archive Un-folding...
+                </p>
               </div>
 
-              <div className="pt-3 border-t border-[#c5a880]/40 flex items-center justify-between text-[11px] font-mono text-stone-300">
+              <div className="pt-3 border-t border-[#c5a880]/30 flex items-center justify-between text-[11px] font-mono text-stone-300">
                 <div className="flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-[#c5a880]" />
-                  <span className="truncate max-w-[200px] sm:max-w-xs">{featuredSpotlight.location}</span>
+                  <span>Marine Documentation</span>
                 </div>
-                <div className="px-3 py-1 rounded bg-[#c5a880]/20 border border-[#c5a880]/40 text-[#c5a880] font-bold text-[10px] tracking-wider uppercase">
+                <div className="px-3.5 py-1 rounded bg-[#c5a880]/20 border border-[#c5a880]/40 text-[#c5a880] font-bold text-[10px] tracking-wider uppercase">
                   {progressPercent}% Un-crumpled
                 </div>
               </div>
@@ -390,61 +441,52 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
       )}
 
       {/* ========================================================================= */}
-      {/* MAIN NATIVE SCROLL CONTAINER DRIVING 3D UN-CRUMPLING & PRESS ARCHIVE WALL  */}
+      {/* FULL PRESS ARCHIVE WALL (REVEALED ANIMATION WHEN PAPER REACHES 100%)       */}
       {/* ========================================================================= */}
-      <div 
-        ref={scrollableRef}
-        onClick={p < 0.85 ? handleUnfoldStepClick : undefined}
-        className={`relative z-20 w-full h-full overflow-y-auto pt-24 pb-36 px-4 sm:px-8 lg:px-12 custom-scrollbar ${
-          p < 0.85 ? 'cursor-pointer' : 'cursor-default'
-        }`}
-      >
-        <div className="max-w-[1400px] mx-auto w-full">
-          
-          {/* SPACER FOR 3D UN-CRUMPLING SCROLL RANGE (0% -> 85%) */}
-          <div className="h-[700px] w-full pointer-events-none" />
-
-          {/* ========================================================================= */}
-          {/* PRESS ARCHIVE WALL (REVEALED ONLY AT 85% -> 100% - ZERO OVERLAP!)          */}
-          {/* ========================================================================= */}
-          {wallOpacity > 0 && (
+      {wallOpacity > 0 && (
+        <div 
+          ref={wallScrollRef}
+          className="relative z-30 w-full h-full overflow-y-auto pt-24 pb-36 px-4 sm:px-8 lg:px-12 custom-scrollbar pointer-events-auto"
+        >
+          <div className="max-w-[1400px] mx-auto w-full">
             <motion.div 
-              style={{
-                opacity: wallOpacity,
-                willChange: 'opacity',
-              }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="w-full rounded-2xl p-6 sm:p-10 transition-colors bg-[#12110e] border border-[#c5a880]/30 shadow-[0_20px_60px_rgba(0,0,0,0.85)] pointer-events-auto"
+              initial={{ opacity: 0, scale: 0.96, y: 20 }}
+              animate={{ opacity: wallOpacity, scale: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full p-2 sm:p-6 transition-colors bg-transparent border-0 shadow-none"
             >
               
-              {/* Header Title Section */}
-              <div className="mb-10">
-                <div className="text-left">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-stone-800 bg-[#121215] text-[#c5a880] text-[11px] font-mono tracking-widest uppercase mb-4 shadow-sm">
-                    <FileText className="w-3.5 h-3.5 text-[#c5a880]" />
-                    <span>Media Coverage &amp; Press Archives</span>
-                  </div>
-                  
-                  <h1 className="font-serif font-bold text-4xl sm:text-6xl lg:text-7xl text-[#f3f1ec] tracking-tight mb-2 leading-none">
-                    Featured in...
-                  </h1>
-                  
-                  <h2 className="font-serif font-normal text-xl sm:text-2xl text-[#c5a880] tracking-wide italic mb-4">
-                    Newspapers &amp; Press Highlights
-                  </h2>
-                  
-                  <p className="text-stone-400 text-sm sm:text-base max-w-3xl leading-relaxed font-normal border-l-2 border-[#c5a880]/30 pl-4 py-0.5">
-                    Exploration of major Tamil and English national news publications documenting Dr. J.S. Yogesh Kumar&apos;s marine ecosystem research, pioneer SCUBA diving training for fishermen youth, and 57-day sea turtle conservation milestones. Click any clipping below for full article translation and details.
-                  </p>
+              {/* Animated Header Title Section */}
+              <motion.div 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="mb-10 text-left"
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-[#c5a880]/40 bg-[#121215]/90 text-[#c5a880] text-[11px] font-mono tracking-widest uppercase mb-4 shadow-md backdrop-blur-md">
+                  <FileText className="w-3.5 h-3.5 text-[#c5a880]" />
+                  <span>Media Coverage &amp; Press Archives</span>
                 </div>
-              </div>
+                
+                <h1 className="font-serif font-bold text-4xl sm:text-6xl lg:text-7xl text-[#f3f1ec] tracking-tight mb-2 leading-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+                  Featured in...
+                </h1>
+                
+                <h2 className="font-serif font-normal text-xl sm:text-2xl text-[#c5a880] tracking-wide italic mb-4 drop-shadow-md">
+                  Newspapers &amp; Press Highlights
+                </h2>
+                
+                <p className="text-stone-200 text-sm sm:text-base max-w-3xl leading-relaxed font-normal border-l-2 border-[#c5a880]/60 pl-4 py-2 bg-[#090807]/75 p-4 rounded-r-lg border-y border-r border-[#c5a880]/20 backdrop-blur-md shadow-xl">
+                  Exploration of major Tamil and English national news publications documenting Dr. J.S. Yogesh Kumar&apos;s marine ecosystem research, pioneer SCUBA diving training for fishermen youth, and 57-day sea turtle conservation milestones. Click any clipping below for full article translation and details.
+                </p>
+              </motion.div>
 
-              {/* --- FEATURED SPOTLIGHT HERO CARD (1 FULL WIDTH LANDMARK FEATURE) --- */}
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedFeature(featuredSpotlight);
-                }}
+              {/* --- FEATURED SPOTLIGHT HERO CUTOUT CARD (ANIMATES IN FROM UNFOLDED SHEET) --- */}
+              <motion.div
+                initial={{ opacity: 0, y: 30, scale: 0.94 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                onClick={() => setSelectedFeature(featuredSpotlight)}
                 className="group mb-12 rounded-xl bg-[#121215] border border-stone-800 hover:border-[#c5a880]/70 overflow-hidden flex flex-col lg:flex-row cursor-pointer transition-colors duration-300 shadow-xl"
               >
                 {/* Image Column */}
@@ -500,7 +542,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
                     <span className="text-base group-hover:translate-x-1 transition-transform">→</span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Section Subheader for 6-Card Grid */}
               <div className="mb-6 flex items-center justify-between border-b border-stone-800 pb-3">
@@ -510,16 +552,34 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
                 <span className="text-xs font-mono text-stone-500">6 Publications</span>
               </div>
 
-              {/* --- PERFECT 3x2 EVEN GRID (6 CARDS) --- */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {remainingFeatures.map((feature) => (
-                  <div
+              {/* --- PERFECT 3x2 EVEN GRID OF ANIMATED NEWSPAPER CUTOUT CARDS --- */}
+              <motion.div 
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: { staggerChildren: 0.08, delayChildren: 0.25 }
+                  }
+                }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                {remainingFeatures.map((feature, idx) => (
+                  <motion.div
                     key={feature.id}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedFeature(feature);
+                    variants={{
+                      hidden: { opacity: 0, y: 30, scale: 0.92, rotateX: 8 },
+                      visible: { 
+                        opacity: 1, 
+                        y: 0, 
+                        scale: 1, 
+                        rotateX: 0,
+                        transition: { duration: 0.5, delay: idx * 0.06, ease: [0.22, 1, 0.36, 1] }
+                      }
                     }}
-                    className="group relative rounded-xl bg-[#121215] border border-stone-800 hover:border-stone-500 overflow-hidden flex flex-col cursor-pointer transition-colors duration-300 shadow-md"
+                    onClick={() => setSelectedFeature(feature)}
+                    className="group relative rounded-xl bg-[#121215] border border-stone-800 hover:border-stone-500 overflow-hidden flex flex-col cursor-pointer transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-1"
                   >
                     {/* Image Container with Framing */}
                     <div className="relative h-[270px] w-full overflow-hidden bg-[#09090b] shrink-0 border-b border-stone-800">
@@ -576,15 +636,14 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
                         <span className="text-sm group-hover:translate-x-1 transition-transform">→</span>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
 
             </motion.div>
-          )}
-
+          </div>
         </div>
-      </div>
+      )}
 
       {/* --- 2. DEDICATED NEWSPAPER ARTICLE READER MODAL ("NEW PAGE" PER CLIPPING) --- */}
       <AnimatePresence>
@@ -595,7 +654,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={() => setSelectedFeature(null)}
-            className="fixed inset-0 z-50 bg-[#09090b]/95 flex items-center justify-center p-3 sm:p-6 overflow-hidden"
+            className="fixed inset-0 z-50 bg-[#09090b]/95 flex items-center justify-center p-3 sm:p-6 overflow-hidden pointer-events-auto"
           >
             {/* Modal Inner Container */}
             <motion.div
@@ -665,7 +724,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
 
                   {/* What This Article Tells (Detailed Overview) */}
                   <div className="mb-6">
-                    <h4 className="flex items-center gap-2 font-serif font-bold text-base text-[#f3f1ec] mb-2">
+                    <h4 className="flex items-center gap-2 font-serif font-bold text-[#f3f1ec] mb-2 text-base">
                       <Compass className="w-4 h-4 text-[#c5a880]" />
                       <span>What This Article Tells</span>
                     </h4>
@@ -748,7 +807,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsZoomedImage(false)}
-            className="fixed inset-0 z-50 bg-[#09090b]/98 flex flex-col items-center justify-center p-4 cursor-zoom-out"
+            className="fixed inset-0 z-50 bg-[#09090b]/98 flex flex-col items-center justify-center p-4 cursor-zoom-out pointer-events-auto"
           >
             <button
               onClick={() => setIsZoomedImage(false)}

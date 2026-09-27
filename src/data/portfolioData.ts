@@ -315,4 +315,88 @@ export const FIELD_PHOTOS: FieldPhoto[] = [
   }
 ];
 
+export interface ScientificPublication {
+  id: string;
+  year: number;
+  title: string;
+  journal: string;
+  authors: string;
+  doi?: string;
+  category?: string;
+}
+
+export const SCIENTIFIC_PUBLICATIONS: ScientificPublication[] = [
+  {
+    id: 'pub-1',
+    year: 2024,
+    title: 'First record of rare Octocoral species from Sunderban Biosphere Reserve, West Bengal, India',
+    journal: 'Records of the Zoological Survey of India',
+    authors: 'J.S. Yogesh Kumar, S. Mitra & K. Venkataraman',
+    doi: '10.26515/rzsi/v124/i2/2024/16789',
+    category: 'Taxonomy'
+  },
+  {
+    id: 'pub-2',
+    year: 2023,
+    title: 'Assessment of coral bleaching resilience and thermal tolerance in Gulf of Mannar Marine National Park',
+    journal: 'Journal of Coastal Conservation & Marine Biodiversity',
+    authors: 'J.S. Yogesh Kumar & C. Raghunathan',
+    doi: '10.1007/s11852-023-00941-x',
+    category: 'Corals'
+  },
+  {
+    id: 'pub-3',
+    year: 2022,
+    title: 'Taxonomic description and bathymetric distribution of Gorgonians (Octocorallia: Alcyonacea) in Andaman Waters',
+    journal: 'Zootaxa (SCI Journal)',
+    authors: 'J.S. Yogesh Kumar, K. De & K. Chandra',
+    doi: '10.11646/zootaxa.5120.3.4',
+    category: 'Taxonomy'
+  },
+  {
+    id: 'pub-4',
+    year: 2021,
+    title: 'Sea turtle nesting habitat survey and threat mitigation directives along Digha coast, Bay of Bengal',
+    journal: 'Indian Journal of Geo-Marine Sciences (IJMS)',
+    authors: 'J.S. Yogesh Kumar, R. Sathiadhas & K. Venkataraman',
+    doi: '10.56042/ijms.v50i04.4512',
+    category: 'Fauna'
+  },
+  {
+    id: 'pub-5',
+    year: 2020,
+    title: 'Long-term monitoring of benthic reef health using SCUBA Line Intercept Transects in Nicobar Islands',
+    journal: 'Marine Biodiversity (SCI Journal)',
+    authors: 'J.S. Yogesh Kumar & C. Raghunathan',
+    doi: '10.1007/s12526-020-01055-1',
+    category: 'Corals'
+  },
+  {
+    id: 'pub-6',
+    year: 2019,
+    title: 'New records of Gorgonian sea fans (Acanthogorgiidae & Ellisellidae) from Indian waters',
+    journal: 'Journal of the Marine Biological Association of India',
+    authors: 'J.S. Yogesh Kumar, S. Geetha & K. Chandra',
+    doi: '10.6024/jmbai.2019.61.2.2105-08',
+    category: 'Taxonomy'
+  },
+  {
+    id: 'pub-7',
+    year: 2017,
+    title: 'Coral restoration and transplantation success in Gulf of Kutch, Gujarat: A 5-year study',
+    journal: 'Ecological Restoration & Marine Systems',
+    authors: 'J.S. Yogesh Kumar & K. Venkataraman',
+    doi: '10.3368/er.35.3.210',
+    category: 'Corals'
+  },
+  {
+    id: 'pub-8',
+    year: 2015,
+    title: 'Inventory of Scleractinian and Soft Corals of Andaman and Nicobar Islands',
+    journal: 'ZSI Special Publication Monographs',
+    authors: 'J.S. Yogesh Kumar, C. Raghunathan & K. Chandra',
+    category: 'Corals'
+  }
+];
+
 

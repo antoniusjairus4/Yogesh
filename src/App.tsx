@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { About } from './components/About';
 import { FeaturedMedia } from './components/FeaturedMedia';
+import { ResearchPage } from './components/ResearchPage';
 
 export const App: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -16,20 +17,6 @@ export const App: React.FC = () => {
   const TRANSITION_DURATION = 1100;
 
   const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4) => {
-    if (targetPage === 4) {
-      setScrollToScuba(true);
-      if (activePage !== 2 && !isTransitioning) {
-        setIsTransitioning(true);
-        setActivePage(2);
-        setTimeout(() => setIsTransitioning(false), TRANSITION_DURATION);
-      } else if (activePage === 2) {
-        // Trigger scroll if already on page 2
-        const el = document.getElementById('scuba-gallery');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }
-      return;
-    }
-
     setScrollToScuba(false);
     if (activePage === targetPage || isTransitioning) return;
     setIsTransitioning(true);
@@ -151,6 +138,7 @@ export const App: React.FC = () => {
           <About 
             onScrollBackToHero={() => handleNavigateTo(1)} 
             onViewPressArchives={() => handleNavigateTo(3)}
+            onViewResearchPage={() => handleNavigateTo(4)}
             scrollToScubaSection={scrollToScuba}
           />
         </motion.div>
@@ -174,6 +162,28 @@ export const App: React.FC = () => {
         >
           <FeaturedMedia 
             onScrollBackToAbout={() => handleNavigateTo(2)} 
+          />
+        </motion.div>
+
+        {/* Page 4: Scientific Research & Academic Publications Demo Page (z-40) */}
+        <motion.div
+          initial={false}
+          animate={{
+            scale: activePage === 4 ? 1 : 0.9,
+            opacity: activePage === 4 ? 1 : 0,
+            filter: activePage === 4 ? 'blur(0px)' : 'blur(12px)',
+          }}
+          transition={{
+            duration: 1.1,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          style={{ willChange: 'transform, opacity, filter' }}
+          className={`absolute inset-0 z-40 w-full h-full overflow-y-auto origin-center transform-gpu ${
+            activePage === 4 ? 'pointer-events-auto' : 'pointer-events-none'
+          }`}
+        >
+          <ResearchPage 
+            onBackToPortfolio={() => handleNavigateTo(2)} 
           />
         </motion.div>
 

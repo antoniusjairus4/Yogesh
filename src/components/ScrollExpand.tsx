@@ -161,10 +161,13 @@ export const ScrollExpand: React.FC<ScrollExpandProps> = ({
     const readProgress = () => {
       const c = propsRef.current;
       if (!c.enabled) return 1;
-      const span = stageH * Math.max(0.01, c.scrollDistance);
+      const viewH = window.innerHeight || 800;
+      const span = viewH * Math.max(0.01, c.scrollDistance);
       if (track) {
         const top = track.getBoundingClientRect().top;
-        return clamp(-top / span, 0, 1);
+        const startPoint = viewH * 0.65;
+        const scrolled = startPoint - top;
+        return clamp(scrolled / span, 0, 1);
       }
       return clamp(root.scrollTop / span, 0, 1);
     };

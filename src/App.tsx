@@ -165,6 +165,20 @@ export const App: React.FC = () => {
           />
         </motion.div>
 
+        {/* Fixed Library Background for Page 4 (Viewport-fixed, unaffected by scroll transforms) */}
+        <div 
+          className={`fixed inset-0 pointer-events-none transition-opacity duration-700 z-35 overflow-hidden ${
+            activePage === 4 ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <img 
+            src="/background_paper_publication.png" 
+            alt="Library Background" 
+            className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/60 pointer-events-none" />
+        </div>
+
         {/* Page 4: Scientific Research & Academic Publications Demo Page (z-40) */}
         <motion.div
           initial={false}

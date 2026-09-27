@@ -67,14 +67,8 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
   });
 
   return (
-    <div className="relative w-full min-h-screen bg-[#050505] text-stone-200 z-20 font-sans selection:bg-[#c5a880] selection:text-[#050505] pt-20 pb-36 px-4 sm:px-8 lg:px-12">
+    <div className="relative w-full min-h-screen bg-transparent text-stone-200 z-20 font-sans selection:bg-[#c5a880] selection:text-[#050505] pt-20 pb-36 px-4 sm:px-8 lg:px-12">
       
-      {/* Background Ambient Glow */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#c5a880]/5 rounded-full blur-[160px]" />
-        <div className="absolute bottom-1/4 left-1/3 w-[500px] h-[500px] bg-[#9D8DF1]/5 rounded-full blur-[140px]" />
-      </div>
-
       <div className="relative z-10 max-w-[1400px] mx-auto w-full">
         
         {/* Top Back Navigation Bar */}
@@ -106,12 +100,10 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
           </div>
           
           <h1 className="font-serif font-bold text-4xl sm:text-6xl text-[#f3f1ec] tracking-tight mb-3 leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
-            Scientific Archives &amp; PDF Library
+            Research and Publications
           </h1>
           
-          <p className="text-stone-300 text-sm sm:text-base max-w-3xl leading-relaxed font-normal border-l-2 border-[#c5a880]/60 pl-4 py-2 bg-[#090807]/75 p-4 rounded-r-lg border-y border-r border-[#c5a880]/20 backdrop-blur-md shadow-xl">
-            Explore 68 peer-reviewed research papers, taxonomic monographs, books, and field expedition reports authored by Dr. J.S. Yogesh Kumar across Indian Ocean coral reefs, Octocorallia systematics, Sunderbans biodiversity, and marine ecology. Hover over any paper card to reveal the <strong className="text-[#c5a880] font-semibold">Open PDF</strong> viewer.
-          </p>
+
         </motion.div>
 
         {/* Category Filters & Search Bar */}
@@ -184,74 +176,82 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
         ) : (
           /* 3-COLUMN PUBLICATIONS CARDS GRID WITH POPUP "OPEN" MINI BUTTON ON HOVER */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {filteredPapers.map((paper, idx) => (
-              <motion.div
-                key={paper.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: Math.min(idx * 0.04, 0.4) }}
-                onClick={() => setSelectedPdf(paper)}
-                className="group relative bg-[#121215] border border-stone-800 hover:border-[#c5a880]/80 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.04] hover:-translate-y-1.5 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.85)] w-full h-full overflow-hidden"
-              >
-                {/* PDF Document Icon Header & Category */}
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <span className="px-2.5 py-1 rounded-md bg-[#1a1a1e] text-[#c5a880] text-[11px] font-mono font-medium border border-stone-800 uppercase tracking-wider">
-                      {paper.category}
-                    </span>
-                    <span className="px-2.5 py-1 rounded-md bg-[#09090b] text-stone-400 text-xs font-mono border border-stone-800">
-                      {paper.year}
-                    </span>
-                  </div>
+            {filteredPapers.map((paper, idx) => {
+              // Helper to format long author lists cleanly as first author et al.
+              const formattedAuthors = (() => {
+                if (!paper.authors) return '';
+                const parts = paper.authors.split(',').map(s => s.trim()).filter(Boolean);
+                if (parts.length > 2) {
+                  return `${parts[0]} et al.`;
+                }
+                return paper.authors;
+              })();
 
-                  {/* Paper Title */}
-                  <h3 className="font-serif font-bold text-lg sm:text-xl text-[#f3f1ec] group-hover:text-[#c5a880] transition-colors leading-snug mb-3">
-                    {paper.title}
-                  </h3>
+              return (
+                <motion.div
+                  key={paper.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: Math.min(idx * 0.04, 0.4) }}
+                  onClick={() => setSelectedPdf(paper)}
+                  className="group relative bg-[#121215]/90 backdrop-blur-md border border-stone-800 hover:border-[#c5a880]/80 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.85)] w-full h-full overflow-hidden"
+                >
+                  <div>
+                    {/* Consolidated Category Tag & Year Row */}
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <span className="px-2.5 py-0.5 rounded-md bg-[#1a1a1e] text-[#c5a880] text-[11px] font-mono font-medium border border-stone-800 uppercase tracking-wider">
+                        {paper.category}
+                      </span>
+                      <span className="text-xs font-mono font-medium text-stone-400">
+                        {paper.year}
+                      </span>
+                    </div>
 
-                  {/* Authors & Journal */}
-                  <div className="space-y-1.5 mb-4">
-                    <p className="text-xs font-mono text-stone-300 font-medium truncate">
-                      {paper.authors}
+                    {/* Paper Title */}
+                    <h3 className="font-serif font-bold text-lg sm:text-xl text-[#f3f1ec] group-hover:text-[#c5a880] transition-colors leading-snug mb-2">
+                      {paper.title}
+                    </h3>
+
+                    {/* Authors & Journal */}
+                    <div className="space-y-1 mb-3">
+                      <p className="text-xs font-mono text-stone-300 font-medium">
+                        {formattedAuthors}
+                      </p>
+                      <p className="text-xs font-serif italic text-stone-400 truncate">
+                        {paper.journal}
+                      </p>
+                    </div>
+
+                    {/* Subtler Location Line */}
+                    {paper.location && (
+                      <div className="flex items-center gap-1.5 text-xs text-stone-400 font-mono mb-3">
+                        <MapPin className="w-3.5 h-3.5 text-[#c5a880]/80 shrink-0" />
+                        <span className="truncate">{paper.location}</span>
+                      </div>
+                    )}
+
+                    {/* Clean 1-2 Line Description */}
+                    <p className="text-xs text-stone-400 leading-relaxed line-clamp-2 font-normal font-sans mb-5">
+                      {paper.description}
                     </p>
-                    <p className="text-xs font-serif italic text-stone-400">
-                      {paper.journal}
-                    </p>
                   </div>
 
-                  {/* Location badge */}
-                  <div className="flex items-center gap-1.5 text-xs text-stone-400 font-mono mb-4 border-t border-stone-800/80 pt-3">
-                    <MapPin className="w-3.5 h-3.5 text-[#c5a880] shrink-0" />
-                    <span className="truncate">{paper.location}</span>
+                  {/* Clean Footer Row with OPEN PDF Button */}
+                  <div className="pt-3 border-t border-stone-800/80 flex items-center justify-end">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(paper.pdfUrl, '_blank');
+                      }}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#c5a880] hover:bg-white text-[#050505] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-lg group-hover:scale-105 cursor-pointer"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>Open PDF</span>
+                    </button>
                   </div>
-
-                  {/* Abstract / Summary */}
-                  <p className="text-xs text-stone-400 leading-relaxed line-clamp-3 font-normal font-sans mb-6">
-                    {paper.description}
-                  </p>
-                </div>
-
-                {/* Footer Bar & POPUP MINI "OPEN" BUTTON ON HOVER */}
-                <div className="pt-4 border-t border-stone-800/80 flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-xs font-mono text-stone-400">
-                    <FileText className="w-4 h-4 text-[#c5a880]" />
-                    <span>PDF Document</span>
-                  </div>
-
-                  {/* POPUP MINI BUTTON: Opens the PDF file directly */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.open(paper.pdfUrl, '_blank');
-                    }}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#c5a880] hover:bg-white text-[#050505] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-lg group-hover:scale-110 cursor-pointer"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    <span>Open PDF</span>
-                  </button>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         )}
 

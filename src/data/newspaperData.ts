@@ -18,7 +18,7 @@ export interface NewspaperFeature {
 export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
   {
     id: 'scan0015',
-    image: '/scan0015.jpg',
+    image: '/newspapers/scan0015.jpg',
     newspaper: 'Dinakaran (தினகரன்)',
     date: '26 June 2006',
     headlineTamil: 'தமிழகத்தில் முதன்முறையாக ஆழ்கடலில் மூழ்கும் நீச்சல் பயிற்சி அறிமுகம்',
@@ -42,7 +42,7 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
   },
   {
     id: 'scan0016',
-    image: '/scan0016.jpg',
+    image: '/newspapers/scan0016.jpg',
     newspaper: 'Dinamani (தினமணி)',
     date: '28 June 2006',
     headlineTamil: 'மீனவ இளைஞர்களுக்கான ஆழ்கடல் மூழ்கும் பயிற்சி நிறைவு',
@@ -67,7 +67,7 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
   },
   {
     id: 'scan0017',
-    image: '/scan0017.jpg',
+    image: '/newspapers/scan0017.jpg',
     newspaper: 'Dinamalar (தினமலர் - Tirunelveli)',
     date: '3 July 2006',
     headlineTamil: 'ஆழ்கடல் அதிசயங்கள் • ஆழ்கடலில் மூழ்கும் பயிற்சி அவசியம்',
@@ -91,7 +91,7 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
   },
   {
     id: 'scan0018',
-    image: '/scan0018.jpg',
+    image: '/newspapers/scan0018.jpg',
     newspaper: 'THE HINDU (Madurai)',
     date: 'Wednesday, June 28, 2006',
     headlineTamil: 'THE HINDU: SCUBA டைவிங் பயிற்சி - மீட்பு மற்றும் ஆராய்ச்சி',
@@ -116,7 +116,7 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
   },
   {
     id: 'scan0019',
-    image: '/scan0019.jpg',
+    image: '/newspapers/scan0019.jpg',
     newspaper: 'Dinakaran (தினகரன்)',
     date: '28 June 2006',
     headlineTamil: 'மீனவர்களுக்கு நீச்சல் பயிற்சி நிறைவு விழா',
@@ -140,7 +140,7 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
   },
   {
     id: 'scan0020',
-    image: '/scan0020.jpg',
+    image: '/newspapers/scan0020.jpg',
     newspaper: 'Dinamalar (தினமலர் - Tirunelveli)',
     date: '8 June 2006',
     headlineTamil: 'நீச்சல் பயிற்சி மையம் துவக்க விழா',
@@ -165,7 +165,7 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
   },
   {
     id: 'scan0021',
-    image: '/scan0021.jpg',
+    image: '/newspapers/scan0021.jpg',
     newspaper: 'Tamil Osai (தமிழ் ஓசை - Madurai)',
     date: '19 April 2008',
     headlineTamil: 'கடல் ஆமைகளைப் பாதுகாக்க நடவடிக்கை',
@@ -190,7 +190,7 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
   },
   {
     id: 'turtle_malar',
-    image: '/Turtle Malar.jpg',
+    image: '/newspapers/Turtle Malar.jpg',
     newspaper: 'Dinamalar (தினமலர்)',
     date: 'April 2008',
     headlineTamil: 'கடல் ஆமைகள் காப்பகம் • 87 ஆமைக் குஞ்சுகள் கடலில் விடப்பட்டன',
@@ -214,7 +214,7 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
   },
   {
     id: 'turtle_thinakaran',
-    image: '/Turtle Thinakaran1.jpg',
+    image: '/newspapers/Turtle Thinakaran1.jpg',
     newspaper: 'Dinakaran (தினகரன்)',
     date: 'April 2008',
     headlineTamil: 'தூத்துக்குடியில் 87 கடல் ஆமைக் குஞ்சுகள் கடலில் விடப்பட்டன',
@@ -237,7 +237,7 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
   },
   {
     id: 'turtle_main',
-    image: '/Turtle.jpg',
+    image: '/newspapers/Turtle.jpg',
     newspaper: 'National Press Archive',
     date: '2008',
     headlineTamil: 'கடல்வாழ் உயிரினங்கள் பாதுகாப்பு • ஆமை குஞ்சுகள் வளர்ப்பு',

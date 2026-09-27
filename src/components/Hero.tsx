@@ -124,10 +124,10 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
           muted
           playsInline
           loop={false}
-          poster="/poster.png"
+          poster="/portfolio/poster.png"
           onEnded={() => setIsVideoEnded(true)}
         >
-          <source src="/Yogesh_landing.mp4" type="video/mp4" />
+          <source src="/videos/Yogesh_landing.mp4" type="video/mp4" />
           Your browser does not support HTML5 video background.
         </video>
 
@@ -148,7 +148,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
         >
           <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl">
             <img
-              src="/landing_img.JPG"
+              src="/portfolio/landing_img.JPG"
               alt="Dr. J.S. Yogesh Kumar"
               className="w-56 h-72 sm:w-68 sm:h-88 md:w-76 md:h-96 lg:w-84 lg:h-[26rem] xl:w-96 xl:h-[30rem] object-cover object-top transform hover:scale-105 transition-transform duration-500"
             />

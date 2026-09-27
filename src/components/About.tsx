@@ -138,7 +138,7 @@ export const About: React.FC<AboutProps> = ({
           loop
           playsInline
         >
-          <source src="/2nd_page.mp4" type="video/mp4" />
+          <source src="/videos/2nd_page.mp4" type="video/mp4" />
           Your browser does not support HTML5 video background.
         </video>
 

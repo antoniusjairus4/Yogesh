@@ -229,7 +229,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
         className="absolute inset-0 z-0 pointer-events-none overflow-hidden transition-opacity duration-700 ease-out"
       >
         <img 
-          src="/research_table_bg.jpg" 
+          src="/portfolio/research_table_bg.jpg" 
           alt="Research Desk Workspace Surface" 
           className="w-full h-full object-cover object-center filter brightness-[0.70] contrast-[1.08]"
         />

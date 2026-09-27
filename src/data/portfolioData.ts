@@ -284,31 +284,31 @@ export interface FieldPhoto {
 
 export const FIELD_PHOTOS: FieldPhoto[] = [
   {
-    url: "/DSC04638.JPG",
+    url: "/portfolio/DSC04638.JPG",
     title: "Official Media & Field Briefing",
     caption: "Dr. Yogesh addressing national scientific media during coastal marine conservation & coral restoration directives.",
     tag: "ZSI Leadership"
   },
   {
-    url: "/DSC00260.JPG",
+    url: "/portfolio/DSC00260.JPG",
     title: "Deep Sea SCUBA Survey",
     caption: "PADI Master underwater benthic transect assessment and coral reef monitoring along Indian coral reefs.",
     tag: "SCUBA Field Survey"
   },
   {
-    url: "/29.jpg",
+    url: "/portfolio/29.jpg",
     title: "Marine Invertebrate Exploration",
     caption: "Taxonomic field research on Octocorallia, Gorgonians, and Cnidarians across coastal ecosystems.",
     tag: "Taxonomy & Systematics"
   },
   {
-    url: "/DSC09721.JPG",
+    url: "/portfolio/DSC09721.JPG",
     title: "Sunderbans Faunal Assessment",
     caption: "Field exploration of mangrove-associated fauna and threatened species across Sunderban Biosphere Reserve.",
     tag: "Mangrove Exploration"
   },
   {
-    url: "/DSCN0271.JPG",
+    url: "/portfolio/DSCN0271.JPG",
     title: "Benthic Quadrat Sampling",
     caption: "Quantitative Line Intersect Transect (LIT) and underwater photography of coral reef ecosystems.",
     tag: "Underwater Methodology"

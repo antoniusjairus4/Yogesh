@@ -87,77 +87,72 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
           </div>
         </div>
 
-        {/* Page Header */}
+        {/* Page Header & Inline Search Bar */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-10 text-left"
+          className="mb-8"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-[#c5a880]/40 bg-[#121215]/90 text-[#c5a880] text-[11px] font-mono tracking-widest uppercase mb-4 shadow-md backdrop-blur-md">
             <BookOpen className="w-3.5 h-3.5 text-[#c5a880]" />
             <span>Peer-Reviewed SCI Publications &amp; Monograph Reprints</span>
           </div>
           
-          <h1 className="font-serif font-bold text-4xl sm:text-6xl text-[#f3f1ec] tracking-tight mb-3 leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
-            Research and Publications
-          </h1>
-          
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <h1 className="font-serif font-bold text-4xl sm:text-6xl text-[#f3f1ec] tracking-tight leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+              Research and Publications
+            </h1>
 
+            {/* Search Input Box placed inline next to title */}
+            <div className="relative w-full md:w-80 lg:w-96 shrink-0">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search paper title, species, journal, year..."
+                className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#121215]/90 backdrop-blur-md border border-stone-800 text-stone-200 placeholder-stone-500 text-xs font-mono focus:outline-none focus:border-[#c5a880] transition-colors shadow-lg"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white p-1"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
         </motion.div>
 
-        {/* Category Filters & Search Bar */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-10 pb-6 border-b border-stone-800/80">
-          
-          {/* Category Filter Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 custom-scrollbar">
-            {categories.map((cat) => {
-              const isActive = selectedCategory === cat;
-              const count = cat === 'All' 
-                ? PDF_PUBLICATIONS.length 
-                : PDF_PUBLICATIONS.filter(p => p.category === cat).length;
+        {/* Category Filter Tabs Bar */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-10 border-b border-stone-800/80 custom-scrollbar">
+          {categories.map((cat) => {
+            const isActive = selectedCategory === cat;
+            const count = cat === 'All' 
+              ? PDF_PUBLICATIONS.length 
+              : PDF_PUBLICATIONS.filter(p => p.category === cat).length;
 
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-mono font-medium tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border ${
-                    isActive
-                      ? 'bg-[#c5a880] text-[#050505] font-bold border-[#c5a880] shadow-lg scale-105'
-                      : 'bg-[#121215] text-stone-300 hover:text-white border-stone-800 hover:border-stone-700'
-                  }`}
-                >
-                  <span>{cat}</span>
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] ${
-                    isActive ? 'bg-[#050505]/20 text-[#050505] font-bold' : 'bg-stone-800 text-stone-400'
-                  }`}>
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Search Input Box */}
-          <div className="relative w-full lg:w-80 shrink-0">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search paper title, species, journal, year..."
-              className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#121215] border border-stone-800 text-stone-200 placeholder-stone-500 text-xs font-mono focus:outline-none focus:border-[#c5a880] transition-colors"
-            />
-            {searchQuery && (
+            return (
               <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white p-1"
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-4 py-2.5 rounded-xl text-xs font-mono font-medium tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border ${
+                  isActive
+                    ? 'bg-[#c5a880] text-[#050505] font-bold border-[#c5a880] shadow-lg scale-105'
+                    : 'bg-[#121215]/90 backdrop-blur-md text-stone-300 hover:text-white border-stone-800 hover:border-stone-700'
+                }`}
               >
-                <X className="w-3.5 h-3.5" />
+                <span>{cat}</span>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] ${
+                  isActive ? 'bg-[#050505]/20 text-[#050505] font-bold' : 'bg-stone-800 text-stone-400'
+                }`}>
+                  {count}
+                </span>
               </button>
-            )}
-          </div>
-
+            );
+          })}
         </div>
 
         {/* Empty Search Result */}

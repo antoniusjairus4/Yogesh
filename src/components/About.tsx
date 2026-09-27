@@ -11,8 +11,6 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { ScubaGallery } from './ScubaGallery';
-import { ScrollExpand } from './ScrollExpand';
-import { ResearchPage } from './ResearchPage';
 
 interface AboutProps {
   onScrollBackToHero?: () => void;
@@ -422,32 +420,7 @@ export const About: React.FC<AboutProps> = ({
           {/* SCUBA Diving Visuals & Coral Image Pool (Bright & Vibrant Underwater Video) */}
           <ScubaGallery />
 
-          {/* REACT BITS SCROLL EXPAND COMPONENT: Research & Publications emerging INSIDE the expanding frame stage */}
-          <div className="relative w-full mt-24 mb-16 h-[85vh] min-h-[620px]">
-            <ScrollExpand
-              src=""
-              mediaType="none"
-              title="Expand Scientific Archives"
-              titleClassName="text-slate-950 font-outfit font-black tracking-tight drop-shadow-sm cursor-pointer hover:scale-[1.02] transition-transform duration-300"
-              scrollHint="Scroll to Expand or Click to View Research Stage"
-              hintClassName="text-slate-500 font-semibold cursor-pointer"
-              startWidth={48}
-              startHeight={58}
-              startRadius={28}
-              endRadius={16}
-              mediaZoom={1.0}
-              scrollDistance={1.0}
-              holdDistance={0.4}
-              smoothing={0.1}
-              overlayScrim={0}
-              onClick={onViewResearchPage}
-              className="w-full h-full rounded-3xl overflow-hidden border border-white/20 shadow-[0_30px_70px_rgba(0,0,0,0.95)]"
-            >
-              <div className="w-full h-full overflow-y-auto pt-4 pb-12 px-2 sm:px-6 text-left max-w-[1280px] mx-auto custom-scrollbar pointer-events-auto">
-                <ResearchPage onBackToPortfolio={() => {}} />
-              </div>
-            </ScrollExpand>
-          </div>
+
 
         </div>
       </div>

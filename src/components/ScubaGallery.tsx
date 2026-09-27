@@ -91,7 +91,7 @@ export const ScubaGallery: React.FC = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
           
           {/* Category Filter Tabs */}
-          <div className="flex items-center gap-2.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 custom-scrollbar">
+          <div className="flex items-center gap-2.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar">
             {[
               { id: 'All', label: 'All Discoveries', count: SCUBA_PHOTOS.length },
               { id: 'Corals', label: 'Corals & Octocorals', count: SCUBA_PHOTOS.filter(p => p.category === 'Corals').length },

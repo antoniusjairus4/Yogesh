@@ -134,3 +134,12 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #38bdf8;
 }
+
+/* Hide scrollbar tracks while preserving scroll functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

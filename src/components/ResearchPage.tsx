@@ -117,7 +117,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
         </motion.div>
 
         {/* Category Filter Tabs Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-10 border-b border-stone-800/80 custom-scrollbar">
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-10 border-b border-stone-800/80 no-scrollbar">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat;
             const count = cat === 'All' 

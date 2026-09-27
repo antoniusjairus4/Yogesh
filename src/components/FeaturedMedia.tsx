@@ -38,8 +38,8 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
   const [isReducedMotion, setIsReducedMotion] = useState(false);
 
   // Landmark feature (scan0021 - Sea Turtle Protection) is elevated to Featured Spotlight Hero
-  const featuredSpotlight = NEWSPAPER_FEATURES[6]; // scan0021 (Turtle Conservation landmark)
-  const remainingFeatures = NEWSPAPER_FEATURES.slice(0, 6); // 6 cards (3x2 grid)
+  const featuredSpotlight = NEWSPAPER_FEATURES.find(f => f.id === 'scan0021') || NEWSPAPER_FEATURES[6];
+  const remainingFeatures = NEWSPAPER_FEATURES.filter(f => f.id !== featuredSpotlight.id);
 
   // Check prefers-reduced-motion
   useEffect(() => {
@@ -549,7 +549,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
                 <h3 className="font-serif font-bold text-lg sm:text-xl text-[#f3f1ec] tracking-tight">
                   Press Archives &amp; SCUBA Training Milestones
                 </h3>
-                <span className="text-xs font-mono text-stone-500">6 Publications</span>
+                <span className="text-xs font-mono text-stone-500">{remainingFeatures.length} Publications</span>
               </div>
 
               {/* --- PERFECT 3x2 EVEN GRID OF ANIMATED NEWSPAPER CUTOUT CARDS --- */}

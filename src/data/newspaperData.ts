@@ -187,5 +187,75 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
         'Gulf of Mannar Biosphere Reserve Trust Conservation Team'
       ]
     }
+  },
+  {
+    id: 'turtle_malar',
+    image: '/Turtle Malar.jpg',
+    newspaper: 'Dinamalar (தினமலர்)',
+    date: 'April 2008',
+    headlineTamil: 'கடல் ஆமைகள் காப்பகம் • 87 ஆமைக் குஞ்சுகள் கடலில் விடப்பட்டன',
+    headlineEnglish: 'Sea Turtle Protection: 87 Hatchlings Safely Released into the Sea',
+    location: 'Karsambar Island, Tuticorin Coast',
+    summary: 'Dinamalar reporting on the 57-day continuous nest protection program, releasing 87 endangered sea turtle hatchlings.',
+    fullDetails: {
+      overview: 'Comprehensive report detailing how Dr. J.S. Yogesh Kumar and the conservation team safeguarded endangered sea turtle nests for 57 consecutive days along the Tuticorin coastal belt.',
+      keyAchievements: [
+        '57-day intensive surveillance of turtle nesting sites',
+        'Successful incubation and safe ocean release of 87 sea turtle hatchlings',
+        'Community engagement with coastal fishermen to protect nesting grounds'
+      ],
+      ecologicalSignificance: 'Crucial contribution to marine biodiversity and endangered sea turtle population recovery in the Gulf of Mannar.',
+      dignitariesInvolved: [
+        'Dr. J.S. Yogesh Kumar (Lead Ecologist)',
+        'Forest Department Officials',
+        'SDMRI Research Team'
+      ]
+    }
+  },
+  {
+    id: 'turtle_thinakaran',
+    image: '/Turtle Thinakaran1.jpg',
+    newspaper: 'Dinakaran (தினகரன்)',
+    date: 'April 2008',
+    headlineTamil: 'தூத்துக்குடியில் 87 கடல் ஆமைக் குஞ்சுகள் கடலில் விடப்பட்டன',
+    headlineEnglish: '87 Sea Turtle Hatchlings Released Off Tuticorin Coast',
+    location: 'Tuticorin Coastal Reserve, Gulf of Mannar',
+    summary: 'Front-page coverage showcasing the release of 87 sea turtle hatchlings following a dedicated 57-day conservation watch.',
+    fullDetails: {
+      overview: 'Dinakaran featured photographic coverage of the marine research team releasing healthy hatchlings into deep waters following rounds of protective incubation.',
+      keyAchievements: [
+        'Protection of vulnerable sea turtle eggs from predators and poaching',
+        'Establishment of a local turtle conservation network among fishermen',
+        'Scientific documentation of Green Turtle nesting behavior'
+      ],
+      ecologicalSignificance: 'Enhanced survival rate for vulnerable marine turtle species in critical breeding corridors.',
+      dignitariesInvolved: [
+        'Dr. J.S. Yogesh Kumar (Lead Ecologist)',
+        'Gulf of Mannar Biosphere Officers'
+      ]
+    }
+  },
+  {
+    id: 'turtle_main',
+    image: '/Turtle.jpg',
+    newspaper: 'National Press Archive',
+    date: '2008',
+    headlineTamil: 'கடல்வாழ் உயிரினங்கள் பாதுகாப்பு • ஆமை குஞ்சுகள் வளர்ப்பு',
+    headlineEnglish: 'Marine Species Conservation: Sea Turtle Nest Protection & Hatchling Release',
+    location: 'Tuticorin & Gulf of Mannar Biosphere',
+    summary: 'Special press report highlighting marine ecologist Dr. J.S. Yogesh Kumar\'s pioneering work in sea turtle nesting protection.',
+    fullDetails: {
+      overview: 'In-depth news coverage profiling the ecological milestone achieved through continuous day-and-night beach patrols during the turtle nesting season.',
+      keyAchievements: [
+        '24/7 beach monitoring and egg relocation to secure hatcheries',
+        'Release of multiple cohorts of healthy hatchlings into coastal waters',
+        'Training local coastal youth in marine species rescue'
+      ],
+      ecologicalSignificance: 'Sustained ecological intervention restoring native sea turtle populations along the Southeast coast of India.',
+      dignitariesInvolved: [
+        'Dr. J.S. Yogesh Kumar (Marine Ecologist)',
+        'Local Conservationists & Field Officers'
+      ]
+    }
   }
 ];

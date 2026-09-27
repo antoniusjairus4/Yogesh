@@ -129,22 +129,26 @@ export const About: React.FC<AboutProps> = ({
   return (
     <div className="relative w-full h-screen overflow-hidden bg-slate-950 text-slate-100 z-20">
       
-      {/* 1. STATIONARY BACKGROUND VIDEO (Fixed edge-to-edge) */}
+      {/* 1. STATIONARY BACKGROUND VIDEO (Fixed edge-to-edge, bright and infinitely looping) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video
-          className="w-full h-full object-cover object-center transform scale-105 sm:scale-110 origin-center filter brightness-90 contrast-105"
+          className="w-full h-full object-cover object-center transform scale-105 sm:scale-110 origin-center filter brightness-110 contrast-105"
           autoPlay
           muted
           loop
           playsInline
+          onEnded={(e) => {
+            e.currentTarget.currentTime = 0;
+            e.currentTarget.play().catch(() => {});
+          }}
         >
           <source src="/videos/2nd_page.mp4" type="video/mp4" />
           Your browser does not support HTML5 video background.
         </video>
 
-        {/* Dark Glass Overlay for High Contrast & Readability */}
-        <div className="absolute inset-0 z-5 bg-slate-950/80" />
-        <div className="absolute inset-0 z-5 bg-gradient-to-b from-slate-950/95 via-slate-950/60 to-slate-950/95" />
+        {/* Softened Glass Overlay for Vibrant Underwater Visibility & Readability */}
+        <div className="absolute inset-0 z-5 bg-slate-950/35" />
+        <div className="absolute inset-0 z-5 bg-gradient-to-b from-slate-950/70 via-slate-950/25 to-slate-950/75" />
       </div>
 
       {/* 2. FOREGROUND SCROLLABLE CONTENT */}

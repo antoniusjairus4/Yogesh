@@ -119,7 +119,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
       <div className="absolute inset-0 z-0 overflow-hidden">
         <video
           ref={videoRef}
-          className="w-full h-full object-cover object-center filter brightness-90 contrast-105 transform scale-110 origin-center"
+          className="w-full h-full object-cover object-center filter brightness-110 contrast-105 transform scale-110 origin-center"
           autoPlay
           muted
           playsInline
@@ -132,8 +132,8 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
         </video>
 
         {/* Ambient Dark Gradient Overlays for Readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/65 to-slate-950/40" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/70 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-slate-950/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/45 to-transparent" />
       </div>
 
       {/* Hero Content Container (2-Column Flex Layout on Desktop) */}

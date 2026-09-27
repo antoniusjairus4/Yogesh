@@ -73,7 +73,7 @@ export const ScubaGallery: React.FC = () => {
   const currentPhoto = activePhotoIndex !== null ? filteredPhotos[activePhotoIndex] : null;
 
   return (
-    <section id="scuba-gallery" className="relative w-full pt-16 pb-28 border-t border-slate-800/80 mt-16 bg-slate-950 text-slate-100">
+    <section id="scuba-gallery" className="relative w-full pt-16 pb-28 border-t border-white/10 mt-16 text-slate-100">
       
       <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         

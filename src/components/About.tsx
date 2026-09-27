@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import { ScubaGallery } from './ScubaGallery';
 
 
 interface AboutProps {
@@ -416,6 +417,9 @@ export const About: React.FC<AboutProps> = ({
               </button>
             </motion.div>
           )}
+
+          {/* SCUBA Diving Visuals & Coral Image Pool */}
+          <ScubaGallery />
 
           {/* Page 4 Research Publications Callout Banner Button */}
           {onViewResearchPage && (

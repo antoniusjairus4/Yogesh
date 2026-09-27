@@ -10,6 +10,7 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { id: 'career', label: 'Career', page: 2 },
+  { id: 'scuba', label: 'Scuba Visuals', page: 2 },
   { id: 'featured', label: 'Featured Press', page: 3 },
   { id: 'research', label: 'Research Papers (68 PDFs)', page: 4 },
   { id: 'contact', label: 'Contact', page: 2 },

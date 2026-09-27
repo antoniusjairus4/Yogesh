@@ -238,16 +238,16 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                     <span>PDF Document</span>
                   </div>
 
-                  {/* POPUP MINI BUTTON: Pops up with scale animation on hover */}
+                  {/* POPUP MINI BUTTON: Opens the PDF file directly */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      setSelectedPdf(paper);
+                      window.open(paper.pdfUrl, '_blank');
                     }}
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#c5a880] hover:bg-white text-[#050505] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-lg group-hover:scale-110 cursor-pointer"
                   >
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>Open</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Open PDF</span>
                   </button>
                 </div>
               </motion.div>

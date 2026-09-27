@@ -8,7 +8,9 @@ import {
   MapPin, 
   Calendar,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  BookOpen,
+  FileText
 } from 'lucide-react';
 import { ScubaGallery } from './ScubaGallery';
 
@@ -423,24 +425,42 @@ export const About: React.FC<AboutProps> = ({
           {/* SCUBA Diving Visuals & Coral Image Pool */}
           <ScubaGallery onViewScubaArchive={onViewScubaArchive} />
 
-          {/* Page 4 Research Publications Callout Banner Button */}
+          {/* Page 4 Research Publications Section Card Block */}
           {onViewResearchPage && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="mt-12 text-center pt-8 border-t border-white/10 flex flex-col items-center gap-4"
+              className="mt-20 pt-10 border-t border-white/10"
             >
-              <p className="text-white/80 text-sm font-semibold">
-                Explore 68 Peer-Reviewed SCI Publications, Books &amp; Monograph Reprints (PDFs)
-              </p>
-              <button
-                onClick={onViewResearchPage}
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-[#c5a880] hover:bg-white text-slate-950 font-outfit font-black text-base tracking-wide transition-all shadow-[0_0_30px_rgba(197,168,128,0.35)] hover:shadow-[0_0_45px_rgba(255,255,255,0.5)] cursor-pointer hover:scale-105 border border-white/80"
-              >
-                <span>View Full-Text Research Publications Library (68 PDFs)</span>
-                <span className="text-lg">→</span>
-              </button>
+              <div className="relative overflow-hidden rounded-3xl bg-slate-900/80 border border-amber-500/20 p-8 sm:p-10 backdrop-blur-xl shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8 group hover:border-amber-500/40 transition-all duration-500">
+                {/* Ambient background glow */}
+                <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-amber-500/15 transition-all duration-500" />
+                
+                <div className="relative z-10 max-w-2xl text-left">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold uppercase tracking-wider mb-3">
+                    <BookOpen className="w-3.5 h-3.5" />
+                    <span>Academic Output &amp; Reprints</span>
+                  </div>
+                  <h3 className="font-outfit font-black text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight leading-tight mb-3">
+                    Scientific Research &amp; Publications Library
+                  </h3>
+                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
+                    Access 68 peer-reviewed SCI research papers, book chapters, taxonomy monographs, and open-access full-text PDFs spanning marine invertebrate biodiversity and octocoral systematics.
+                  </p>
+                </div>
+
+                <div className="relative z-10 shrink-0">
+                  <button
+                    onClick={onViewResearchPage}
+                    className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-outfit font-black text-sm sm:text-base tracking-wide transition-all shadow-[0_0_25px_rgba(245,158,11,0.3)] hover:shadow-[0_0_35px_rgba(245,158,11,0.5)] cursor-pointer hover:scale-105 border border-amber-300/40"
+                  >
+                    <span>Browse 68 Research PDFs</span>
+                    <FileText className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
             </motion.div>
           )}
 

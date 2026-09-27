@@ -130,43 +130,48 @@ export const About: React.FC<AboutProps> = ({
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-slate-950 text-slate-100 z-20">
+    <div className="relative w-full h-screen overflow-hidden bg-[#040814] text-slate-100 z-20">
       
-      {/* 1. STATIONARY BACKGROUND VIDEO (Fixed edge-to-edge, bright and infinitely looping) */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <video
-          className="w-full h-full object-cover object-center transform scale-105 sm:scale-110 origin-center filter brightness-110 contrast-105"
-          autoPlay
-          muted
-          loop
-          playsInline
-          onEnded={(e) => {
-            e.currentTarget.currentTime = 0;
-            e.currentTarget.play().catch(() => {});
-          }}
-        >
-          <source src="/videos/2nd_page.mp4" type="video/mp4" />
-          Your browser does not support HTML5 video background.
-        </video>
-
-        {/* Dynamic Gradient Overlay: Darker over top Career Pathway & Expeditions, Fading to Bright over bottom Scuba Gallery */}
-        <div className="absolute inset-0 z-5 bg-gradient-to-b from-slate-950/85 via-slate-950/75 via-[55%] to-slate-950/10 pointer-events-none" />
-      </div>
-
-      {/* 2. FOREGROUND SCROLLABLE CONTENT */}
+      {/* FOREGROUND SCROLLABLE CONTAINER */}
       <div 
         ref={scrollableContentRef} 
-        className="relative z-10 w-full h-full overflow-y-auto pt-24 pb-36 px-4 sm:px-8 lg:px-12 scroll-smooth custom-scrollbar"
+        className="relative z-10 w-full h-full overflow-y-auto pt-24 pb-36 px-4 sm:px-8 lg:px-12 scroll-smooth custom-scrollbar bg-[#040814]"
       >
         <div className="max-w-[1400px] mx-auto w-full">
           
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-4xl mx-auto mb-10 pt-2"
-          >
+          {/* 1. UPPER SECTION WITH SCROLLING UNDERWATER VIDEO BACKGROUND (SCROLLS UP WITH CONTENT) */}
+          <div className="relative -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 pb-16 overflow-hidden rounded-b-3xl">
+            
+            {/* Background Video Layer (Scrolls UP along with Journey, Expeditions, Career Pathway & Scuba Gallery) */}
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+              <video
+                className="w-full h-full object-cover object-center transform scale-105 sm:scale-110 origin-center filter brightness-110 contrast-105"
+                autoPlay
+                muted
+                loop
+                playsInline
+                onEnded={(e) => {
+                  e.currentTarget.currentTime = 0;
+                  e.currentTarget.play().catch(() => {});
+                }}
+              >
+                <source src="/videos/2nd_page.mp4" type="video/mp4" />
+                Your browser does not support HTML5 video background.
+              </video>
+
+              {/* Dynamic Overlay: Dark over top Career Pathway, Fading to Bright over bottom Scuba Gallery */}
+              <div className="absolute inset-0 z-5 bg-gradient-to-b from-slate-950/85 via-slate-950/75 via-[55%] to-slate-950/10 pointer-events-none" />
+            </div>
+
+            {/* Content Wrapper */}
+            <div className="relative z-10 max-w-[1400px] mx-auto w-full">
+              {/* Header */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-center max-w-4xl mx-auto mb-10 pt-2"
+              >
             <h2 className="font-outfit font-black text-4xl sm:text-6xl text-white tracking-tight leading-tight">
               Journey and Field Work
             </h2>
@@ -421,9 +426,11 @@ export const About: React.FC<AboutProps> = ({
 
           {/* SCUBA Diving Visuals & Coral Image Pool (Bright & Vibrant Underwater Video) */}
           <ScubaGallery />
+            </div>
+          </div>
 
-          {/* SOLID BLACK BACKDROP SECTION FROM HERE ONWARDS (PITCH BLACK BACKGROUND FOR SCROLL EXPAND) */}
-          <div className="relative w-full -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 pt-16 pb-28 border-t border-white/10 mt-24 bg-[#040814] z-20">
+          {/* SOLID BLACK BACKDROP SECTION FROM HERE ONWARDS (EMERGES AS A NEW PAGE STAGE UPWARDS) */}
+          <div className="relative w-full -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 pt-16 pb-28 border-t border-white/10 mt-12 bg-[#040814] z-20 shadow-[0_-20px_50px_rgba(0,0,0,0.9)]">
             <div className="max-w-[1400px] mx-auto w-full">
               
               <div className="relative w-full h-[580px] sm:h-[660px]">

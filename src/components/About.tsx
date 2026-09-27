@@ -17,6 +17,7 @@ interface AboutProps {
   onScrollBackToHero?: () => void;
   onViewPressArchives?: () => void;
   onViewResearchPage?: () => void;
+  onViewScubaArchive?: (photoId?: string) => void;
   scrollToScubaSection?: boolean;
 }
 
@@ -24,6 +25,7 @@ export const About: React.FC<AboutProps> = ({
   onScrollBackToHero, 
   onViewPressArchives,
   onViewResearchPage,
+  onViewScubaArchive,
   scrollToScubaSection
 }) => {
   const scrollableContentRef = useRef<HTMLDivElement>(null);
@@ -419,7 +421,7 @@ export const About: React.FC<AboutProps> = ({
           )}
 
           {/* SCUBA Diving Visuals & Coral Image Pool */}
-          <ScubaGallery />
+          <ScubaGallery onViewScubaArchive={onViewScubaArchive} />
 
           {/* Page 4 Research Publications Callout Banner Button */}
           {onViewResearchPage && (

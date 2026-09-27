@@ -5,18 +5,20 @@ import { Hero } from './components/Hero';
 import { About } from './components/About';
 import { FeaturedMedia } from './components/FeaturedMedia';
 import { ResearchPage } from './components/ResearchPage';
+import { ScubaArchivePage } from './components/ScubaArchivePage';
 
 export const App: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVideoEnded, setIsVideoEnded] = useState(false);
-  const [activePage, setActivePage] = useState<1 | 2 | 3 | 4>(1);
+  const [activePage, setActivePage] = useState<1 | 2 | 3 | 4 | 5>(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [scrollToScuba, setScrollToScuba] = useState(false);
+  const [selectedScubaPhotoId, setSelectedScubaPhotoId] = useState<string | null>(null);
 
   const touchStartY = useRef<number | null>(null);
   const TRANSITION_DURATION = 1100;
 
-  const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4) => {
+  const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4 | 5) => {
     setScrollToScuba(false);
     if (activePage === targetPage || isTransitioning) return;
     setIsTransitioning(true);
@@ -139,6 +141,10 @@ export const App: React.FC = () => {
             onScrollBackToHero={() => handleNavigateTo(1)} 
             onViewPressArchives={() => handleNavigateTo(3)}
             onViewResearchPage={() => handleNavigateTo(4)}
+            onViewScubaArchive={(photoId) => {
+              setSelectedScubaPhotoId(photoId || null);
+              handleNavigateTo(5);
+            }}
             scrollToScubaSection={scrollToScuba}
           />
         </motion.div>
@@ -198,6 +204,29 @@ export const App: React.FC = () => {
         >
           <ResearchPage 
             onBackToPortfolio={() => handleNavigateTo(2)} 
+          />
+        </motion.div>
+
+        {/* Page 5: Full Subsurface SCUBA Image Archive Page (z-45) */}
+        <motion.div
+          initial={false}
+          animate={{
+            scale: activePage === 5 ? 1 : 0.9,
+            opacity: activePage === 5 ? 1 : 0,
+            filter: activePage === 5 ? 'blur(0px)' : 'blur(12px)',
+          }}
+          transition={{
+            duration: 1.1,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          style={{ willChange: 'transform, opacity, filter' }}
+          className={`absolute inset-0 z-45 w-full h-full overflow-y-auto origin-center transform-gpu ${
+            activePage === 5 ? 'pointer-events-auto' : 'pointer-events-none'
+          }`}
+        >
+          <ScubaArchivePage 
+            onBackToPortfolio={() => handleNavigateTo(2)} 
+            initialPhotoId={selectedScubaPhotoId}
           />
         </motion.div>
 

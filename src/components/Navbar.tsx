@@ -5,7 +5,7 @@ import { Menu, X } from 'lucide-react';
 export interface NavItem {
   id: string;
   label: string;
-  page: 1 | 2 | 3 | 4;
+  page: 1 | 2 | 3 | 4 | 5;
 }
 
 export const NAV_ITEMS: NavItem[] = [
@@ -17,8 +17,8 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 interface NavbarProps {
-  activePage?: 1 | 2 | 3 | 4;
-  onNavigatePage?: (page: 1 | 2 | 3 | 4) => void;
+  activePage?: 1 | 2 | 3 | 4 | 5;
+  onNavigatePage?: (page: 1 | 2 | 3 | 4 | 5) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }) => {

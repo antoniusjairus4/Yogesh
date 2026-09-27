@@ -5,11 +5,12 @@ import { Menu, X } from 'lucide-react';
 export interface NavItem {
   id: string;
   label: string;
-  page: 1 | 2 | 3;
+  page: 1 | 2 | 3 | 4;
 }
 
 export const NAV_ITEMS: NavItem[] = [
   { id: 'career', label: 'Career', page: 2 },
+  { id: 'scuba', label: 'Scuba Visuals', page: 4 },
   { id: 'featured', label: 'Featured in...', page: 3 },
   { id: 'research', label: 'Research', page: 2 },
   { id: 'publications', label: 'Publications', page: 2 },
@@ -17,8 +18,8 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 interface NavbarProps {
-  activePage?: 1 | 2 | 3;
-  onNavigatePage?: (page: 1 | 2 | 3) => void;
+  activePage?: 1 | 2 | 3 | 4;
+  onNavigatePage?: (page: 1 | 2 | 3 | 4) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }) => {

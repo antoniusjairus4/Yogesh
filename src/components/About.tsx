@@ -10,13 +10,19 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import { ScubaGallery } from './ScubaGallery';
 
 interface AboutProps {
   onScrollBackToHero?: () => void;
-  onScrollToNextPage?: () => void;
+  onViewPressArchives?: () => void;
+  scrollToScubaSection?: boolean;
 }
 
-export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNextPage }) => {
+export const About: React.FC<AboutProps> = ({ 
+  onScrollBackToHero, 
+  onViewPressArchives,
+  scrollToScubaSection
+}) => {
   const scrollableContentRef = useRef<HTMLDivElement>(null);
   const topExpeditionsRef = useRef<HTMLDivElement>(null);
   const timelineSectionRef = useRef<HTMLDivElement>(null);
@@ -27,6 +33,16 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
 
   // State to track which timeline card is dynamically centered in viewport focus
   const [activeTimelineIndex, setActiveTimelineIndex] = React.useState<number>(0);
+
+  // Scroll to Scuba Section if requested via prop (e.g. Navbar click)
+  useEffect(() => {
+    if (scrollToScubaSection && scrollableContentRef.current) {
+      const target = document.getElementById('scuba-gallery');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [scrollToScubaSection]);
 
   // Natural Vertical Scroll Listener:
   useEffect(() => {
@@ -47,10 +63,9 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
     return () => {
       contentEl.removeEventListener('wheel', handleWheel);
     };
-  }, [onScrollBackToHero, onScrollToNextPage]);
+  }, [onScrollBackToHero]);
 
   // Center Card Tracker for Timeline Track:
-  // Dynamically determines which horizontal card is aligned in the track center
   useEffect(() => {
     const scrollEl = timelineScrollRef.current;
     if (!scrollEl) return;
@@ -244,7 +259,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                 </h3>
               </div>
 
-              {/* Arrow Controls (Secondary Accent #9D8DF1 on Hover) */}
+              {/* Arrow Controls */}
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setActiveTimelineIndex((prev) => Math.max(0, prev - 1))}
@@ -269,7 +284,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
               </div>
             </div>
 
-            {/* 3D SPATIAL STAGE (Camera Depth of Field Effect) */}
+            {/* 3D SPATIAL STAGE */}
             <div className="relative w-full h-[460px] sm:h-[500px] overflow-visible flex items-center justify-center perspective-[1200px] transform-gpu my-4 select-none px-4">
               
               {CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.map((item, index) => {
@@ -278,20 +293,18 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                 const isCurrent = index === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1;
                 const isSelected = offset === 0;
 
-                // Render up to 2 cards on left and right (5 cards total in stage)
                 if (absOffset > 2) return null;
 
-                // 3D Spatial Coverflow Math:
                 const getXPos = (off: number) => {
                   if (off === 0) return 0;
                   const sign = off < 0 ? -1 : 1;
-                  if (Math.abs(off) === 1) return sign * 260; // 1st neighbor: 260px displacement
-                  return sign * 450; // 2nd neighbor: 450px displacement
+                  if (Math.abs(off) === 1) return sign * 260;
+                  return sign * 450;
                 };
 
                 const xPos = getXPos(offset);
-                const zPos = absOffset * -120; // Subtle depth displacement
-                const rotateYPos = offset < 0 ? 22 : offset > 0 ? -22 : 0; // Natural 3D perspective angle
+                const zPos = absOffset * -120;
+                const rotateYPos = offset < 0 ? 22 : offset > 0 ? -22 : 0;
                 const scalePos = isSelected ? 1.0 : absOffset === 1 ? 0.88 : 0.74;
                 const opacityPos = isSelected ? 1.0 : absOffset === 1 ? 0.80 : 0.45;
                 const zIndexPos = 30 - absOffset * 5;
@@ -321,7 +334,6 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                       isSelected ? 'pointer-events-auto' : 'pointer-events-auto hover:opacity-90'
                     }`}
                   >
-                    {/* Step Number Indicator Line */}
                     <div className="flex items-center gap-3 mb-4">
                       <span className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-black shrink-0 transition-all duration-300 ${
                         isSelected
@@ -337,7 +349,6 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                       }`} />
                     </div>
 
-                    {/* Solid Card Surface without Glass Transparency */}
                     <div className={`p-7 sm:p-8 rounded-3xl border flex flex-col justify-between h-[340px] sm:h-[370px] transition-all duration-300 ${
                       isSelected
                         ? 'bg-[#050B14] border-[#4CC9F0]/60 shadow-[0_25px_60px_rgba(0,0,0,0.9)] blur-none'
@@ -346,7 +357,6 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                         : 'bg-[#050B14] border-slate-800/70 blur-[4px] hover:border-[#9D8DF1]/50'
                     }`}>
                       <div>
-                        {/* Period Tag & Rank Badge */}
                         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                           <div className="inline-flex items-center gap-2 text-xs font-bold text-[#F8FAFC]">
                             <Calendar className="w-4 h-4 text-[#4CC9F0]" />
@@ -359,19 +369,16 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                           )}
                         </div>
 
-                        {/* Position Title */}
                         <h4 className="font-outfit font-black text-xl sm:text-2xl text-[#F8FAFC] mb-3 leading-snug tracking-tight">
                           {item.title}
                         </h4>
 
-                        {/* Location */}
                         <div className="flex items-start gap-2 text-xs sm:text-sm text-[#94A3B8] mb-4 font-medium">
                           <MapPin className="w-4.5 h-4.5 text-[#4CC9F0] shrink-0 mt-0.5" />
                           <span className="leading-relaxed text-[#F8FAFC]">{item.location}</span>
                         </div>
                       </div>
 
-                      {/* Key Focus Box */}
                       <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 mt-auto">
                         <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed font-normal">
                           <strong className="text-[#F8FAFC] font-bold block mb-1">Key Focus &amp; Responsibilities:</strong>
@@ -385,19 +392,19 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
             </div>
           </div>
 
-          {/* Page 3 Transition Callout Banner */}
-          {onScrollToNextPage && (
+          {/* Page 3 Callout Banner Button */}
+          {onViewPressArchives && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="mt-16 text-center pt-8 border-t border-white/10"
+              className="mt-16 text-center pt-8 border-t border-white/10 flex flex-col items-center gap-4"
             >
-              <p className="text-white/80 text-sm mb-4 font-semibold">
+              <p className="text-white/80 text-sm font-semibold">
                 Explore Press Archives &amp; National News Coverage
               </p>
               <button
-                onClick={onScrollToNextPage}
+                onClick={onViewPressArchives}
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-base tracking-wide transition-all shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_45px_rgba(255,255,255,0.4)] cursor-pointer hover:scale-105 border border-white/80"
               >
                 <span>View Featured Newspaper Clippings</span>
@@ -406,10 +413,14 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
             </motion.div>
           )}
 
+          {/* SCUBA Diving Visuals & Coral Pool Gallery (Right below the button!) */}
+          <ScubaGallery />
+
         </div>
       </div>
 
     </div>
   );
 };
+
 

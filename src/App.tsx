@@ -8,13 +8,29 @@ import { FeaturedMedia } from './components/FeaturedMedia';
 export const App: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVideoEnded, setIsVideoEnded] = useState(false);
-  const [activePage, setActivePage] = useState<1 | 2 | 3>(1);
+  const [activePage, setActivePage] = useState<1 | 2 | 3 | 4>(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [scrollToScuba, setScrollToScuba] = useState(false);
 
   const touchStartY = useRef<number | null>(null);
   const TRANSITION_DURATION = 1100;
 
-  const handleNavigateTo = (targetPage: 1 | 2 | 3) => {
+  const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4) => {
+    if (targetPage === 4) {
+      setScrollToScuba(true);
+      if (activePage !== 2 && !isTransitioning) {
+        setIsTransitioning(true);
+        setActivePage(2);
+        setTimeout(() => setIsTransitioning(false), TRANSITION_DURATION);
+      } else if (activePage === 2) {
+        // Trigger scroll if already on page 2
+        const el = document.getElementById('scuba-gallery');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
+
+    setScrollToScuba(false);
     if (activePage === targetPage || isTransitioning) return;
     setIsTransitioning(true);
     setActivePage(targetPage);
@@ -115,7 +131,7 @@ export const App: React.FC = () => {
           className="absolute inset-0 z-15 bg-black/50 pointer-events-none transform-gpu"
         />
 
-        {/* Page 2: About & Career Portfolio (z-20) */}
+        {/* Page 2: About & Career Portfolio + SCUBA Gallery (z-20) */}
         <motion.div
           initial={false}
           animate={{
@@ -134,7 +150,8 @@ export const App: React.FC = () => {
         >
           <About 
             onScrollBackToHero={() => handleNavigateTo(1)} 
-            onScrollToNextPage={() => handleNavigateTo(3)}
+            onViewPressArchives={() => handleNavigateTo(3)}
+            scrollToScubaSection={scrollToScuba}
           />
         </motion.div>
 

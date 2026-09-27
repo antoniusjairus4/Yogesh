@@ -207,6 +207,20 @@ export const App: React.FC = () => {
           />
         </motion.div>
 
+        {/* Fixed Shipwreck Underwater Background for Page 5 (Viewport-fixed, unaffected by scroll transforms) */}
+        <div 
+          className={`fixed inset-0 pointer-events-none transition-opacity duration-700 z-42 overflow-hidden ${
+            activePage === 5 ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <img 
+            src="/scuba_archive_bg.jpg" 
+            alt="Underwater Shipwreck Background" 
+            className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/70 pointer-events-none" />
+        </div>
+
         {/* Page 5: Full Subsurface SCUBA Image Archive Page (z-45) */}
         <motion.div
           initial={false}

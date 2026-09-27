@@ -92,7 +92,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
   const currentPhoto = activePhotoIndex !== null ? filteredPhotos[activePhotoIndex] : null;
 
   return (
-    <div className="relative w-full min-h-screen bg-[#040914] text-slate-100 z-20 font-sans pt-20 pb-36 px-4 sm:px-8 lg:px-12">
+    <div className="relative w-full min-h-screen bg-transparent text-slate-100 z-20 font-sans pt-20 pb-36 px-4 sm:px-8 lg:px-12">
       
       <div className="relative z-10 max-w-[1400px] mx-auto w-full">
         

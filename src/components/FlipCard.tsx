@@ -172,6 +172,8 @@ export const FlipCard: React.FC<FlipCardProps> = ({
 
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
     if (disabled || e.button !== 0 || grip.current) return;
+    const targetEl = e.target as HTMLElement;
+    if (targetEl.closest('button, a, [data-no-flip]')) return;
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch {}
@@ -248,7 +250,10 @@ export const FlipCard: React.FC<FlipCardProps> = ({
     if (!e.repeat) flipCard(true);
   };
   const onClick = (e: MouseEvent<HTMLDivElement>) => {
-    if (!disabled && e.detail === 0) flipCard(true);
+    if (disabled) return;
+    const targetEl = e.target as HTMLElement;
+    if (targetEl.closest('button, a, [data-no-flip]')) return;
+    if (e.detail === 0) flipCard(true);
   };
 
   const rotorStyle = {
@@ -313,7 +318,7 @@ export const FlipCard: React.FC<FlipCardProps> = ({
         <div
           className="absolute inset-0 overflow-hidden [border-radius:var(--fc-radius)] [background:var(--fc-bg)] [color:var(--fc-ink)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [&_img]:[-webkit-user-drag:none] group-data-[fade]:opacity-0 group-data-[fade]:[backface-visibility:visible] group-data-[fade]:[-webkit-backface-visibility:visible] group-data-[fade]:[transition:opacity_200ms_ease] group-data-[fade=front]:opacity-100!"
           aria-hidden={shown}
-          inert={shown}
+          inert={shown ? true : undefined}
         >
           {front}
           {glare ? (
@@ -326,7 +331,7 @@ export const FlipCard: React.FC<FlipCardProps> = ({
         <div
           className="absolute inset-0 overflow-hidden [border-radius:var(--fc-radius)] [background:var(--fc-bg)] [color:var(--fc-ink)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [&_img]:[-webkit-user-drag:none] group-data-[fade]:opacity-0 group-data-[fade]:[backface-visibility:visible] group-data-[fade]:[-webkit-backface-visibility:visible] group-data-[fade]:[transition:opacity_200ms_ease] [transform:rotateY(180deg)] group-data-[axis=x]:[transform:rotateX(180deg)] group-data-[fade]:[transform:none]! group-data-[fade=back]:opacity-100!"
           aria-hidden={!shown}
-          inert={!shown}
+          inert={!shown ? true : undefined}
         >
           {back}
           {glare ? (

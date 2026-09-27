@@ -256,16 +256,23 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                     back={
                       <div className="w-full h-full p-6 flex flex-col items-center justify-center bg-[#061215] border border-[#e0ad5b]/70 rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.85)] text-center">
                         {/* Flipped side: Just the Open PDF button centered alone */}
-                        <button
+                        <a
+                          href={paper.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-no-flip
+                          onPointerDown={(e) => e.stopPropagation()}
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.open(paper.pdfUrl, '_blank');
+                            if (paper.pdfUrl) {
+                              window.open(paper.pdfUrl, '_blank', 'noopener,noreferrer');
+                            }
                           }}
                           className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-sm uppercase tracking-wider transition-all duration-300 shadow-[0_4px_24px_rgba(224,173,91,0.4)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.6)] scale-110 hover:scale-115 cursor-pointer"
                         >
                           <ExternalLink className="w-4 h-4" />
                           <span>Open PDF</span>
-                        </button>
+                        </a>
                       </div>
                     }
                   />

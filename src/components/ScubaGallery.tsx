@@ -4,6 +4,7 @@ import {
   SCUBA_PHOTOS, 
   ScubaPhoto 
 } from '../data/scubaData';
+import FlexCarousel, { FlexCarouselItem } from './FlexCarousel';
 import { 
   Search, 
   X, 
@@ -52,6 +53,16 @@ export const ScubaGallery: React.FC = () => {
       return matchesCategory && matchesSearch;
     });
   }, [selectedCategory, searchQuery]);
+
+  // Map filtered photos for FlexCarousel
+  const carouselItems = useMemo<FlexCarouselItem[]>(() => {
+    return filteredPhotos.map((photo) => ({
+      src: photo.url,
+      alt: photo.title,
+      title: photo.title,
+      subtitle: photo.scientificName || (photo.location ? `${photo.location} · ${photo.category}` : photo.category)
+    }));
+  }, [filteredPhotos]);
 
   const handleOpenLightbox = (photo: ScubaPhoto) => {
     const index = filteredPhotos.findIndex((p) => p.id === photo.id);
@@ -141,6 +152,27 @@ export const ScubaGallery: React.FC = () => {
           </div>
 
         </div>
+
+        {/* FlexCarousel Interactive WebGL Showcase */}
+        {carouselItems.length > 0 && (
+          <div className="mb-12 w-full h-[460px] sm:h-[520px] relative rounded-3xl overflow-hidden border border-slate-800 bg-slate-950/80 shadow-2xl">
+            <FlexCarousel
+              items={carouselItems}
+              preset="liquid"
+              intro="rise"
+              cardHeight={0.52}
+              gap={14}
+              squeeze={0.2}
+              focusOnClick
+              captions
+              onSelect={(index) => {
+                if (filteredPhotos[index]) {
+                  handleOpenLightbox(filteredPhotos[index]);
+                }
+              }}
+            />
+          </div>
+        )}
 
         {/* Empty State */}
         {filteredPhotos.length === 0 ? (

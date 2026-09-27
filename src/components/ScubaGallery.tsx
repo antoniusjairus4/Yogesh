@@ -137,15 +137,12 @@ export const ScubaGallery: React.FC<ScubaGalleryProps> = ({ onViewScubaArchive }
         )}
 
         {/* Callout Button leading to the Full SCUBA Image Archive Page */}
-        <div className="mt-6 text-center flex flex-col items-center gap-3">
-          <p className="text-slate-300 text-sm font-medium font-sans">
-            Explore all 47 taxonomically documented underwater corals, gorgonians &amp; marine fauna photos
-          </p>
+        <div className="mt-6 text-center flex flex-col items-center">
           <button
             onClick={() => onViewScubaArchive && onViewScubaArchive()}
             className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-outfit font-black text-base tracking-wide transition-all duration-300 shadow-[0_0_30px_rgba(224,173,91,0.35)] hover:shadow-[0_0_45px_rgba(255,255,255,0.5)] cursor-pointer hover:scale-105 border border-white/80 uppercase"
           >
-            <span>View All Subsurface Images &amp; Taxonomic Archive</span>
+            <span>View Image Pool</span>
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>

@@ -156,29 +156,12 @@ export const ScubaGallery: React.FC = () => {
             </button>
           </div>
         ) : (
-          /* DYNAMIC MASONRY BENTO EDITORIAL GRID (Jumbled 2-col Wide, 2-row Tall & 1x1 Standard Cards) */
+          /* CLEAN UNIFORM EDITORIAL GRID (3-column responsive layout, perfectly aligned without empty gaps) */
           <motion.div 
             layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 grid-flow-dense w-full"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full"
           >
             {filteredPhotos.map((photo, idx) => {
-              // Calculate Bento card variation based on index pattern
-              const modulo = idx % 6;
-              const isWide = modulo === 0; // Spans 2 columns horizontally
-              const isTall = modulo === 3; // Spans 2 rows vertically
-
-              const containerSpan = isWide 
-                ? 'col-span-1 md:col-span-2 lg:col-span-2 row-span-1' 
-                : isTall 
-                ? 'col-span-1 md:row-span-2 lg:row-span-2' 
-                : 'col-span-1 row-span-1';
-
-              const imageHeight = isTall
-                ? 'h-[460px] sm:h-[560px] lg:h-[620px]'
-                : isWide
-                ? 'h-[280px] sm:h-full'
-                : 'h-[260px] sm:h-[300px] lg:h-[320px]';
-
               return (
                 <motion.div
                   layout
@@ -188,14 +171,10 @@ export const ScubaGallery: React.FC = () => {
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.35, delay: Math.min(idx * 0.03, 0.4) }}
                   onClick={() => handleOpenLightbox(photo)}
-                  className={`group relative bg-slate-900/90 border border-slate-800/80 rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-1.5 hover:border-slate-700 transition-all duration-300 shadow-lg hover:shadow-2xl flex ${
-                    isWide ? 'flex-col sm:flex-row' : 'flex-col'
-                  } w-full ${containerSpan}`}
+                  className="group relative bg-slate-900/90 border border-slate-800/80 rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-1.5 hover:border-slate-700 transition-all duration-300 shadow-lg hover:shadow-2xl flex flex-col w-full h-full"
                 >
                   {/* Image Container */}
-                  <div className={`relative overflow-hidden bg-slate-950 shrink-0 ${
-                    isWide ? 'w-full sm:w-[55%] h-[260px] sm:h-full' : 'w-full'
-                  } ${!isWide ? imageHeight : ''}`}>
+                  <div className="relative overflow-hidden bg-slate-950 shrink-0 w-full h-[260px] sm:h-[280px] lg:h-[300px]">
                     <img
                       src={photo.url}
                       alt={photo.title}
@@ -221,9 +200,7 @@ export const ScubaGallery: React.FC = () => {
                   </div>
 
                   {/* Card Metadata Banner */}
-                  <div className={`p-5 sm:p-6 bg-slate-900/90 flex flex-col justify-between flex-grow ${
-                    isWide ? 'border-t sm:border-t-0 sm:border-l border-slate-800/80 w-full sm:w-[45%]' : 'border-t border-slate-800/80'
-                  }`}>
+                  <div className="p-5 sm:p-6 bg-slate-900/90 flex flex-col justify-between flex-grow border-t border-slate-800/80">
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
                         <span className="px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-300 text-xs font-medium uppercase tracking-wide border border-slate-700/60">
@@ -247,9 +224,7 @@ export const ScubaGallery: React.FC = () => {
                         </p>
                       )}
 
-                      <p className={`text-xs sm:text-sm text-slate-400 leading-relaxed font-normal font-sans ${
-                        isWide || isTall ? 'line-clamp-4 sm:line-clamp-5' : 'line-clamp-2'
-                      }`}>
+                      <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-normal font-sans line-clamp-3">
                         {photo.description}
                       </p>
                     </div>

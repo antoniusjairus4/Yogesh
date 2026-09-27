@@ -278,7 +278,7 @@ export const ScrollExpand: React.FC<ScrollExpandProps> = ({
             {children ? (
               <div
                 ref={overlayRef}
-                className="absolute inset-0 flex flex-col items-center justify-center text-center p-[6%] opacity-0 [will-change:opacity,transform]"
+                className="absolute inset-0 flex flex-col items-center justify-center text-center p-2 sm:p-6 opacity-0 [will-change:opacity,transform] pointer-events-auto z-20"
               >
                 {children}
               </div>

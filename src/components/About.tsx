@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { ScubaGallery } from './ScubaGallery';
 import { ScrollExpand } from './ScrollExpand';
+import { ResearchPage } from './ResearchPage';
 
 interface AboutProps {
   onScrollBackToHero?: () => void;
@@ -130,41 +131,35 @@ export const About: React.FC<AboutProps> = ({
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#040814] text-slate-100 z-20">
+    <div className="relative w-full h-screen overflow-hidden bg-slate-950 text-slate-100 z-20">
       
-      {/* FOREGROUND SCROLLABLE CONTAINER */}
+      {/* 1. FIXED BACKGROUND VIDEO (Stationary full-bleed behind entire page) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <video
+          className="w-full h-full object-cover object-center transform scale-105 sm:scale-110 origin-center filter brightness-110 contrast-105"
+          autoPlay
+          muted
+          loop
+          playsInline
+          onEnded={(e) => {
+            e.currentTarget.currentTime = 0;
+            e.currentTarget.play().catch(() => {});
+          }}
+        >
+          <source src="/videos/2nd_page.mp4" type="video/mp4" />
+          Your browser does not support HTML5 video background.
+        </video>
+
+        {/* Dynamic Gradient Overlay */}
+        <div className="absolute inset-0 z-5 bg-gradient-to-b from-slate-950/85 via-slate-950/75 via-[55%] to-slate-950/10 pointer-events-none" />
+      </div>
+
+      {/* 2. FOREGROUND SCROLLABLE CONTAINER */}
       <div 
         ref={scrollableContentRef} 
-        className="relative z-10 w-full h-full overflow-y-auto pt-24 pb-36 px-4 sm:px-8 lg:px-12 scroll-smooth custom-scrollbar bg-[#040814]"
+        className="relative z-10 w-full h-full overflow-y-auto pt-24 pb-36 px-4 sm:px-8 lg:px-12 scroll-smooth custom-scrollbar"
       >
         <div className="max-w-[1400px] mx-auto w-full">
-          
-          {/* 1. UPPER SECTION WITH SCROLLING UNDERWATER VIDEO BACKGROUND (SCROLLS UP WITH CONTENT) */}
-          <div className="relative -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 pb-16 overflow-hidden rounded-b-3xl">
-            
-            {/* Background Video Layer (Scrolls UP along with Journey, Expeditions, Career Pathway & Scuba Gallery) */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-              <video
-                className="w-full h-full object-cover object-center transform scale-105 sm:scale-110 origin-center filter brightness-110 contrast-105"
-                autoPlay
-                muted
-                loop
-                playsInline
-                onEnded={(e) => {
-                  e.currentTarget.currentTime = 0;
-                  e.currentTarget.play().catch(() => {});
-                }}
-              >
-                <source src="/videos/2nd_page.mp4" type="video/mp4" />
-                Your browser does not support HTML5 video background.
-              </video>
-
-              {/* Dynamic Overlay: Dark over top Career Pathway, Fading to Bright over bottom Scuba Gallery */}
-              <div className="absolute inset-0 z-5 bg-gradient-to-b from-slate-950/85 via-slate-950/75 via-[55%] to-slate-950/10 pointer-events-none" />
-            </div>
-
-            {/* Content Wrapper */}
-            <div className="relative z-10 max-w-[1400px] mx-auto w-full">
               {/* Header */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -426,62 +421,29 @@ export const About: React.FC<AboutProps> = ({
 
           {/* SCUBA Diving Visuals & Coral Image Pool (Bright & Vibrant Underwater Video) */}
           <ScubaGallery />
-            </div>
-          </div>
 
-          {/* SOLID BLACK BACKDROP SECTION FROM HERE ONWARDS (EMERGES AS A NEW PAGE STAGE UPWARDS) */}
-          <div className="relative w-full -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 pt-16 pb-28 border-t border-white/10 mt-12 bg-[#040814] z-20 shadow-[0_-20px_50px_rgba(0,0,0,0.9)]">
-            <div className="max-w-[1400px] mx-auto w-full">
-              
-              <div className="relative w-full h-[580px] sm:h-[660px]">
-                <ScrollExpand
-                  src="/videos/2nd_page.mp4"
-                  mediaType="video"
-                  title="Expand Scientific Archives"
-                  scrollHint="Scroll to Open Next Stage"
-                  startWidth={48}
-                  startHeight={58}
-                  startRadius={28}
-                  endRadius={0}
-                  mediaZoom={1.3}
-                  scrollDistance={1.0}
-                  holdDistance={0.3}
-                  smoothing={0.1}
-                  overlayScrim={0.55}
-                  className="w-full h-full rounded-3xl overflow-hidden border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.9)]"
-                >
-                  <div className="max-w-2xl mx-auto flex flex-col items-center justify-center text-center px-4">
-                    <span className="px-4 py-1.5 rounded-full bg-sky-500/20 text-sky-400 border border-sky-400/30 text-xs font-bold uppercase tracking-widest mb-4 backdrop-blur-md">
-                      Next Frontier
-                    </span>
-                    <h3 className="font-outfit font-black text-3xl sm:text-5xl text-white tracking-tight leading-tight mb-4">
-                      Research Grants &amp; Academic Publications
-                    </h3>
-                    <p className="text-slate-200 text-sm sm:text-base leading-relaxed mb-8 max-w-xl font-sans font-normal">
-                      Explore 80+ scientific publications, 37 SCI-indexed journals, active ANRF-DST grants, and national press archives.
-                    </p>
-
-                    <div className="flex flex-wrap items-center justify-center gap-4">
-                      <button
-                        onClick={onViewResearchPage}
-                        className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-sky-500 hover:bg-sky-400 text-white font-outfit font-black text-sm tracking-wide transition-all shadow-xl hover:scale-105 cursor-pointer border border-sky-300"
-                      >
-                        <span>Explore Research &amp; Publications Demo</span>
-                        <span>→</span>
-                      </button>
-
-                      <button
-                        onClick={onViewPressArchives}
-                        className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-outfit font-bold text-sm tracking-wide transition-all border border-white/20 hover:scale-105 cursor-pointer backdrop-blur-md"
-                      >
-                        <span>View Press Archives</span>
-                      </button>
-                    </div>
-                  </div>
-                </ScrollExpand>
+          {/* REACT BITS SCROLL EXPAND COMPONENT: Research & Publications emerging INSIDE the expanding frame stage */}
+          <div className="relative w-full mt-24 mb-16 h-[85vh] min-h-[620px]">
+            <ScrollExpand
+              src="/videos/2nd_page.mp4"
+              mediaType="video"
+              title="Expand Scientific Archives"
+              scrollHint="Scroll to Open Scientific Stage"
+              startWidth={48}
+              startHeight={58}
+              startRadius={28}
+              endRadius={16}
+              mediaZoom={1.3}
+              scrollDistance={1.0}
+              holdDistance={0.4}
+              smoothing={0.1}
+              overlayScrim={0.75}
+              className="w-full h-full rounded-3xl overflow-hidden border border-white/20 shadow-[0_30px_70px_rgba(0,0,0,0.95)]"
+            >
+              <div className="w-full h-full overflow-y-auto pt-4 pb-12 px-2 sm:px-6 text-left max-w-[1280px] mx-auto custom-scrollbar pointer-events-auto">
+                <ResearchPage onBackToPortfolio={() => {}} />
               </div>
-
-            </div>
+            </ScrollExpand>
           </div>
 
         </div>

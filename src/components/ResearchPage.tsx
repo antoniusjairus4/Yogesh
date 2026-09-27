@@ -245,82 +245,27 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                         </div>
 
                         {/* Card Front Footer Row */}
-                        <div className="pt-3 border-t border-[#173841]/70 flex items-center justify-between">
-                          <div className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[#e0ad5b]/80 font-medium">
-                            <RotateCw className="w-3 h-3" />
-                            <span>Click/Drag to Flip</span>
+                        <div className="pt-3 border-t border-[#173841]/70 flex items-center justify-center">
+                          <div className="inline-flex items-center gap-2 text-xs font-mono text-[#e0ad5b]/90 font-medium tracking-wide">
+                            <RotateCw className="w-3.5 h-3.5" />
+                            <span>Click card to reveal PDF button</span>
                           </div>
-
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              window.open(paper.pdfUrl, '_blank');
-                            }}
-                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(224,173,91,0.25)] hover:shadow-[0_4px_24px_rgba(255,255,255,0.4)] cursor-pointer"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            <span>Open PDF</span>
-                          </button>
                         </div>
                       </div>
                     }
                     back={
-                      <div className="w-full h-full p-6 flex flex-col justify-between bg-[#061215] border border-[#e0ad5b]/60 rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.85)]">
-                        <div>
-                          {/* Back Header */}
-                          <div className="flex items-center justify-between gap-2 mb-2">
-                            <span className="px-2.5 py-0.5 rounded-md bg-[#10242a] text-[#e0ad5b] text-[11px] font-mono font-semibold border border-[#1b434e] uppercase tracking-wider">
-                              {paper.category} • {paper.year}
-                            </span>
-                            <div className="inline-flex items-center gap-1 text-[11px] font-mono text-[#e0ad5b] font-medium">
-                              <RotateCw className="w-3 h-3" />
-                              <span>Flipped</span>
-                            </div>
-                          </div>
-
-                          <h4 className="font-serif font-bold text-sm sm:text-base text-[#f3f1ec] mb-2 leading-snug line-clamp-2">
-                            {paper.title}
-                          </h4>
-
-                          <div className="text-[11px] font-mono text-stone-300 mb-2 space-y-0.5 border-b border-[#173841]/70 pb-2">
-                            <p className="truncate"><strong className="text-stone-400 font-normal">Authors:</strong> {paper.authors}</p>
-                            <p className="italic truncate text-stone-400">{paper.journal}</p>
-                          </div>
-
-                          <div className="mb-2">
-                            <span className="text-[10px] font-mono text-[#e0ad5b] uppercase font-bold tracking-wider block mb-1">
-                              Abstract &amp; Summary
-                            </span>
-                            <p className="text-xs text-stone-300 leading-relaxed font-sans line-clamp-4 font-normal">
-                              {paper.description}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Back Action Buttons */}
-                        <div className="pt-3 border-t border-[#173841]/70 flex items-center justify-between gap-2">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedPdf(paper);
-                            }}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#10242a] hover:bg-[#18353e] text-stone-200 hover:text-white border border-[#173841] text-xs font-mono font-medium transition-colors cursor-pointer"
-                          >
-                            <Eye className="w-3.5 h-3.5 text-[#e0ad5b]" />
-                            <span>Preview Modal</span>
-                          </button>
-
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              window.open(paper.pdfUrl, '_blank');
-                            }}
-                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(224,173,91,0.25)] hover:shadow-[0_4px_24px_rgba(255,255,255,0.4)] cursor-pointer"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            <span>Open PDF</span>
-                          </button>
-                        </div>
+                      <div className="w-full h-full p-6 flex flex-col items-center justify-center bg-[#061215] border border-[#e0ad5b]/70 rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.85)] text-center">
+                        {/* Flipped side: Just the Open PDF button centered alone */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(paper.pdfUrl, '_blank');
+                          }}
+                          className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-sm uppercase tracking-wider transition-all duration-300 shadow-[0_4px_24px_rgba(224,173,91,0.4)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.6)] scale-110 hover:scale-115 cursor-pointer"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          <span>Open PDF</span>
+                        </button>
                       </div>
                     }
                   />

@@ -16,8 +16,10 @@ import {
   Maximize2,
   Sparkles,
   Award,
-  Filter
+  Filter,
+  RotateCw
 } from 'lucide-react';
+import FlipCard from './FlipCard';
 
 interface ResearchPageProps {
   onBackToPortfolio: () => void;
@@ -159,7 +161,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
             </button>
           </div>
         ) : (
-          /* 3-COLUMN PUBLICATIONS CARDS GRID WITH POPUP "OPEN" MINI BUTTON ON HOVER */
+          /* 3-COLUMN PUBLICATIONS CARDS GRID WITH REACT BITS 3D FLIP CARD EFFECT */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {filteredPapers.map((paper, idx) => {
               // Helper to format long author lists cleanly as first author et al.
@@ -178,62 +180,150 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, delay: Math.min(idx * 0.04, 0.4) }}
-                  onClick={() => setSelectedPdf(paper)}
-                  className="group relative bg-[#0a181c]/95 backdrop-blur-md border border-[#173841]/80 hover:border-[#e0ad5b]/80 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 shadow-[0_12px_32px_rgba(0,0,0,0.75)] hover:shadow-[0_20px_50px_rgba(10,24,28,0.9)] w-full h-full overflow-hidden"
+                  className="w-full h-full"
                 >
-                  <div>
-                    {/* Consolidated Category Tag & Year Row */}
-                    <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className="px-2.5 py-0.5 rounded-md bg-[#10242a] text-[#e0ad5b] text-[11px] font-mono font-semibold border border-[#1b434e] uppercase tracking-wider">
-                        {paper.category}
-                      </span>
-                      <span className="text-xs font-mono font-medium text-stone-400">
-                        {paper.year}
-                      </span>
-                    </div>
+                  <FlipCard
+                    axis="y"
+                    flipOnClick={true}
+                    draggable={true}
+                    tilt={true}
+                    tiltMax={10}
+                    glare={true}
+                    glareOpacity={0.18}
+                    hoverScale={1.025}
+                    perspective={1100}
+                    stiffness={180}
+                    damping={22}
+                    radius={16}
+                    background="#0a181c"
+                    color="#f8fafc"
+                    shadow={true}
+                    shadowColor="#000000"
+                    shadowOpacity={0.5}
+                    ariaLabel={`Research paper: ${paper.title}`}
+                    className="w-full h-[370px]"
+                    front={
+                      <div className="w-full h-full p-6 flex flex-col justify-between bg-[#0a181c]/95 backdrop-blur-md border border-[#173841]/80 hover:border-[#e0ad5b]/80 rounded-2xl transition-all duration-300 shadow-[0_12px_32px_rgba(0,0,0,0.75)]">
+                        <div>
+                          {/* Category Tag & Year Row */}
+                          <div className="flex items-center justify-between gap-2 mb-3">
+                            <span className="px-2.5 py-0.5 rounded-md bg-[#10242a] text-[#e0ad5b] text-[11px] font-mono font-semibold border border-[#1b434e] uppercase tracking-wider">
+                              {paper.category}
+                            </span>
+                            <span className="text-xs font-mono font-medium text-stone-400">
+                              {paper.year}
+                            </span>
+                          </div>
 
-                    {/* Paper Title */}
-                    <h3 className="font-serif font-bold text-lg sm:text-xl text-[#f3f1ec] group-hover:text-[#e0ad5b] transition-colors leading-snug mb-2">
-                      {paper.title}
-                    </h3>
+                          {/* Paper Title */}
+                          <h3 className="font-serif font-bold text-lg sm:text-xl text-[#f3f1ec] group-hover:text-[#e0ad5b] transition-colors leading-snug mb-2">
+                            {paper.title}
+                          </h3>
 
-                    {/* Authors & Journal */}
-                    <div className="space-y-1 mb-3">
-                      <p className="text-xs font-mono text-stone-300 font-medium">
-                        {formattedAuthors}
-                      </p>
-                      <p className="text-xs font-serif italic text-stone-400 truncate">
-                        {paper.journal}
-                      </p>
-                    </div>
+                          {/* Authors & Journal */}
+                          <div className="space-y-1 mb-3">
+                            <p className="text-xs font-mono text-stone-300 font-medium">
+                              {formattedAuthors}
+                            </p>
+                            <p className="text-xs font-serif italic text-stone-400 truncate">
+                              {paper.journal}
+                            </p>
+                          </div>
 
-                    {/* Subtler Location Line */}
-                    {paper.location && (
-                      <div className="flex items-center gap-1.5 text-xs text-stone-400 font-mono mb-3">
-                        <MapPin className="w-3.5 h-3.5 text-[#e0ad5b]/90 shrink-0" />
-                        <span className="truncate">{paper.location}</span>
+                          {/* Location Line */}
+                          {paper.location && (
+                            <div className="flex items-center gap-1.5 text-xs text-stone-400 font-mono mb-3">
+                              <MapPin className="w-3.5 h-3.5 text-[#e0ad5b]/90 shrink-0" />
+                              <span className="truncate">{paper.location}</span>
+                            </div>
+                          )}
+
+                          {/* 1-2 Line Description */}
+                          <p className="text-xs text-stone-400 leading-relaxed line-clamp-2 font-normal font-sans mb-4">
+                            {paper.description}
+                          </p>
+                        </div>
+
+                        {/* Card Front Footer Row */}
+                        <div className="pt-3 border-t border-[#173841]/70 flex items-center justify-between">
+                          <div className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[#e0ad5b]/80 font-medium">
+                            <RotateCw className="w-3 h-3" />
+                            <span>Click/Drag to Flip</span>
+                          </div>
+
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(paper.pdfUrl, '_blank');
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(224,173,91,0.25)] hover:shadow-[0_4px_24px_rgba(255,255,255,0.4)] cursor-pointer"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            <span>Open PDF</span>
+                          </button>
+                        </div>
                       </div>
-                    )}
+                    }
+                    back={
+                      <div className="w-full h-full p-6 flex flex-col justify-between bg-[#061215] border border-[#e0ad5b]/60 rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.85)]">
+                        <div>
+                          {/* Back Header */}
+                          <div className="flex items-center justify-between gap-2 mb-2">
+                            <span className="px-2.5 py-0.5 rounded-md bg-[#10242a] text-[#e0ad5b] text-[11px] font-mono font-semibold border border-[#1b434e] uppercase tracking-wider">
+                              {paper.category} • {paper.year}
+                            </span>
+                            <div className="inline-flex items-center gap-1 text-[11px] font-mono text-[#e0ad5b] font-medium">
+                              <RotateCw className="w-3 h-3" />
+                              <span>Flipped</span>
+                            </div>
+                          </div>
 
-                    {/* Clean 1-2 Line Description */}
-                    <p className="text-xs text-stone-400 leading-relaxed line-clamp-2 font-normal font-sans mb-5">
-                      {paper.description}
-                    </p>
-                  </div>
+                          <h4 className="font-serif font-bold text-sm sm:text-base text-[#f3f1ec] mb-2 leading-snug line-clamp-2">
+                            {paper.title}
+                          </h4>
 
-                  {/* Clean Footer Row with OPEN PDF Button */}
-                  <div className="pt-3 border-t border-[#173841]/70 flex items-center justify-end">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        window.open(paper.pdfUrl, '_blank');
-                      }}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(224,173,91,0.25)] hover:shadow-[0_4px_24px_rgba(255,255,255,0.4)] group-hover:scale-105 cursor-pointer"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5" />
-                      <span>Open PDF</span>
-                    </button>
-                  </div>
+                          <div className="text-[11px] font-mono text-stone-300 mb-2 space-y-0.5 border-b border-[#173841]/70 pb-2">
+                            <p className="truncate"><strong className="text-stone-400 font-normal">Authors:</strong> {paper.authors}</p>
+                            <p className="italic truncate text-stone-400">{paper.journal}</p>
+                          </div>
+
+                          <div className="mb-2">
+                            <span className="text-[10px] font-mono text-[#e0ad5b] uppercase font-bold tracking-wider block mb-1">
+                              Abstract &amp; Summary
+                            </span>
+                            <p className="text-xs text-stone-300 leading-relaxed font-sans line-clamp-4 font-normal">
+                              {paper.description}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Back Action Buttons */}
+                        <div className="pt-3 border-t border-[#173841]/70 flex items-center justify-between gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedPdf(paper);
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#10242a] hover:bg-[#18353e] text-stone-200 hover:text-white border border-[#173841] text-xs font-mono font-medium transition-colors cursor-pointer"
+                          >
+                            <Eye className="w-3.5 h-3.5 text-[#e0ad5b]" />
+                            <span>Preview Modal</span>
+                          </button>
+
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(paper.pdfUrl, '_blank');
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(224,173,91,0.25)] hover:shadow-[0_4px_24px_rgba(255,255,255,0.4)] cursor-pointer"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            <span>Open PDF</span>
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  />
                 </motion.div>
               );
             })}

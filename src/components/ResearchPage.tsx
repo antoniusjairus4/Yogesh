@@ -72,12 +72,12 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
       <div className="relative z-10 max-w-[1400px] mx-auto w-full">
         
         {/* Top Back Navigation Bar */}
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-stone-800/80">
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#173841]/80">
           <button
             onClick={onBackToPortfolio}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#141416]/90 hover:bg-[#1a1a1e] text-stone-300 hover:text-white border border-stone-800 transition-all text-xs font-mono font-medium cursor-pointer shadow-md backdrop-blur-md hover:scale-105"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0a181c]/95 hover:bg-[#12272e] text-stone-300 hover:text-white border border-[#173841] transition-all text-xs font-mono font-medium cursor-pointer shadow-md backdrop-blur-md hover:scale-105"
           >
-            <ArrowLeft className="w-4 h-4 text-[#c5a880]" />
+            <ArrowLeft className="w-4 h-4 text-[#e0ad5b]" />
             <span>Back to Scientific Journey</span>
           </button>
         </div>
@@ -102,7 +102,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search paper title, species, journal, year..."
-                className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#121215]/90 backdrop-blur-md border border-stone-800 text-stone-200 placeholder-stone-500 text-xs font-mono focus:outline-none focus:border-[#c5a880] transition-colors shadow-lg"
+                className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#0a181c]/95 backdrop-blur-md border border-[#173841] text-stone-200 placeholder-stone-400 text-xs font-mono focus:outline-none focus:border-[#e0ad5b] focus:ring-1 focus:ring-[#e0ad5b]/30 transition-colors shadow-lg"
               />
               {searchQuery && (
                 <button
@@ -117,7 +117,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
         </motion.div>
 
         {/* Category Filter Tabs Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-10 border-b border-stone-800/80 no-scrollbar">
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-10 border-b border-[#173841]/80 no-scrollbar">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat;
             const count = cat === 'All' 
@@ -130,13 +130,13 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-4 py-2.5 rounded-xl text-xs font-mono font-medium tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border ${
                   isActive
-                    ? 'bg-[#c5a880] text-[#050505] font-bold border-[#c5a880] shadow-lg scale-105'
-                    : 'bg-[#121215]/90 backdrop-blur-md text-stone-300 hover:text-white border-stone-800 hover:border-stone-700'
+                    ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-[0_0_20px_rgba(224,173,91,0.3)] scale-105'
+                    : 'bg-[#0a181c]/95 backdrop-blur-md text-stone-300 hover:text-white border-[#173841] hover:border-[#e0ad5b]/50'
                 }`}
               >
                 <span>{cat}</span>
                 <span className={`px-2 py-0.5 rounded-full text-[10px] ${
-                  isActive ? 'bg-[#050505]/20 text-[#050505] font-bold' : 'bg-stone-800 text-stone-400'
+                  isActive ? 'bg-[#050e11]/25 text-[#050e11] font-extrabold' : 'bg-[#132c34] text-stone-300'
                 }`}>
                   {count}
                 </span>
@@ -147,13 +147,13 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
 
         {/* Empty Search Result */}
         {filteredPapers.length === 0 ? (
-          <div className="text-center py-20 bg-[#121215]/60 rounded-3xl border border-stone-800 my-8">
-            <FileText className="w-12 h-12 text-stone-600 mx-auto mb-3" />
+          <div className="text-center py-20 bg-[#0a181c]/95 backdrop-blur-md rounded-3xl border border-[#173841] my-8">
+            <FileText className="w-12 h-12 text-stone-500 mx-auto mb-3" />
             <h3 className="text-lg font-serif font-medium text-stone-200 mb-1">No research papers match your query</h3>
             <p className="text-stone-400 text-xs font-mono">Try clearing your search query or selecting a different category filter.</p>
             <button
               onClick={() => { setSelectedCategory('All'); setSearchQuery(''); }}
-              className="mt-4 px-4 py-2 rounded-xl bg-[#c5a880] text-[#050505] font-mono text-xs font-bold hover:bg-[#b0936c] transition-colors cursor-pointer"
+              className="mt-4 px-4 py-2 rounded-xl bg-[#e0ad5b] text-[#050e11] font-mono text-xs font-bold hover:bg-white transition-colors cursor-pointer"
             >
               Reset Filters
             </button>
@@ -179,12 +179,12 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, delay: Math.min(idx * 0.04, 0.4) }}
                   onClick={() => setSelectedPdf(paper)}
-                  className="group relative bg-[#121215]/90 backdrop-blur-md border border-stone-800 hover:border-[#c5a880]/80 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.85)] w-full h-full overflow-hidden"
+                  className="group relative bg-[#0a181c]/95 backdrop-blur-md border border-[#173841]/80 hover:border-[#e0ad5b]/80 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 shadow-[0_12px_32px_rgba(0,0,0,0.75)] hover:shadow-[0_20px_50px_rgba(10,24,28,0.9)] w-full h-full overflow-hidden"
                 >
                   <div>
                     {/* Consolidated Category Tag & Year Row */}
                     <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className="px-2.5 py-0.5 rounded-md bg-[#1a1a1e] text-[#c5a880] text-[11px] font-mono font-medium border border-stone-800 uppercase tracking-wider">
+                      <span className="px-2.5 py-0.5 rounded-md bg-[#10242a] text-[#e0ad5b] text-[11px] font-mono font-semibold border border-[#1b434e] uppercase tracking-wider">
                         {paper.category}
                       </span>
                       <span className="text-xs font-mono font-medium text-stone-400">
@@ -193,7 +193,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                     </div>
 
                     {/* Paper Title */}
-                    <h3 className="font-serif font-bold text-lg sm:text-xl text-[#f3f1ec] group-hover:text-[#c5a880] transition-colors leading-snug mb-2">
+                    <h3 className="font-serif font-bold text-lg sm:text-xl text-[#f3f1ec] group-hover:text-[#e0ad5b] transition-colors leading-snug mb-2">
                       {paper.title}
                     </h3>
 
@@ -210,7 +210,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                     {/* Subtler Location Line */}
                     {paper.location && (
                       <div className="flex items-center gap-1.5 text-xs text-stone-400 font-mono mb-3">
-                        <MapPin className="w-3.5 h-3.5 text-[#c5a880]/80 shrink-0" />
+                        <MapPin className="w-3.5 h-3.5 text-[#e0ad5b]/90 shrink-0" />
                         <span className="truncate">{paper.location}</span>
                       </div>
                     )}
@@ -222,13 +222,13 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                   </div>
 
                   {/* Clean Footer Row with OPEN PDF Button */}
-                  <div className="pt-3 border-t border-stone-800/80 flex items-center justify-end">
+                  <div className="pt-3 border-t border-[#173841]/70 flex items-center justify-end">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         window.open(paper.pdfUrl, '_blank');
                       }}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#c5a880] hover:bg-white text-[#050505] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-lg group-hover:scale-105 cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(224,173,91,0.25)] hover:shadow-[0_4px_24px_rgba(255,255,255,0.4)] group-hover:scale-105 cursor-pointer"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                       <span>Open PDF</span>
@@ -251,7 +251,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={() => setSelectedPdf(null)}
-            className="fixed inset-0 z-50 bg-[#050505]/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-hidden pointer-events-auto"
+            className="fixed inset-0 z-50 bg-[#050d10]/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-hidden pointer-events-auto"
           >
             <motion.div
               initial={{ scale: 0.96, y: 15 }}
@@ -259,19 +259,19 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
               exit={{ scale: 0.96, y: 15 }}
               transition={{ duration: 0.25 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-6xl h-[92vh] bg-[#121215] border border-stone-700 rounded-2xl overflow-hidden flex flex-col lg:flex-row text-stone-200 shadow-2xl"
+              className="relative w-full max-w-6xl h-[92vh] bg-[#0a181c] border border-[#173841] rounded-2xl overflow-hidden flex flex-col lg:flex-row text-stone-200 shadow-2xl"
             >
               {/* Close Button */}
               <button
                 onClick={() => setSelectedPdf(null)}
-                className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-[#1a1a1e] hover:bg-[#26262b] text-stone-300 hover:text-white border border-stone-700 transition-colors cursor-pointer"
+                className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-[#10242a] hover:bg-[#18353e] text-stone-300 hover:text-white border border-[#173841] transition-colors cursor-pointer"
                 aria-label="Close PDF view"
               >
                 <X className="w-5 h-5" />
               </button>
 
               {/* Left Column: Embedded PDF Viewer Frame */}
-              <div className="lg:w-3/4 w-full h-[60vh] lg:h-full bg-black relative flex flex-col border-b lg:border-b-0 lg:border-r border-stone-800">
+              <div className="lg:w-3/4 w-full h-[60vh] lg:h-full bg-black relative flex flex-col border-b lg:border-b-0 lg:border-r border-[#173841]">
                 <iframe
                   src={selectedPdf.pdfUrl}
                   title={selectedPdf.title}
@@ -280,9 +280,9 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
               </div>
 
               {/* Right Column: PDF Metadata & Download Sidebar */}
-              <div className="lg:w-1/4 w-full p-6 bg-[#121215] flex flex-col justify-between overflow-y-auto custom-scrollbar">
+              <div className="lg:w-1/4 w-full p-6 bg-[#0a181c] flex flex-col justify-between overflow-y-auto no-scrollbar">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#1a1a1e] border border-stone-800 text-[#c5a880] text-xs font-mono uppercase tracking-wider mb-4">
+                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#10242a] border border-[#1b434e] text-[#e0ad5b] text-xs font-mono uppercase tracking-wider mb-4">
                     {selectedPdf.category}
                   </div>
 
@@ -290,23 +290,23 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                     {selectedPdf.title}
                   </h2>
 
-                  <div className="space-y-2 mb-6 border-b border-stone-800 pb-4 text-xs font-mono">
+                  <div className="space-y-2 mb-6 border-b border-[#173841] pb-4 text-xs font-mono">
                     <div>
-                      <span className="text-stone-500 block">Authors:</span>
+                      <span className="text-stone-400 block">Authors:</span>
                       <span className="text-stone-200 font-medium">{selectedPdf.authors}</span>
                     </div>
                     <div>
-                      <span className="text-stone-500 block">Journal / Source:</span>
+                      <span className="text-stone-400 block">Journal / Source:</span>
                       <span className="text-stone-300 italic">{selectedPdf.journal} ({selectedPdf.year})</span>
                     </div>
                     <div>
-                      <span className="text-stone-500 block">Location:</span>
+                      <span className="text-stone-400 block">Location:</span>
                       <span className="text-stone-300">{selectedPdf.location}</span>
                     </div>
                   </div>
 
                   <div>
-                    <h4 className="font-mono text-xs text-[#c5a880] uppercase tracking-wider mb-2 font-bold">
+                    <h4 className="font-mono text-xs text-[#e0ad5b] uppercase tracking-wider mb-2 font-bold">
                       Abstract &amp; Summary
                     </h4>
                     <p className="text-xs text-stone-300 leading-relaxed font-sans font-normal">
@@ -315,13 +315,13 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                   </div>
                 </div>
 
-                <div className="pt-6 border-t border-stone-800 mt-6 space-y-3">
+                <div className="pt-6 border-t border-[#173841] mt-6 space-y-3">
                   <a
                     href={selectedPdf.pdfUrl}
                     download={selectedPdf.filename}
                     target="_blank"
                     rel="noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#c5a880] hover:bg-white text-[#050505] font-mono font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-lg"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-lg"
                   >
                     <Download className="w-4 h-4" />
                     <span>Download PDF File</span>
@@ -331,9 +331,9 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                     href={selectedPdf.pdfUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#1a1a1e] hover:bg-[#26262b] text-stone-300 hover:text-white font-mono text-xs border border-stone-700 transition-colors cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#10242a] hover:bg-[#18353e] text-stone-300 hover:text-white font-mono text-xs border border-[#173841] transition-colors cursor-pointer"
                   >
-                    <ExternalLink className="w-4 h-4 text-[#c5a880]" />
+                    <ExternalLink className="w-4 h-4 text-[#e0ad5b]" />
                     <span>Open in Full Tab</span>
                   </a>
                 </div>

@@ -11,6 +11,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { ScubaGallery } from './ScubaGallery';
+import { ScrollExpand } from './ScrollExpand';
 
 interface AboutProps {
   onScrollBackToHero?: () => void;
@@ -418,6 +419,48 @@ export const About: React.FC<AboutProps> = ({
 
           {/* SCUBA Diving Visuals & Coral Image Pool (Bright & Vibrant Underwater Video) */}
           <ScubaGallery />
+
+          {/* REACT BITS SCROLL EXPAND COMPONENT (Transition Frame Leading to Next Stage) */}
+          <div className="relative w-full mt-24 mb-12 h-[560px] sm:h-[640px]">
+            <ScrollExpand
+              src="/videos/2nd_page.mp4"
+              mediaType="video"
+              title="Expand Scientific Archives"
+              scrollHint="Scroll to Open Next Stage"
+              startWidth={48}
+              startHeight={58}
+              startRadius={28}
+              endRadius={0}
+              mediaZoom={1.3}
+              scrollDistance={1.0}
+              holdDistance={0.3}
+              smoothing={0.1}
+              overlayScrim={0.55}
+              className="w-full h-full rounded-3xl overflow-hidden border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.8)]"
+            >
+              <div className="max-w-2xl mx-auto flex flex-col items-center justify-center text-center px-4">
+                <span className="px-4 py-1.5 rounded-full bg-white/10 text-white border border-white/20 text-xs font-bold uppercase tracking-widest mb-4 backdrop-blur-md">
+                  Next Horizon
+                </span>
+                <h3 className="font-outfit font-black text-3xl sm:text-5xl text-white tracking-tight leading-tight mb-4">
+                  Research Grants &amp; Academic Publications
+                </h3>
+                <p className="text-slate-200 text-sm sm:text-base leading-relaxed mb-8 max-w-xl font-sans font-normal">
+                  Explore 80+ scientific publications, 37 SCI-indexed journals, active ANRF-DST grants, and national press archives.
+                </p>
+
+                <div className="flex flex-wrap items-center justify-center gap-4">
+                  <button
+                    onClick={onViewPressArchives}
+                    className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-sm tracking-wide transition-all shadow-xl hover:scale-105 cursor-pointer border border-white"
+                  >
+                    <span>View Press Archives</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
+            </ScrollExpand>
+          </div>
 
         </div>
       </div>

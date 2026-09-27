@@ -447,7 +447,7 @@ export const About: React.FC<AboutProps> = ({
                     Scientific Research &amp; Publications Library
                   </h3>
                   <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
-                    Access 68 peer-reviewed SCI research papers, book chapters, taxonomy monographs, and open-access full-text PDFs spanning marine invertebrate biodiversity and octocoral systematics.
+                    Access peer-reviewed SCI research papers, book chapters, taxonomy monographs, and open-access full-text PDFs spanning marine invertebrate biodiversity and octocoral systematics.
                   </p>
                 </div>
 
@@ -456,7 +456,7 @@ export const About: React.FC<AboutProps> = ({
                     onClick={onViewResearchPage}
                     className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-outfit font-black text-sm sm:text-base tracking-wide transition-all shadow-[0_0_25px_rgba(245,158,11,0.3)] hover:shadow-[0_0_35px_rgba(245,158,11,0.5)] cursor-pointer hover:scale-105 border border-amber-300/40"
                   >
-                    <span>Browse 68 Research PDFs</span>
+                    <span>Browse Research PDFs</span>
                     <FileText className="w-5 h-5" />
                   </button>
                 </div>

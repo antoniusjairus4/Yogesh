@@ -10,7 +10,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
-import { ScubaGallery } from './ScubaGallery';
+
 
 interface AboutProps {
   onScrollBackToHero?: () => void;
@@ -417,8 +417,26 @@ export const About: React.FC<AboutProps> = ({
             </motion.div>
           )}
 
-          {/* SCUBA Diving Visuals & Coral Image Pool (Bright & Vibrant Underwater Video) */}
-          <ScubaGallery />
+          {/* Page 4 Research Publications Callout Banner Button */}
+          {onViewResearchPage && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="mt-12 text-center pt-8 border-t border-white/10 flex flex-col items-center gap-4"
+            >
+              <p className="text-white/80 text-sm font-semibold">
+                Explore 68 Peer-Reviewed SCI Publications, Books &amp; Monograph Reprints (PDFs)
+              </p>
+              <button
+                onClick={onViewResearchPage}
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-[#c5a880] hover:bg-white text-slate-950 font-outfit font-black text-base tracking-wide transition-all shadow-[0_0_30px_rgba(197,168,128,0.35)] hover:shadow-[0_0_45px_rgba(255,255,255,0.5)] cursor-pointer hover:scale-105 border border-white/80"
+              >
+                <span>View Full-Text Research Publications Library (68 PDFs)</span>
+                <span className="text-lg">→</span>
+              </button>
+            </motion.div>
+          )}
 
 
 

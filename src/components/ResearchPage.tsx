@@ -1,273 +1,362 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { PDF_PUBLICATIONS, PdfPublication } from '../data/pdfPublicationsData';
 import { 
-  BookOpen, 
-  Award, 
-  Search, 
-  ExternalLink, 
   FileText, 
+  Search, 
+  X, 
+  ExternalLink, 
+  Calendar, 
+  MapPin, 
+  BookOpen, 
   Layers, 
+  Download, 
   ArrowLeft,
-  Calendar,
-  MapPin,
-  CheckCircle2,
+  Eye,
+  Maximize2,
   Sparkles,
-  Bookmark,
-  ShieldCheck
+  Award,
+  Filter
 } from 'lucide-react';
-import { RESEARCH_PILLARS, SCIENTIFIC_PUBLICATIONS, ScientificPublication, ResearchPillar } from '../data/portfolioData';
 
 interface ResearchPageProps {
   onBackToPortfolio: () => void;
 }
 
 export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio }) => {
-  const [activeTab, setActiveTab] = useState<'all' | 'projects' | 'publications'>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDomain, setSelectedDomain] = useState<string>('All');
-  const [selectedPublication, setSelectedPublication] = useState<ScientificPublication | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedPdf, setSelectedPdf] = useState<PdfPublication | null>(null);
 
-  // Filtered publications
-  const filteredPublications = useMemo(() => {
-    return SCIENTIFIC_PUBLICATIONS.filter((pub: ScientificPublication) => {
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch = !q || 
-        pub.title.toLowerCase().includes(q) ||
-        pub.journal.toLowerCase().includes(q) ||
-        pub.year.toString().includes(q) ||
-        (pub.doi && pub.doi.toLowerCase().includes(q));
+  // Keyboard navigation & modal shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedPdf && e.key === 'Escape') {
+        setSelectedPdf(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPdf]);
 
-      const matchesDomain = selectedDomain === 'All' || 
-        (selectedDomain === 'Corals' && (pub.title.toLowerCase().includes('coral') || pub.journal.toLowerCase().includes('coral'))) ||
-        (selectedDomain === 'Fauna' && (pub.title.toLowerCase().includes('fauna') || pub.title.toLowerCase().includes('species') || pub.title.toLowerCase().includes('turtle'))) ||
-        (selectedDomain === 'Taxonomy' && (pub.title.toLowerCase().includes('taxonomy') || pub.title.toLowerCase().includes('octocoral') || pub.title.toLowerCase().includes('new record')));
+  // Categories list
+  const categories = [
+    'All',
+    'Octocorals',
+    'Corals & Black Corals',
+    'Sea Slugs & Molluscs',
+    'Marine Mammals & Turtles',
+    'Reef Fishes & Seahorses',
+    'Invertebrates',
+    'Oceanography & Ecology',
+    'Shipwrecks'
+  ];
 
-      return matchesSearch && matchesDomain;
-    });
-  }, [searchQuery, selectedDomain]);
+  // Filtered dataset
+  const filteredPapers = PDF_PUBLICATIONS.filter((paper) => {
+    const matchesCat = selectedCategory === 'All' || paper.category === selectedCategory;
+    const q = searchQuery.toLowerCase().trim();
+    const matchesQuery = !q || 
+      paper.title.toLowerCase().includes(q) ||
+      paper.journal.toLowerCase().includes(q) ||
+      paper.authors.toLowerCase().includes(q) ||
+      paper.location.toLowerCase().includes(q) ||
+      paper.year.includes(q) ||
+      paper.description.toLowerCase().includes(q);
+    return matchesCat && matchesQuery;
+  });
 
   return (
-    <div className="min-h-screen w-full bg-[#040814] text-slate-100 font-sans selection:bg-sky-500 selection:text-white pt-20 pb-32 px-4 sm:px-8 lg:px-12 relative overflow-x-hidden">
+    <div className="relative w-full min-h-screen bg-[#050505] text-stone-200 z-20 font-sans selection:bg-[#c5a880] selection:text-[#050505] pt-20 pb-36 px-4 sm:px-8 lg:px-12">
       
       {/* Background Ambient Glow */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-sky-900/15 rounded-full blur-[140px]" />
-        <div className="absolute bottom-1/4 left-1/3 w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[120px]" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#c5a880]/5 rounded-full blur-[160px]" />
+        <div className="absolute bottom-1/4 left-1/3 w-[500px] h-[500px] bg-[#9D8DF1]/5 rounded-full blur-[140px]" />
       </div>
 
-      <div className="relative z-10 max-w-[1320px] mx-auto w-full">
+      <div className="relative z-10 max-w-[1400px] mx-auto w-full">
         
-        {/* Top Back Navigation & Breadcrumb */}
-        <motion.div 
-          initial={{ opacity: 0, y: -15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-8 pb-6 border-b border-white/10"
-        >
+        {/* Top Back Navigation Bar */}
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-stone-800/80">
           <button
             onClick={onBackToPortfolio}
-            className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm font-semibold transition-all border border-white/15 hover:scale-105 cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#141416]/90 hover:bg-[#1a1a1e] text-stone-300 hover:text-white border border-stone-800 transition-all text-xs font-mono font-medium cursor-pointer shadow-md backdrop-blur-md hover:scale-105"
           >
-            <ArrowLeft className="w-4 h-4 text-sky-400" />
-            <span>Back to Portfolio</span>
+            <ArrowLeft className="w-4 h-4 text-[#c5a880]" />
+            <span>Back to Scientific Journey</span>
           </button>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-            <span>Dr. J.S. Yogesh Kumar</span>
-            <span>/</span>
-            <span className="text-sky-400 font-bold">Research &amp; Publications</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#161410] border border-[#c5a880]/40 text-[#c5a880] text-xs font-mono">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>{PDF_PUBLICATIONS.length} Full-Text Research Papers (PDFs)</span>
           </div>
-        </motion.div>
+        </div>
 
         {/* Page Header */}
-        <motion.div
+        <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-4xl mx-auto mb-14"
+          transition={{ duration: 0.5 }}
+          className="mb-10 text-left"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-400 text-xs font-bold uppercase tracking-widest mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Zoological Survey of India • ANRF-DST Grants</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-[#c5a880]/40 bg-[#121215]/90 text-[#c5a880] text-[11px] font-mono tracking-widest uppercase mb-4 shadow-md backdrop-blur-md">
+            <BookOpen className="w-3.5 h-3.5 text-[#c5a880]" />
+            <span>Peer-Reviewed SCI Publications &amp; Monograph Reprints</span>
           </div>
-          <h1 className="font-outfit font-black text-4xl sm:text-6xl text-white tracking-tight leading-tight mb-4">
-            Scientific Research &amp; Academic Publications
+          
+          <h1 className="font-serif font-bold text-4xl sm:text-6xl text-[#f3f1ec] tracking-tight mb-3 leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+            Scientific Archives &amp; PDF Library
           </h1>
-          <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto font-sans font-normal">
-            Comprehensive archive of funded marine biodiversity grants, SCI-indexed peer-reviewed journal papers, octocoral taxonomy discoveries, and coral reef conservation research.
+          
+          <p className="text-stone-300 text-sm sm:text-base max-w-3xl leading-relaxed font-normal border-l-2 border-[#c5a880]/60 pl-4 py-2 bg-[#090807]/75 p-4 rounded-r-lg border-y border-r border-[#c5a880]/20 backdrop-blur-md shadow-xl">
+            Explore 68 peer-reviewed research papers, taxonomic monographs, books, and field expedition reports authored by Dr. J.S. Yogesh Kumar across Indian Ocean coral reefs, Octocorallia systematics, Sunderbans biodiversity, and marine ecology. Hover over any paper card to reveal the <strong className="text-[#c5a880] font-semibold">Open PDF</strong> viewer.
           </p>
         </motion.div>
 
-        {/* Executive Stats Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16 p-6 rounded-3xl bg-slate-900/80 border border-white/10 backdrop-blur-xl shadow-2xl"
-        >
-          <div className="p-4 text-center border-r border-white/10 last:border-0">
-            <div className="text-3xl sm:text-4xl font-black font-outfit text-white mb-1">80+</div>
-            <div className="text-xs sm:text-sm text-slate-300 font-medium">Total Publications</div>
-          </div>
-          <div className="p-4 text-center border-r border-white/10 last:border-0">
-            <div className="text-3xl sm:text-4xl font-black font-outfit text-sky-400 mb-1">37</div>
-            <div className="text-xs sm:text-sm text-slate-300 font-medium">SCI Indexed Papers</div>
-          </div>
-          <div className="p-4 text-center border-r border-white/10 last:border-0">
-            <div className="text-3xl sm:text-4xl font-black font-outfit text-emerald-400 mb-1">14</div>
-            <div className="text-xs sm:text-sm text-slate-300 font-medium">Funded Research Projects</div>
-          </div>
-          <div className="p-4 text-center">
-            <div className="text-3xl sm:text-4xl font-black font-outfit text-amber-400 mb-1">2026-30</div>
-            <div className="text-xs sm:text-sm text-slate-300 font-medium">ANRF-DST Active Grant</div>
-          </div>
-        </motion.div>
+        {/* Category Filters & Search Bar */}
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-10 pb-6 border-b border-stone-800/80">
+          
+          {/* Category Filter Tabs */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 custom-scrollbar">
+            {categories.map((cat) => {
+              const isActive = selectedCategory === cat;
+              const count = cat === 'All' 
+                ? PDF_PUBLICATIONS.length 
+                : PDF_PUBLICATIONS.filter(p => p.category === cat).length;
 
-        {/* SECTION 1: FUNDED RESEARCH PROJECTS */}
-        <div className="mb-20">
-          <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
-            <div>
-              <h2 className="font-outfit font-black text-2xl sm:text-3xl text-white tracking-tight flex items-center gap-3">
-                <Award className="w-7 h-7 text-sky-400" />
-                <span>Major Funded Research Projects</span>
-              </h2>
-              <p className="text-slate-400 text-sm mt-1">National &amp; International Research Directives (DST, SERB, MoEFCC, ZSI)</p>
-            </div>
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-2.5 rounded-xl text-xs font-mono font-medium tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border ${
+                    isActive
+                      ? 'bg-[#c5a880] text-[#050505] font-bold border-[#c5a880] shadow-lg scale-105'
+                      : 'bg-[#121215] text-stone-300 hover:text-white border-stone-800 hover:border-stone-700'
+                  }`}
+                >
+                  <span>{cat}</span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] ${
+                    isActive ? 'bg-[#050505]/20 text-[#050505] font-bold' : 'bg-stone-800 text-stone-400'
+                  }`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {RESEARCH_PILLARS.map((project: ResearchPillar, idx: number) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="p-7 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-sky-500/50 transition-all duration-300 flex flex-col justify-between group shadow-xl"
+          {/* Search Input Box */}
+          <div className="relative w-full lg:w-80 shrink-0">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search paper title, species, journal, year..."
+              className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#121215] border border-stone-800 text-stone-200 placeholder-stone-500 text-xs font-mono focus:outline-none focus:border-[#c5a880] transition-colors"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white p-1"
               >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+        </div>
+
+        {/* Empty Search Result */}
+        {filteredPapers.length === 0 ? (
+          <div className="text-center py-20 bg-[#121215]/60 rounded-3xl border border-stone-800 my-8">
+            <FileText className="w-12 h-12 text-stone-600 mx-auto mb-3" />
+            <h3 className="text-lg font-serif font-medium text-stone-200 mb-1">No research papers match your query</h3>
+            <p className="text-stone-400 text-xs font-mono">Try clearing your search query or selecting a different category filter.</p>
+            <button
+              onClick={() => { setSelectedCategory('All'); setSearchQuery(''); }}
+              className="mt-4 px-4 py-2 rounded-xl bg-[#c5a880] text-[#050505] font-mono text-xs font-bold hover:bg-[#b0936c] transition-colors cursor-pointer"
+            >
+              Reset Filters
+            </button>
+          </div>
+        ) : (
+          /* 3-COLUMN PUBLICATIONS CARDS GRID WITH POPUP "OPEN" MINI BUTTON ON HOVER */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {filteredPapers.map((paper, idx) => (
+              <motion.div
+                key={paper.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: Math.min(idx * 0.04, 0.4) }}
+                onClick={() => setSelectedPdf(paper)}
+                className="group relative bg-[#121215] border border-stone-800 hover:border-[#c5a880]/80 rounded-2xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.04] hover:-translate-y-1.5 shadow-xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.85)] w-full h-full overflow-hidden"
+              >
+                {/* PDF Document Icon Header & Category */}
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-4">
-                    <span className="px-3 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 text-xs font-bold uppercase tracking-wider">
-                      {project.role}
+                    <span className="px-2.5 py-1 rounded-md bg-[#1a1a1e] text-[#c5a880] text-[11px] font-mono font-medium border border-stone-800 uppercase tracking-wider">
+                      {paper.category}
                     </span>
-                    <span className="text-xs font-mono text-slate-400 flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-slate-500" />
-                      {project.period}
+                    <span className="px-2.5 py-1 rounded-md bg-[#09090b] text-stone-400 text-xs font-mono border border-stone-800">
+                      {paper.year}
                     </span>
                   </div>
 
-                  <h3 className="font-outfit font-black text-xl sm:text-2xl text-white group-hover:text-sky-300 transition-colors mb-3 leading-snug">
-                    {project.title}
+                  {/* Paper Title */}
+                  <h3 className="font-serif font-bold text-lg sm:text-xl text-[#f3f1ec] group-hover:text-[#c5a880] transition-colors leading-snug mb-3">
+                    {paper.title}
                   </h3>
 
-                  <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-300 font-medium mb-4">
-                    <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Funding Agency: <strong className="text-white">{project.agency}</strong></span>
+                  {/* Authors & Journal */}
+                  <div className="space-y-1.5 mb-4">
+                    <p className="text-xs font-mono text-stone-300 font-medium truncate">
+                      {paper.authors}
+                    </p>
+                    <p className="text-xs font-serif italic text-stone-400">
+                      {paper.journal}
+                    </p>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-normal mb-6">
-                    {project.description}
+                  {/* Location badge */}
+                  <div className="flex items-center gap-1.5 text-xs text-stone-400 font-mono mb-4 border-t border-stone-800/80 pt-3">
+                    <MapPin className="w-3.5 h-3.5 text-[#c5a880] shrink-0" />
+                    <span className="truncate">{paper.location}</span>
+                  </div>
+
+                  {/* Abstract / Summary */}
+                  <p className="text-xs text-stone-400 leading-relaxed line-clamp-3 font-normal font-sans mb-6">
+                    {paper.description}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
-                  <span>ZSI Canning Directive</span>
-                  <span className="text-emerald-400 font-bold uppercase tracking-wider">Active Directive</span>
+                {/* Footer Bar & POPUP MINI "OPEN" BUTTON ON HOVER */}
+                <div className="pt-4 border-t border-stone-800/80 flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs font-mono text-stone-400">
+                    <FileText className="w-4 h-4 text-[#c5a880]" />
+                    <span>PDF Document</span>
+                  </div>
+
+                  {/* POPUP MINI BUTTON: Pops up with scale animation on hover */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPdf(paper);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#c5a880] hover:bg-white text-[#050505] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-lg group-hover:scale-110 cursor-pointer"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>Open</span>
+                  </button>
                 </div>
               </motion.div>
             ))}
           </div>
-        </div>
+        )}
 
-        {/* SECTION 2: SCIENTIFIC PUBLICATIONS ARCHIVE */}
-        <div>
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10">
-            <div>
-              <h2 className="font-outfit font-black text-2xl sm:text-3xl text-white tracking-tight flex items-center gap-3">
-                <BookOpen className="w-7 h-7 text-sky-400" />
-                <span>Peer-Reviewed Journal Papers</span>
-              </h2>
-              <p className="text-slate-400 text-sm mt-1">Selected High-Impact SCI &amp; International Research Publications</p>
-            </div>
+      </div>
 
-            {/* Filter Tabs & Search */}
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-              <div className="relative w-full sm:w-64">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search papers, DOIs, journals..."
-                  className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-sky-500 transition-colors"
+      {/* EMBEDDED PDF VIEWER MODAL */}
+      <AnimatePresence>
+        {selectedPdf && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setSelectedPdf(null)}
+            className="fixed inset-0 z-50 bg-[#050505]/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-hidden pointer-events-auto"
+          >
+            <motion.div
+              initial={{ scale: 0.96, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.96, y: 15 }}
+              transition={{ duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-6xl h-[92vh] bg-[#121215] border border-stone-700 rounded-2xl overflow-hidden flex flex-col lg:flex-row text-stone-200 shadow-2xl"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedPdf(null)}
+                className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-[#1a1a1e] hover:bg-[#26262b] text-stone-300 hover:text-white border border-stone-700 transition-colors cursor-pointer"
+                aria-label="Close PDF view"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Left Column: Embedded PDF Viewer Frame */}
+              <div className="lg:w-3/4 w-full h-[60vh] lg:h-full bg-black relative flex flex-col border-b lg:border-b-0 lg:border-r border-stone-800">
+                <iframe
+                  src={selectedPdf.pdfUrl}
+                  title={selectedPdf.title}
+                  className="w-full h-full border-0 bg-white"
                 />
               </div>
 
-              <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
-                {['All', 'Corals', 'Fauna', 'Taxonomy'].map((domain) => (
-                  <button
-                    key={domain}
-                    onClick={() => setSelectedDomain(domain)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
-                      selectedDomain === domain
-                        ? 'bg-sky-500 text-white shadow-md'
-                        : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
-                    }`}
-                  >
-                    {domain}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Publications Table / List */}
-          <div className="space-y-4">
-            {filteredPublications.map((pub: ScientificPublication, idx: number) => (
-              <motion.div
-                key={pub.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: idx * 0.05 }}
-                className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-4 group hover:bg-slate-900"
-              >
-                <div className="max-w-4xl">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="px-2.5 py-0.5 rounded-md bg-sky-500/15 text-sky-400 text-xs font-mono font-bold border border-sky-400/30">
-                      {pub.year}
-                    </span>
-                    <span className="text-xs text-slate-400 font-medium italic">
-                      {pub.journal}
-                    </span>
+              {/* Right Column: PDF Metadata & Download Sidebar */}
+              <div className="lg:w-1/4 w-full p-6 bg-[#121215] flex flex-col justify-between overflow-y-auto custom-scrollbar">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#1a1a1e] border border-stone-800 text-[#c5a880] text-xs font-mono uppercase tracking-wider mb-4">
+                    {selectedPdf.category}
                   </div>
 
-                  <h3 className="font-outfit font-bold text-lg text-white group-hover:text-sky-300 transition-colors mb-2 leading-snug">
-                    {pub.title}
-                  </h3>
+                  <h2 className="font-serif font-bold text-xl text-[#f3f1ec] mb-3 leading-snug">
+                    {selectedPdf.title}
+                  </h2>
 
-                  <p className="text-xs text-slate-400 font-sans">
-                    Authors: <span className="text-slate-300 font-medium">{pub.authors}</span>
-                  </p>
+                  <div className="space-y-2 mb-6 border-b border-stone-800 pb-4 text-xs font-mono">
+                    <div>
+                      <span className="text-stone-500 block">Authors:</span>
+                      <span className="text-stone-200 font-medium">{selectedPdf.authors}</span>
+                    </div>
+                    <div>
+                      <span className="text-stone-500 block">Journal / Source:</span>
+                      <span className="text-stone-300 italic">{selectedPdf.journal} ({selectedPdf.year})</span>
+                    </div>
+                    <div>
+                      <span className="text-stone-500 block">Location:</span>
+                      <span className="text-stone-300">{selectedPdf.location}</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-mono text-xs text-[#c5a880] uppercase tracking-wider mb-2 font-bold">
+                      Abstract &amp; Summary
+                    </h4>
+                    <p className="text-xs text-stone-300 leading-relaxed font-sans font-normal">
+                      {selectedPdf.description}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="shrink-0 flex items-center gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-slate-800">
-                  {pub.doi && (
-                    <a
-                      href={`https://doi.org/${pub.doi}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-sky-500 text-slate-300 hover:text-white text-xs font-mono font-semibold transition-all border border-slate-700 hover:border-sky-400"
-                    >
-                      <span>DOI Link</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  )}
+                <div className="pt-6 border-t border-stone-800 mt-6 space-y-3">
+                  <a
+                    href={selectedPdf.pdfUrl}
+                    download={selectedPdf.filename}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#c5a880] hover:bg-white text-[#050505] font-mono font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-lg"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Download PDF File</span>
+                  </a>
+
+                  <a
+                    href={selectedPdf.pdfUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#1a1a1e] hover:bg-[#26262b] text-stone-300 hover:text-white font-mono text-xs border border-stone-700 transition-colors cursor-pointer"
+                  >
+                    <ExternalLink className="w-4 h-4 text-[#c5a880]" />
+                    <span>Open in Full Tab</span>
+                  </a>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-
-        </div>
-
-      </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

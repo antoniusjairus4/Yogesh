@@ -153,15 +153,15 @@ export const ScubaGallery: React.FC = () => {
 
         </div>
 
-        {/* FlexCarousel Interactive WebGL Showcase */}
+        {/* FlexCarousel Interactive WebGL Showcase - Full Edge-to-Edge Page Width */}
         {carouselItems.length > 0 && (
-          <div className="mb-12 w-full h-[460px] sm:h-[520px] relative rounded-3xl overflow-hidden border border-slate-800 bg-slate-950/80 shadow-2xl">
+          <div className="mb-14 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] h-[520px] sm:h-[620px] overflow-hidden bg-transparent border-none">
             <FlexCarousel
               items={carouselItems}
               preset="liquid"
               intro="rise"
-              cardHeight={0.52}
-              gap={14}
+              cardHeight={0.56}
+              gap={16}
               squeeze={0.2}
               focusOnClick
               captions

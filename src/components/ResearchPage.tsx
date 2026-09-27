@@ -80,11 +80,6 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
             <ArrowLeft className="w-4 h-4 text-[#c5a880]" />
             <span>Back to Scientific Journey</span>
           </button>
-
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#161410] border border-[#c5a880]/40 text-[#c5a880] text-xs font-mono">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{PDF_PUBLICATIONS.length} Full-Text Research Papers (PDFs)</span>
-          </div>
         </div>
 
         {/* Page Header & Inline Search Bar */}
@@ -94,11 +89,6 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-[#c5a880]/40 bg-[#121215]/90 text-[#c5a880] text-[11px] font-mono tracking-widest uppercase mb-4 shadow-md backdrop-blur-md">
-            <BookOpen className="w-3.5 h-3.5 text-[#c5a880]" />
-            <span>Peer-Reviewed SCI Publications &amp; Monograph Reprints</span>
-          </div>
-          
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <h1 className="font-serif font-bold text-4xl sm:text-6xl text-[#f3f1ec] tracking-tight leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
               Research and Publications

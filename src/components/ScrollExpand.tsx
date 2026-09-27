@@ -23,13 +23,11 @@ type ConfigKey =
 
 export interface ScrollExpandProps {
   src?: string;
-  mediaType?: 'image' | 'video' | 'none';
+  mediaType?: 'image' | 'video';
   poster?: string;
   alt?: string;
   title?: string;
-  titleClassName?: string;
   scrollHint?: string;
-  hintClassName?: string;
   startWidth?: number;
   startHeight?: number;
   startRadius?: number;
@@ -53,9 +51,7 @@ export const ScrollExpand: React.FC<ScrollExpandProps> = ({
   poster = '',
   alt = '',
   title = '',
-  titleClassName = '',
   scrollHint = '',
-  hintClassName = '',
   startWidth = 42,
   startHeight = 58,
   startRadius = 24,
@@ -240,7 +236,7 @@ export const ScrollExpand: React.FC<ScrollExpandProps> = ({
   }, [applyProgress, useWindowScroll]);
 
   const media =
-    mediaType === 'video' && src ? (
+    mediaType === 'video' ? (
       <video
         ref={mediaRef}
         className="absolute inset-0 w-full h-full object-cover origin-center select-none [will-change:transform]"
@@ -251,18 +247,13 @@ export const ScrollExpand: React.FC<ScrollExpandProps> = ({
         loop
         playsInline
       />
-    ) : mediaType === 'image' && src ? (
+    ) : (
       <img
         ref={mediaRef}
         className="absolute inset-0 w-full h-full object-cover origin-center select-none [will-change:transform]"
         src={src}
         alt={alt}
         draggable={false}
-      />
-    ) : (
-      <div
-        ref={mediaRef}
-        className="absolute inset-0 w-full h-full bg-white origin-center select-none [will-change:transform]"
       />
     );
 
@@ -277,7 +268,7 @@ export const ScrollExpand: React.FC<ScrollExpandProps> = ({
         <div ref={stageRef} className="sticky top-0 w-full overflow-hidden [--se-title-size:4rem]">
           <div
             ref={frameRef}
-            className="absolute inset-0 bg-white [clip-path:inset(21%_29%_21%_29%_round_24px)] [will-change:clip-path]"
+            className="absolute inset-0 [clip-path:inset(21%_29%_21%_29%_round_24px)] [will-change:clip-path]"
           >
             {media}
             <div
@@ -296,9 +287,7 @@ export const ScrollExpand: React.FC<ScrollExpandProps> = ({
           {title ? (
             <div
               ref={titleRef}
-              className={`absolute inset-0 flex items-center justify-center m-0 px-[6%] text-center font-bold leading-none tracking-[-0.03em] [font-size:var(--se-title-size)] pointer-events-none [will-change:opacity,transform] ${
-                titleClassName || 'text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)]'
-              }`.trim()}
+              className="absolute inset-0 flex items-center justify-center m-0 px-[6%] text-center font-bold leading-none tracking-[-0.03em] text-white [font-size:var(--se-title-size)] [text-shadow:0_2px_24px_rgba(0,0,0,0.45)] pointer-events-none [will-change:opacity,transform]"
             >
               {title}
             </div>
@@ -306,9 +295,7 @@ export const ScrollExpand: React.FC<ScrollExpandProps> = ({
           {scrollHint ? (
             <div
               ref={hintRef}
-              className={`absolute inset-x-0 bottom-5 text-center text-[0.8125rem] tracking-[0.02em] pointer-events-none [will-change:opacity,transform] ${
-                hintClassName || 'text-white/55'
-              }`.trim()}
+              className="absolute inset-x-0 bottom-5 text-center text-[0.8125rem] tracking-[0.02em] text-white/55 pointer-events-none [will-change:opacity,transform]"
             >
               {scrollHint}
             </div>

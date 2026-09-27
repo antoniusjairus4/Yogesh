@@ -8,8 +8,7 @@ import {
   MapPin, 
   Calendar,
   ChevronLeft,
-  ChevronRight,
-  ArrowDown
+  ChevronRight
 } from 'lucide-react';
 
 interface AboutProps {
@@ -147,18 +146,9 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
             transition={{ duration: 0.6 }}
             className="text-center max-w-4xl mx-auto mb-10 pt-2"
           >
-            <h2 className="font-outfit font-black text-4xl sm:text-6xl text-white tracking-tight leading-tight mb-4">
-              Scientific Journey &amp; Field Work
+            <h2 className="font-outfit font-black text-4xl sm:text-6xl text-white tracking-tight leading-tight">
+              Journey and Field Work
             </h2>
-            <p className="text-white/90 text-sm sm:text-base leading-relaxed opacity-90 max-w-2xl mx-auto">
-              Scroll down to view the large field expedition photos and explore all 11 chronological career positions.
-            </p>
-            
-            {/* Scroll Down Indicator */}
-            <div className="flex items-center justify-center gap-2 text-xs text-white/90 mt-4 font-semibold animate-pulse">
-              <span>Scroll down to explore</span>
-              <ArrowDown className="w-4 h-4 text-orange-500" />
-            </div>
           </motion.div>
 
           {/* --- 5 FIELD EXPEDITIONS IMAGES GRID (MUCH LARGER & PROMINENT) --- */}
@@ -247,55 +237,40 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
           <div ref={timelineSectionRef} className="py-8 my-12 relative">
             
             {/* Timeline Header & HUD Controls */}
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-8 border-b border-white/10 pb-5">
+            <div className="flex items-center justify-between gap-4 mb-8 border-b border-white/10 pb-5">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-600/20 border border-orange-500/50 text-orange-400 text-xs font-mono tracking-wider uppercase mb-2">
-                  <span>Interactive 3D Spatial Showcase</span>
-                </div>
-                <h3 className="font-outfit font-black text-2xl sm:text-4xl text-white tracking-tight">
-                  11-Position Scientific Career Journey
+                <h3 className="font-outfit font-black text-2xl sm:text-4xl text-[#F8FAFC] tracking-tight">
+                  Career Timeline
                 </h3>
-                <p className="text-xs sm:text-sm text-white/80 font-medium mt-1">
-                  2006 (SDMRI JRF) → 2022–Present (Scientist E &amp; Officer-in-Charge)
-                </p>
               </div>
 
-              {/* HUD Position Counter & Controls */}
-              <div className="flex items-center gap-4">
-                {/* Step Counter Pill */}
-                <div className="px-4 py-2 rounded-2xl bg-slate-900/90 border border-white/20 text-white font-mono text-xs font-bold tracking-wider flex items-center gap-2 shadow-xl backdrop-blur-md">
-                  <span className="w-2 h-2 rounded-full bg-orange-500 animate-ping" />
-                  <span>POSITION {String(activeTimelineIndex + 1).padStart(2, '0')} / 11</span>
-                </div>
-
-                {/* Arrow Controls */}
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setActiveTimelineIndex((prev) => Math.max(0, prev - 1))}
-                    disabled={activeTimelineIndex === 0}
-                    className={`p-3 rounded-2xl bg-slate-900/90 text-white transition-all border border-white/20 shadow-xl backdrop-blur-md cursor-pointer ${
-                      activeTimelineIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-orange-600/40 hover:border-orange-500'
-                    }`}
-                    aria-label="Previous position"
-                  >
-                    <ChevronLeft className="w-5 h-5 text-white" />
-                  </button>
-                  <button
-                    onClick={() => setActiveTimelineIndex((prev) => Math.min(CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1, prev + 1))}
-                    disabled={activeTimelineIndex === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1}
-                    className={`p-3 rounded-2xl bg-slate-900/90 text-white transition-all border border-white/20 shadow-xl backdrop-blur-md cursor-pointer ${
-                      activeTimelineIndex === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-orange-600/40 hover:border-orange-500'
-                    }`}
-                    aria-label="Next position"
-                  >
-                    <ChevronRight className="w-5 h-5 text-white" />
-                  </button>
-                </div>
+              {/* Arrow Controls (Secondary Accent #9D8DF1 on Hover) */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setActiveTimelineIndex((prev) => Math.max(0, prev - 1))}
+                  disabled={activeTimelineIndex === 0}
+                  className={`p-3 rounded-2xl bg-[#050B14]/80 text-[#F8FAFC] transition-all border border-slate-800 shadow-md backdrop-blur-md cursor-pointer ${
+                    activeTimelineIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:border-[#9D8DF1]/70 hover:text-[#9D8DF1]'
+                  }`}
+                  aria-label="Previous position"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => setActiveTimelineIndex((prev) => Math.min(CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1, prev + 1))}
+                  disabled={activeTimelineIndex === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1}
+                  className={`p-3 rounded-2xl bg-[#050B14]/80 text-[#F8FAFC] transition-all border border-slate-800 shadow-md backdrop-blur-md cursor-pointer ${
+                    activeTimelineIndex === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:border-[#9D8DF1]/70 hover:text-[#9D8DF1]'
+                  }`}
+                  aria-label="Next position"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
               </div>
             </div>
 
-            {/* 3D SPATIAL STAGE (Hardware Accelerated Perspective Depth) */}
-            <div className="relative w-full h-[460px] sm:h-[500px] overflow-hidden flex items-center justify-center perspective-[1200px] transform-gpu my-4 select-none">
+            {/* 3D SPATIAL STAGE (Camera Depth of Field Effect) */}
+            <div className="relative w-full h-[460px] sm:h-[500px] overflow-visible flex items-center justify-center perspective-[1200px] transform-gpu my-4 select-none px-4">
               
               {CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.map((item, index) => {
                 const offset = index - activeTimelineIndex;
@@ -303,15 +278,22 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                 const isCurrent = index === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1;
                 const isSelected = offset === 0;
 
-                // Render cards within range [-3, 3] for maximum performance & visual elegance
-                if (absOffset > 3) return null;
+                // Render up to 2 cards on left and right (5 cards total in stage)
+                if (absOffset > 2) return null;
 
-                // 3D Spatial Math:
-                const xPos = offset * 340; // Horizontal displacement (px)
-                const zPos = absOffset * -160; // Depth displacement (px)
-                const rotateYPos = offset < 0 ? 25 : offset > 0 ? -25 : 0; // 3D Y-rotation angle
-                const scalePos = isSelected ? 1.05 : Math.max(0.72, 1 - absOffset * 0.14);
-                const opacityPos = isSelected ? 1 : absOffset === 1 ? 0.65 : absOffset === 2 ? 0.3 : 0;
+                // 3D Spatial Coverflow Math:
+                const getXPos = (off: number) => {
+                  if (off === 0) return 0;
+                  const sign = off < 0 ? -1 : 1;
+                  if (Math.abs(off) === 1) return sign * 260; // 1st neighbor: 260px displacement
+                  return sign * 450; // 2nd neighbor: 450px displacement
+                };
+
+                const xPos = getXPos(offset);
+                const zPos = absOffset * -120; // Subtle depth displacement
+                const rotateYPos = offset < 0 ? 22 : offset > 0 ? -22 : 0; // Natural 3D perspective angle
+                const scalePos = isSelected ? 1.0 : absOffset === 1 ? 0.88 : 0.74;
+                const opacityPos = isSelected ? 1.0 : absOffset === 1 ? 0.80 : 0.45;
                 const zIndexPos = 30 - absOffset * 5;
 
                 return (
@@ -326,71 +308,73 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                       opacity: opacityPos,
                     }}
                     transition={{
-                      duration: 0.6,
+                      duration: 0.55,
                       ease: [0.16, 1, 0.3, 1],
                     }}
                     onClick={() => setActiveTimelineIndex(index)}
                     style={{
                       zIndex: zIndexPos,
                       transformStyle: 'preserve-3d',
-                      willChange: 'transform, opacity',
+                      willChange: 'transform, opacity, filter',
                     }}
-                    className={`absolute w-[330px] sm:w-[420px] lg:w-[460px] cursor-pointer origin-center transform-gpu ${
+                    className={`absolute w-[320px] sm:w-[400px] lg:w-[440px] cursor-pointer origin-center transform-gpu ${
                       isSelected ? 'pointer-events-auto' : 'pointer-events-auto hover:opacity-90'
                     }`}
                   >
-                    {/* Top Step Number Indicator Line */}
+                    {/* Step Number Indicator Line */}
                     <div className="flex items-center gap-3 mb-4">
-                      <span className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-black text-white shrink-0 transition-all duration-300 ${
+                      <span className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-black shrink-0 transition-all duration-300 ${
                         isSelected
-                          ? 'bg-orange-600 border-2 border-orange-400 shadow-[0_0_20px_rgba(234,88,12,0.8)] scale-110'
-                          : 'bg-slate-900 border border-white/20'
+                          ? 'bg-[#4CC9F0] border-2 border-white text-[#050B14] shadow-[0_0_12px_rgba(76,201,240,0.4)] scale-110'
+                          : 'bg-[#050B14]/90 border border-slate-700/80 text-[#94A3B8] backdrop-blur-sm'
                       }`}>
                         {index + 1}
                       </span>
                       <div className={`h-[2px] flex-grow rounded-full transition-all duration-300 ${
                         isSelected 
-                          ? 'bg-gradient-to-r from-orange-500 via-orange-500/50 to-transparent shadow-[0_0_12px_rgba(234,88,12,0.5)]' 
-                          : 'bg-white/10'
+                          ? 'bg-[#4CC9F0] shadow-[0_0_10px_rgba(76,201,240,0.3)]' 
+                          : 'bg-slate-800'
                       }`} />
                     </div>
 
-                    {/* Obsidian Glass 3D Card Surface */}
-                    <div className={`p-7 sm:p-8 rounded-3xl backdrop-blur-2xl border flex flex-col justify-between h-[340px] sm:h-[370px] transition-all duration-300 ${
+                    {/* Card Surface with Crisp Depth-of-Field Blur */}
+                    <div className={`p-7 sm:p-8 rounded-3xl border flex flex-col justify-between h-[340px] sm:h-[370px] transition-all duration-300 ${
                       isSelected
-                        ? 'bg-slate-950/95 border-orange-500/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)]'
-                        : 'bg-slate-950/80 border-white/15 hover:border-white/40'
+                        ? 'bg-[#050B14]/90 backdrop-blur-xl border-[#4CC9F0]/60 shadow-[0_20px_50px_rgba(0,0,0,0.7)] blur-none'
+                        : absOffset === 1
+                        ? 'bg-[#050B14]/80 backdrop-blur-md border-slate-800/80 blur-[2px] hover:border-[#9D8DF1]/50'
+                        : 'bg-[#050B14]/65 backdrop-blur-sm border-slate-800/60 blur-[4px] hover:border-[#9D8DF1]/50'
                     }`}>
                       <div>
                         {/* Period Tag & Rank Badge */}
                         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                          <div className="inline-flex items-center gap-2 text-xs font-bold text-white">
-                            <Calendar className="w-4 h-4 text-orange-500" />
+                          <div className="inline-flex items-center gap-2 text-xs font-bold text-[#F8FAFC]">
+                            <Calendar className="w-4 h-4 text-[#4CC9F0]" />
                             <span>{item.period}</span>
                           </div>
                           {isCurrent && (
-                            <span className="px-3 py-1 rounded-md text-[11px] font-black bg-orange-600/30 text-white border border-orange-500/70 uppercase tracking-widest shadow-md">
+                            <span className="px-3 py-1 rounded-md text-[11px] font-black bg-[#4CC9F0]/15 text-[#4CC9F0] border border-[#4CC9F0]/40 uppercase tracking-widest shadow-sm">
                               Current Rank
                             </span>
                           )}
                         </div>
 
                         {/* Position Title */}
-                        <h4 className="font-outfit font-black text-xl sm:text-2xl text-white mb-3 leading-snug tracking-tight">
+                        <h4 className="font-outfit font-black text-xl sm:text-2xl text-[#F8FAFC] mb-3 leading-snug tracking-tight">
                           {item.title}
                         </h4>
 
                         {/* Location */}
-                        <div className="flex items-start gap-2 text-xs sm:text-sm text-slate-200 mb-4 font-medium">
-                          <MapPin className="w-4.5 h-4.5 text-orange-500 shrink-0 mt-0.5" />
-                          <span className="leading-relaxed text-white">{item.location}</span>
+                        <div className="flex items-start gap-2 text-xs sm:text-sm text-[#94A3B8] mb-4 font-medium">
+                          <MapPin className="w-4.5 h-4.5 text-[#4CC9F0] shrink-0 mt-0.5" />
+                          <span className="leading-relaxed text-[#F8FAFC]">{item.location}</span>
                         </div>
                       </div>
 
                       {/* Key Focus Box */}
-                      <div className="p-4 rounded-2xl bg-white/5 border border-white/10 mt-auto">
-                        <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
-                          <strong className="text-white font-bold block mb-1">Key Focus &amp; Responsibilities:</strong>
+                      <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 mt-auto">
+                        <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed font-normal">
+                          <strong className="text-[#F8FAFC] font-bold block mb-1">Key Focus &amp; Responsibilities:</strong>
                           {item.focus}
                         </p>
                       </div>
@@ -398,47 +382,6 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                   </motion.div>
                 );
               })}
-            </div>
-
-            {/* FUTURISTIC 11-NODE SPINE TIMELINE PROGRESS BAR */}
-            <div className="mt-6 pt-4 border-t border-white/10 max-w-4xl mx-auto w-full px-4">
-              <div className="relative flex items-center justify-between">
-                {/* Background Line */}
-                <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-white/10 -translate-y-1/2 z-0" />
-                
-                {/* Active Progress Line */}
-                <motion.div 
-                  className="absolute top-1/2 left-0 h-[2px] bg-gradient-to-r from-orange-500 to-orange-400 -translate-y-1/2 z-0 shadow-[0_0_10px_rgba(234,88,12,0.8)]"
-                  initial={false}
-                  animate={{
-                    width: `${(activeTimelineIndex / (CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1)) * 100}%`
-                  }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                />
-
-                {/* 11 Node Buttons */}
-                {CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.map((_, nodeIdx) => {
-                  const isActive = nodeIdx === activeTimelineIndex;
-                  const isPassed = nodeIdx < activeTimelineIndex;
-
-                  return (
-                    <button
-                      key={nodeIdx}
-                      onClick={() => setActiveTimelineIndex(nodeIdx)}
-                      className={`relative z-10 rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer ${
-                        isActive
-                          ? 'w-8 h-8 bg-orange-600 border-2 border-orange-400 text-white font-black text-xs shadow-[0_0_15px_rgba(234,88,12,0.8)] scale-110'
-                          : isPassed
-                          ? 'w-6 h-6 bg-orange-500/60 border border-orange-400 text-white font-bold text-[10px]'
-                          : 'w-6 h-6 bg-slate-900 border border-white/20 text-white/50 hover:border-white/50 text-[10px]'
-                      }`}
-                      aria-label={`Jump to position ${nodeIdx + 1}`}
-                    >
-                      {nodeIdx + 1}
-                    </button>
-                  );
-                })}
-              </div>
             </div>
 
           </div>

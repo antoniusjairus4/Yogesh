@@ -243,85 +243,126 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
             </div>
           </div>
 
-          {/* --- 11-POSITION HORIZONTAL TIMELINE (UNBOXED & FLOATING FREELY IN PAGE CENTER) --- */}
-          <div ref={timelineSectionRef} className="py-8 my-12">
+          {/* --- 11-POSITION FUTURISTIC 3D COVERFLOW SPATIAL SLIDER --- */}
+          <div ref={timelineSectionRef} className="py-8 my-12 relative">
             
-            {/* Timeline Title & Floating Nav Controls (No Enclosing Outer Box) */}
+            {/* Timeline Header & HUD Controls */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-8 border-b border-white/10 pb-5">
               <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-600/20 border border-orange-500/50 text-orange-400 text-xs font-mono tracking-wider uppercase mb-2">
+                  <span>Interactive 3D Spatial Showcase</span>
+                </div>
                 <h3 className="font-outfit font-black text-2xl sm:text-4xl text-white tracking-tight">
                   11-Position Scientific Career Journey
                 </h3>
-                <p className="text-xs sm:text-sm text-white/90 font-medium mt-1">
+                <p className="text-xs sm:text-sm text-white/80 font-medium mt-1">
                   2006 (SDMRI JRF) → 2022–Present (Scientist E &amp; Officer-in-Charge)
                 </p>
               </div>
 
-              {/* Navigation Controls */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => scrollToCardIndex(activeTimelineIndex - 1)}
-                  className="p-3 rounded-2xl bg-slate-900/80 hover:bg-orange-600/30 text-slate-200 hover:text-white transition-all border border-white/20 hover:border-orange-500/60 cursor-pointer shadow-xl backdrop-blur-md"
-                  aria-label="Scroll timeline left"
-                >
-                  <ChevronLeft className="w-5 h-5 text-white" />
-                </button>
-                <button
-                  onClick={() => scrollToCardIndex(activeTimelineIndex + 1)}
-                  className="p-3 rounded-2xl bg-slate-900/80 hover:bg-orange-600/30 text-slate-200 hover:text-white transition-all border border-white/20 hover:border-orange-500/60 cursor-pointer shadow-xl backdrop-blur-md"
-                  aria-label="Scroll timeline right"
-                >
-                  <ChevronRight className="w-5 h-5 text-white" />
-                </button>
+              {/* HUD Position Counter & Controls */}
+              <div className="flex items-center gap-4">
+                {/* Step Counter Pill */}
+                <div className="px-4 py-2 rounded-2xl bg-slate-900/90 border border-white/20 text-white font-mono text-xs font-bold tracking-wider flex items-center gap-2 shadow-xl backdrop-blur-md">
+                  <span className="w-2 h-2 rounded-full bg-orange-500 animate-ping" />
+                  <span>POSITION {String(activeTimelineIndex + 1).padStart(2, '0')} / 11</span>
+                </div>
+
+                {/* Arrow Controls */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setActiveTimelineIndex((prev) => Math.max(0, prev - 1))}
+                    disabled={activeTimelineIndex === 0}
+                    className={`p-3 rounded-2xl bg-slate-900/90 text-white transition-all border border-white/20 shadow-xl backdrop-blur-md cursor-pointer ${
+                      activeTimelineIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-orange-600/40 hover:border-orange-500'
+                    }`}
+                    aria-label="Previous position"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-white" />
+                  </button>
+                  <button
+                    onClick={() => setActiveTimelineIndex((prev) => Math.min(CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1, prev + 1))}
+                    disabled={activeTimelineIndex === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1}
+                    className={`p-3 rounded-2xl bg-slate-900/90 text-white transition-all border border-white/20 shadow-xl backdrop-blur-md cursor-pointer ${
+                      activeTimelineIndex === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-orange-600/40 hover:border-orange-500'
+                    }`}
+                    aria-label="Next position"
+                  >
+                    <ChevronRight className="w-5 h-5 text-white" />
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* UNBOXED FLOATING CARDS TRACK WITH CENTER FOCUS BLUR PHYSICS */}
-            <div
-              ref={timelineScrollRef}
-              className="flex overflow-x-auto gap-8 pb-10 pt-4 scroll-smooth snap-x snap-mandatory custom-horizontal-scrollbar relative items-center"
-            >
+            {/* 3D SPATIAL STAGE (Hardware Accelerated Perspective Depth) */}
+            <div className="relative w-full h-[460px] sm:h-[500px] overflow-hidden flex items-center justify-center perspective-[1200px] transform-gpu my-4 select-none">
+              
               {CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.map((item, index) => {
+                const offset = index - activeTimelineIndex;
+                const absOffset = Math.abs(offset);
                 const isCurrent = index === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1;
-                
-                // At the start (when activeTimelineIndex is 0), BOTH 1 and 2 (index 0 and index 1) are unblurred!
-                const isUnblurredCard = (activeTimelineIndex === 0 && (index === 0 || index === 1)) || index === activeTimelineIndex;
+                const isSelected = offset === 0;
+
+                // Render cards within range [-3, 3] for maximum performance & visual elegance
+                if (absOffset > 3) return null;
+
+                // 3D Spatial Math:
+                const xPos = offset * 340; // Horizontal displacement (px)
+                const zPos = absOffset * -160; // Depth displacement (px)
+                const rotateYPos = offset < 0 ? 25 : offset > 0 ? -25 : 0; // 3D Y-rotation angle
+                const scalePos = isSelected ? 1.05 : Math.max(0.72, 1 - absOffset * 0.14);
+                const opacityPos = isSelected ? 1 : absOffset === 1 ? 0.65 : absOffset === 2 ? 0.3 : 0;
+                const zIndexPos = 30 - absOffset * 5;
 
                 return (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.05 }}
-                    onClick={() => scrollToCardIndex(index)}
-                    className={`snap-center shrink-0 w-[330px] sm:w-[400px] lg:w-[440px] flex flex-col group transition-all duration-400 ease-out ${
-                      isUnblurredCard ? 'scale-100 sm:scale-105 z-20 opacity-100' : 'scale-[0.94] z-10 opacity-40 hover:opacity-75'
+                    initial={false}
+                    animate={{
+                      x: xPos,
+                      z: zPos,
+                      rotateY: rotateYPos,
+                      scale: scalePos,
+                      opacity: opacityPos,
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    onClick={() => setActiveTimelineIndex(index)}
+                    style={{
+                      zIndex: zIndexPos,
+                      transformStyle: 'preserve-3d',
+                      willChange: 'transform, opacity',
+                    }}
+                    className={`absolute w-[330px] sm:w-[420px] lg:w-[460px] cursor-pointer origin-center transform-gpu ${
+                      isSelected ? 'pointer-events-auto' : 'pointer-events-auto hover:opacity-90'
                     }`}
                   >
-                    {/* Step Number Indicator with Deep Orange Line */}
+                    {/* Top Step Number Indicator Line */}
                     <div className="flex items-center gap-3 mb-4">
-                      <span className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-black tracking-tight text-white shrink-0 transition-all duration-400 ease-out ${
-                        isUnblurredCard
-                          ? 'bg-orange-600/50 border-2 border-orange-500 shadow-[0_0_18px_rgba(234,88,12,0.6)] scale-110'
-                          : 'bg-slate-800/80 border border-white/20 opacity-60'
+                      <span className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-black text-white shrink-0 transition-all duration-300 ${
+                        isSelected
+                          ? 'bg-orange-600 border-2 border-orange-400 shadow-[0_0_20px_rgba(234,88,12,0.8)] scale-110'
+                          : 'bg-slate-900 border border-white/20'
                       }`}>
                         {index + 1}
                       </span>
-                      <div className={`h-[2px] flex-grow rounded-full transition-all duration-400 ease-out ${
-                        isUnblurredCard 
-                          ? 'bg-gradient-to-r from-orange-500 via-orange-500/50 to-transparent shadow-[0_0_10px_rgba(234,88,12,0.4)]' 
+                      <div className={`h-[2px] flex-grow rounded-full transition-all duration-300 ${
+                        isSelected 
+                          ? 'bg-gradient-to-r from-orange-500 via-orange-500/50 to-transparent shadow-[0_0_12px_rgba(234,88,12,0.5)]' 
                           : 'bg-white/10'
                       }`} />
                     </div>
 
-                    {/* Unboxed Obsidian Glass Card */}
-                    <div className={`p-7 sm:p-8 rounded-3xl bg-slate-900/85 backdrop-blur-2xl border flex flex-col justify-between h-full min-h-[250px] transition-all duration-400 ease-out ${
-                      isUnblurredCard
-                        ? 'blur-none border-white/40 shadow-[0_0_30px_rgba(255,255,255,0.08)] bg-slate-900/95 cursor-default'
-                        : 'blur-[5px] brightness-75 grayscale-[20%] border-white/10 hover:blur-none hover:brightness-100 hover:border-white/30 cursor-pointer'
+                    {/* Obsidian Glass 3D Card Surface */}
+                    <div className={`p-7 sm:p-8 rounded-3xl backdrop-blur-2xl border flex flex-col justify-between h-[340px] sm:h-[370px] transition-all duration-300 ${
+                      isSelected
+                        ? 'bg-slate-950/95 border-orange-500/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)]'
+                        : 'bg-slate-950/80 border-white/15 hover:border-white/40'
                     }`}>
                       <div>
-                        {/* Period Tag */}
+                        {/* Period Tag & Rank Badge */}
                         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                           <div className="inline-flex items-center gap-2 text-xs font-bold text-white">
                             <Calendar className="w-4 h-4 text-orange-500" />
@@ -335,26 +376,71 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                         </div>
 
                         {/* Position Title */}
-                        <h4 className="font-outfit font-black text-xl sm:text-2xl text-white mb-3 transition-colors leading-tight tracking-tight">
+                        <h4 className="font-outfit font-black text-xl sm:text-2xl text-white mb-3 leading-snug tracking-tight">
                           {item.title}
                         </h4>
 
                         {/* Location */}
-                        <div className="flex items-start gap-2 text-xs sm:text-sm text-slate-200 mb-5 font-medium">
+                        <div className="flex items-start gap-2 text-xs sm:text-sm text-slate-200 mb-4 font-medium">
                           <MapPin className="w-4.5 h-4.5 text-orange-500 shrink-0 mt-0.5" />
                           <span className="leading-relaxed text-white">{item.location}</span>
                         </div>
                       </div>
 
-                      {/* Key Focus */}
-                      <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal border-t border-white/10 pt-4 mt-auto">
-                        <strong className="text-white font-bold">Key Focus:</strong> {item.focus}
-                      </p>
+                      {/* Key Focus Box */}
+                      <div className="p-4 rounded-2xl bg-white/5 border border-white/10 mt-auto">
+                        <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
+                          <strong className="text-white font-bold block mb-1">Key Focus &amp; Responsibilities:</strong>
+                          {item.focus}
+                        </p>
+                      </div>
                     </div>
                   </motion.div>
                 );
               })}
             </div>
+
+            {/* FUTURISTIC 11-NODE SPINE TIMELINE PROGRESS BAR */}
+            <div className="mt-6 pt-4 border-t border-white/10 max-w-4xl mx-auto w-full px-4">
+              <div className="relative flex items-center justify-between">
+                {/* Background Line */}
+                <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-white/10 -translate-y-1/2 z-0" />
+                
+                {/* Active Progress Line */}
+                <motion.div 
+                  className="absolute top-1/2 left-0 h-[2px] bg-gradient-to-r from-orange-500 to-orange-400 -translate-y-1/2 z-0 shadow-[0_0_10px_rgba(234,88,12,0.8)]"
+                  initial={false}
+                  animate={{
+                    width: `${(activeTimelineIndex / (CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1)) * 100}%`
+                  }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                />
+
+                {/* 11 Node Buttons */}
+                {CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.map((_, nodeIdx) => {
+                  const isActive = nodeIdx === activeTimelineIndex;
+                  const isPassed = nodeIdx < activeTimelineIndex;
+
+                  return (
+                    <button
+                      key={nodeIdx}
+                      onClick={() => setActiveTimelineIndex(nodeIdx)}
+                      className={`relative z-10 rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer ${
+                        isActive
+                          ? 'w-8 h-8 bg-orange-600 border-2 border-orange-400 text-white font-black text-xs shadow-[0_0_15px_rgba(234,88,12,0.8)] scale-110'
+                          : isPassed
+                          ? 'w-6 h-6 bg-orange-500/60 border border-orange-400 text-white font-bold text-[10px]'
+                          : 'w-6 h-6 bg-slate-900 border border-white/20 text-white/50 hover:border-white/50 text-[10px]'
+                      }`}
+                      aria-label={`Jump to position ${nodeIdx + 1}`}
+                    >
+                      {nodeIdx + 1}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
           </div>
 
           {/* Page 3 Transition Callout Banner */}

@@ -146,9 +146,8 @@ export const About: React.FC<AboutProps> = ({
           Your browser does not support HTML5 video background.
         </video>
 
-        {/* Softened Glass Overlay for Vibrant Underwater Visibility & Readability */}
-        <div className="absolute inset-0 z-5 bg-slate-950/35" />
-        <div className="absolute inset-0 z-5 bg-gradient-to-b from-slate-950/70 via-slate-950/25 to-slate-950/75" />
+        {/* Dynamic Gradient Overlay: Darker over top Career Pathway & Expeditions, Fading to Bright over bottom Scuba Gallery */}
+        <div className="absolute inset-0 z-5 bg-gradient-to-b from-slate-950/85 via-slate-950/75 via-[55%] to-slate-950/10 pointer-events-none" />
       </div>
 
       {/* 2. FOREGROUND SCROLLABLE CONTENT */}
@@ -417,7 +416,7 @@ export const About: React.FC<AboutProps> = ({
             </motion.div>
           )}
 
-          {/* SCUBA Diving Visuals & Coral Pool Gallery (Right below the button!) */}
+          {/* SCUBA Diving Visuals & Coral Image Pool (Bright & Vibrant Underwater Video) */}
           <ScubaGallery />
 
         </div>

@@ -128,7 +128,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
         </video>
 
         {/* Dark Glass Overlay for High Contrast & Readability */}
-        <div className="absolute inset-0 z-5 bg-slate-950/75 backdrop-blur-[3px]" />
+        <div className="absolute inset-0 z-5 bg-slate-950/80" />
         <div className="absolute inset-0 z-5 bg-gradient-to-b from-slate-950/95 via-slate-950/60 to-slate-950/95" />
       </div>
 
@@ -171,7 +171,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
                   onMouseEnter={() => setHoveredPhotoIndex(idx)}
                   onMouseLeave={() => setHoveredPhotoIndex(null)}
-                  className={`apple-liquid-glass overflow-hidden rounded-3xl group flex flex-col w-full ${getPhotoCardFocusStyle(idx)}`}
+                  className={`bg-slate-950 border border-white/10 overflow-hidden rounded-3xl group flex flex-col w-full ${getPhotoCardFocusStyle(idx)}`}
                 >
                   {/* Image Container */}
                   <div className="relative h-[340px] sm:h-[420px] lg:h-[480px] w-full overflow-hidden shrink-0">
@@ -184,7 +184,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                   </div>
 
                   {/* Caption */}
-                  <div className="p-6 sm:p-7 bg-slate-950/80 backdrop-blur-xl border-t border-white/10 flex flex-col justify-between flex-grow">
+                  <div className="p-6 sm:p-7 bg-slate-950 border-t border-white/10 flex flex-col justify-between flex-grow">
                     <h4 className="font-outfit font-black text-xl sm:text-2xl text-white mb-2 transition-colors">
                       {photo.title}
                     </h4>
@@ -208,7 +208,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                     transition={{ duration: 0.6, delay: photoIndex * 0.1 }}
                     onMouseEnter={() => setHoveredPhotoIndex(photoIndex)}
                     onMouseLeave={() => setHoveredPhotoIndex(null)}
-                    className={`apple-liquid-glass overflow-hidden rounded-3xl group flex flex-col w-full ${getPhotoCardFocusStyle(photoIndex)}`}
+                    className={`bg-slate-950 border border-white/10 overflow-hidden rounded-3xl group flex flex-col w-full ${getPhotoCardFocusStyle(photoIndex)}`}
                   >
                     <div className="relative h-[280px] sm:h-[340px] lg:h-[380px] w-full overflow-hidden shrink-0">
                       <img
@@ -219,7 +219,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
                     </div>
 
-                    <div className="p-6 bg-slate-950/80 backdrop-blur-xl border-t border-white/10 flex flex-col justify-between flex-grow">
+                    <div className="p-6 bg-slate-950 border-t border-white/10 flex flex-col justify-between flex-grow">
                       <h4 className="font-outfit font-bold text-lg sm:text-xl text-white mb-2 transition-colors">
                         {photo.title}
                       </h4>
@@ -249,7 +249,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                 <button
                   onClick={() => setActiveTimelineIndex((prev) => Math.max(0, prev - 1))}
                   disabled={activeTimelineIndex === 0}
-                  className={`p-3 rounded-2xl bg-[#050B14]/80 text-[#F8FAFC] transition-all border border-slate-800 shadow-md backdrop-blur-md cursor-pointer ${
+                  className={`p-3 rounded-2xl bg-[#050B14] text-[#F8FAFC] transition-all border border-slate-800 shadow-md cursor-pointer ${
                     activeTimelineIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:border-[#9D8DF1]/70 hover:text-[#9D8DF1]'
                   }`}
                   aria-label="Previous position"
@@ -259,7 +259,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                 <button
                   onClick={() => setActiveTimelineIndex((prev) => Math.min(CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1, prev + 1))}
                   disabled={activeTimelineIndex === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1}
-                  className={`p-3 rounded-2xl bg-[#050B14]/80 text-[#F8FAFC] transition-all border border-slate-800 shadow-md backdrop-blur-md cursor-pointer ${
+                  className={`p-3 rounded-2xl bg-[#050B14] text-[#F8FAFC] transition-all border border-slate-800 shadow-md cursor-pointer ${
                     activeTimelineIndex === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:border-[#9D8DF1]/70 hover:text-[#9D8DF1]'
                   }`}
                   aria-label="Next position"
@@ -326,7 +326,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                       <span className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-black shrink-0 transition-all duration-300 ${
                         isSelected
                           ? 'bg-[#4CC9F0] border-2 border-white text-[#050B14] shadow-[0_0_12px_rgba(76,201,240,0.4)] scale-110'
-                          : 'bg-[#050B14]/90 border border-slate-700/80 text-[#94A3B8] backdrop-blur-sm'
+                          : 'bg-[#050B14] border border-slate-700 text-[#94A3B8]'
                       }`}>
                         {index + 1}
                       </span>
@@ -337,13 +337,13 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                       }`} />
                     </div>
 
-                    {/* Card Surface with Crisp Depth-of-Field Blur */}
+                    {/* Solid Card Surface without Glass Transparency */}
                     <div className={`p-7 sm:p-8 rounded-3xl border flex flex-col justify-between h-[340px] sm:h-[370px] transition-all duration-300 ${
                       isSelected
-                        ? 'bg-[#050B14]/90 backdrop-blur-xl border-[#4CC9F0]/60 shadow-[0_20px_50px_rgba(0,0,0,0.7)] blur-none'
+                        ? 'bg-[#050B14] border-[#4CC9F0]/60 shadow-[0_25px_60px_rgba(0,0,0,0.9)] blur-none'
                         : absOffset === 1
-                        ? 'bg-[#050B14]/80 backdrop-blur-md border-slate-800/80 blur-[2px] hover:border-[#9D8DF1]/50'
-                        : 'bg-[#050B14]/65 backdrop-blur-sm border-slate-800/60 blur-[4px] hover:border-[#9D8DF1]/50'
+                        ? 'bg-[#050B14] border-slate-800/90 blur-[2px] hover:border-[#9D8DF1]/50'
+                        : 'bg-[#050B14] border-slate-800/70 blur-[4px] hover:border-[#9D8DF1]/50'
                     }`}>
                       <div>
                         {/* Period Tag & Rank Badge */}
@@ -372,7 +372,7 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                       </div>
 
                       {/* Key Focus Box */}
-                      <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 mt-auto">
+                      <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 mt-auto">
                         <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed font-normal">
                           <strong className="text-[#F8FAFC] font-bold block mb-1">Key Focus &amp; Responsibilities:</strong>
                           {item.focus}
@@ -383,7 +383,6 @@ export const About: React.FC<AboutProps> = ({ onScrollBackToHero, onScrollToNext
                 );
               })}
             </div>
-
           </div>
 
           {/* Page 3 Transition Callout Banner */}

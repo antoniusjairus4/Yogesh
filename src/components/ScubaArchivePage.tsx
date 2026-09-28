@@ -126,13 +126,13 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
 
             {/* Search Input Box */}
             <div className="relative w-full md:w-80 lg:w-96 shrink-0">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search species, taxonomy, location..."
-                className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-800 text-slate-200 placeholder-slate-500 text-xs font-mono focus:outline-none focus:border-[#e0ad5b] transition-colors shadow-lg"
+                className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#0c1f26]/95 backdrop-blur-md border border-[#265360] text-slate-100 placeholder-slate-400 text-xs font-mono focus:outline-none focus:border-[#e0ad5b] focus:ring-1 focus:ring-[#e0ad5b]/40 transition-all shadow-md"
               />
               {searchQuery && (
                 <button
@@ -147,7 +147,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
         </motion.div>
 
         {/* Category Filter Tabs Bar */}
-        <div className="flex items-center gap-2.5 overflow-x-auto pb-3 mb-10 border-b border-slate-800/80 no-scrollbar">
+        <div className="flex items-center gap-2.5 overflow-x-auto pb-3 mb-10 border-b border-[#173e4a] no-scrollbar">
           {[
             { id: 'All', label: 'All Discoveries', count: SCUBA_PHOTOS.length },
             { id: 'Corals', label: 'Corals & Octocorals', count: SCUBA_PHOTOS.filter(p => p.category === 'Corals').length },
@@ -159,15 +159,17 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setSelectedCategory(tab.id as any)}
-                className={`px-4 py-2.5 rounded-xl font-sans font-medium text-xs tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border ${
+                className={`px-4 py-2.5 rounded-xl font-sans text-xs tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border tactile-btn ${
                   isActive
-                    ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-sm scale-105'
-                    : 'bg-slate-900/90 backdrop-blur-md text-slate-300 hover:text-white border-slate-800 hover:border-[#e0ad5b]/50'
+                    ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-sm'
+                    : 'bg-[#0c1f26]/95 backdrop-blur-md text-slate-100 font-semibold border-[#265360] hover:border-[#e0ad5b]/80 hover:text-white hover:bg-[#122e38]'
                 }`}
               >
                 <span>{tab.label}</span>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
-                  isActive ? 'bg-[#050e11]/25 text-[#050e11]' : 'bg-slate-800 text-slate-400'
+                <span className={`px-2 py-0.5 rounded-full text-[10px] ${
+                  isActive 
+                    ? 'bg-[#050e11]/25 text-[#050e11] font-extrabold' 
+                    : 'bg-[#183a45] text-slate-200 font-medium border border-[#2d6271]/60'
                 }`}>
                   {tab.count}
                 </span>

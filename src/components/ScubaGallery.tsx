@@ -76,15 +76,17 @@ export const ScubaGallery: React.FC<ScubaGalleryProps> = ({ onViewScubaArchive }
                 <button
                   key={tab.id}
                   onClick={() => setSelectedCategory(tab.id as any)}
-                  className={`px-4 py-2.5 rounded-xl font-sans font-medium text-sm tracking-wide transition-colors shrink-0 cursor-pointer flex items-center gap-2 border ${
+                  className={`px-4 py-2.5 rounded-xl font-sans text-xs tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border tactile-btn ${
                     isActive
-                      ? 'bg-slate-200 text-slate-950 font-semibold border-slate-200 shadow-sm'
-                      : 'bg-slate-900/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border-slate-800'
+                      ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-sm'
+                      : 'bg-[#0c1f26]/95 backdrop-blur-md text-slate-100 font-semibold border-[#265360] hover:border-[#e0ad5b]/80 hover:text-white hover:bg-[#122e38]'
                   }`}
                 >
                   <span>{tab.label}</span>
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                    isActive ? 'bg-slate-950/15 text-slate-950' : 'bg-slate-800 text-slate-400'
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] ${
+                    isActive 
+                      ? 'bg-[#050e11]/25 text-[#050e11] font-extrabold' 
+                      : 'bg-[#183a45] text-slate-200 font-medium border border-[#2d6271]/60'
                   }`}>
                     {tab.count}
                   </span>
@@ -95,13 +97,13 @@ export const ScubaGallery: React.FC<ScubaGalleryProps> = ({ onViewScubaArchive }
 
           {/* Search Box */}
           <div className="relative w-full md:w-80">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search species, taxonomy, location..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-slate-600 transition-colors font-sans"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0c1f26]/95 backdrop-blur-md border border-[#265360] text-slate-100 placeholder-slate-400 text-xs font-mono focus:outline-none focus:border-[#e0ad5b] focus:ring-1 focus:ring-[#e0ad5b]/40 transition-all shadow-md"
             />
             {searchQuery && (
               <button

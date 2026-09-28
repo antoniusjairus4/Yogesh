@@ -130,15 +130,17 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2.5 rounded-xl text-xs font-mono font-medium tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border ${
+                className={`px-4 py-2.5 rounded-xl text-xs font-mono font-medium tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border tactile-btn ${
                   isActive
-                    ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-sm scale-105'
-                    : 'bg-[#0a181c]/95 backdrop-blur-md text-stone-300 hover:text-white border-[#173841] hover:border-[#e0ad5b]/50'
+                    ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-sm'
+                    : 'bg-[#0c1f26]/95 backdrop-blur-md text-stone-100 font-semibold border-[#265360] hover:border-[#e0ad5b]/80 hover:text-white hover:bg-[#122e38]'
                 }`}
               >
                 <span>{cat}</span>
                 <span className={`px-2 py-0.5 rounded-full text-[10px] ${
-                  isActive ? 'bg-[#050e11]/25 text-[#050e11] font-extrabold' : 'bg-[#132c34] text-stone-300'
+                  isActive 
+                    ? 'bg-[#050e11]/25 text-[#050e11] font-extrabold' 
+                    : 'bg-[#183a45] text-stone-200 font-medium border border-[#2d6271]/60'
                 }`}>
                   {count}
                 </span>

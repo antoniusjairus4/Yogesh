@@ -430,41 +430,134 @@ export const About: React.FC<AboutProps> = ({
           {/* SCUBA Diving Visuals & Coral Image Pool */}
           <ScubaGallery onViewScubaArchive={onViewScubaArchive} />
 
-          {/* Page 4 Research Publications Section Card Block */}
+          {/* Page 4 Featured Research Publications Section */}
           {onViewResearchPage && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="mt-20 pt-10 border-t border-white/10"
+              className="mt-20 pt-12 border-t border-white/10"
             >
-              <div className="relative overflow-hidden rounded-3xl bg-slate-900/80 border border-amber-500/20 p-8 sm:p-10 backdrop-blur-xl shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8 group hover:border-amber-500/40 transition-all duration-500">
-                {/* Ambient background glow */}
-                <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-amber-500/15 transition-all duration-500" />
-                
-                <div className="relative z-10 max-w-2xl text-left">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold uppercase tracking-wider mb-3">
+              {/* Section Header */}
+              <div className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e0ad5b]/10 border border-[#e0ad5b]/30 text-[#e0ad5b] text-xs font-semibold uppercase tracking-wider mb-2">
                     <BookOpen className="w-3.5 h-3.5" />
                     <span>Academic Output &amp; Reprints</span>
                   </div>
-                  <h3 className="font-outfit font-black text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight leading-tight mb-3">
-                    Scientific Research &amp; Publications Library
+                  <h3 className="font-outfit font-black text-2xl sm:text-4xl text-white tracking-tight">
+                    Featured Research Publications
                   </h3>
-                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
-                    Access peer-reviewed SCI research papers, book chapters, taxonomy monographs, and open-access full-text PDFs spanning marine invertebrate biodiversity and octocoral systematics.
+                  <p className="text-slate-300 text-sm mt-1 font-normal">
+                    Selected SCI peer-reviewed papers &amp; taxonomy monographs
                   </p>
                 </div>
 
-                <div className="relative z-10 shrink-0">
-                  <button
-                    onClick={onViewResearchPage}
-                    className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-outfit font-black text-sm sm:text-base tracking-wide transition-all shadow-[0_0_25px_rgba(245,158,11,0.3)] hover:shadow-[0_0_35px_rgba(245,158,11,0.5)] cursor-pointer hover:scale-105 border border-amber-300/40"
-                  >
-                    <span>Browse Research PDFs</span>
-                    <FileText className="w-5 h-5" />
-                  </button>
-                </div>
+                <button
+                  onClick={onViewResearchPage}
+                  className="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#e0ad5b]/90 hover:bg-[#e0ad5b] text-slate-950 font-outfit font-bold text-xs tracking-wider uppercase transition-all shadow-md cursor-pointer hover:scale-105"
+                >
+                  <span>View All Papers</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* 3 Featured Paper Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {PDF_PUBLICATIONS.slice(0, 3).map((paper) => (
+                  <div key={paper.id} className="w-full h-[360px]">
+                    <FlipCard
+                      axis="y"
+                      flipOnClick={true}
+                      draggable={true}
+                      tilt={true}
+                      tiltMax={10}
+                      glare={true}
+                      glareOpacity={0.18}
+                      hoverScale={1.02}
+                      perspective={1100}
+                      stiffness={180}
+                      damping={22}
+                      radius={16}
+                      background="#0a181c"
+                      color="#f8fafc"
+                      shadow={true}
+                      shadowColor="#000000"
+                      shadowOpacity={0.5}
+                      ariaLabel={`Research paper: ${paper.title}`}
+                      className="w-full h-full"
+                      front={
+                        <div className="w-full h-full p-6 flex flex-col justify-between bg-[#0a181c]/95 backdrop-blur-md border border-[#173841]/80 hover:border-[#e0ad5b]/80 rounded-2xl transition-all duration-300 shadow-[0_12px_32px_rgba(0,0,0,0.75)]">
+                          <div>
+                            <div className="flex items-center justify-between gap-2 mb-3">
+                              <span className="px-2.5 py-0.5 rounded-md bg-[#10242a] text-[#e0ad5b] text-[11px] font-mono font-semibold border border-[#1b434e] uppercase tracking-wider">
+                                {paper.category}
+                              </span>
+                              <span className="text-xs font-mono font-medium text-slate-400">
+                                {paper.year}
+                              </span>
+                            </div>
+
+                            <h4 className="font-serif font-bold text-base text-[#f3f1ec] leading-snug mb-2 line-clamp-3">
+                              {paper.title}
+                            </h4>
+
+                            <p className="text-xs font-mono text-slate-300 font-medium mb-1 truncate">
+                              {paper.authors}
+                            </p>
+                            <p className="text-xs font-serif italic text-slate-400 truncate mb-3">
+                              {paper.journal}
+                            </p>
+
+                            <p className="text-xs text-slate-300 leading-relaxed line-clamp-3 font-normal">
+                              {paper.description}
+                            </p>
+                          </div>
+
+                          <div className="pt-3 border-t border-[#173841]/70 flex items-center justify-center">
+                            <div className="inline-flex items-center gap-1.5 text-xs font-mono text-[#e0ad5b]/90 font-medium tracking-wide">
+                              <RotateCw className="w-3.5 h-3.5" />
+                              <span>Click card to reveal PDF</span>
+                            </div>
+                          </div>
+                        </div>
+                      }
+                      back={
+                        <div className="w-full h-full p-6 flex flex-col items-center justify-center bg-[#061215] border border-[#e0ad5b]/70 rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.85)] text-center">
+                          <a
+                            href={paper.pdfUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-no-flip
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (paper.pdfUrl) {
+                                window.open(paper.pdfUrl, '_blank', 'noopener,noreferrer');
+                              }
+                            }}
+                            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_24px_rgba(224,173,91,0.4)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.6)] cursor-pointer scale-105"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            <span>Open PDF</span>
+                          </a>
+                        </div>
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Bottom Centered Small Button to View All Papers */}
+              <div className="text-center pt-2">
+                <button
+                  onClick={onViewResearchPage}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#e0ad5b] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer hover:scale-105 border border-white/50"
+                >
+                  <span>Explore Full Research Publications Library</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </motion.div>
           )}

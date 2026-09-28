@@ -76,8 +76,8 @@ const DEFAULT_ITEMS: FolderFloatItem[] = [
 ];
 const PAD = 44;
 const CHAR = 9;
-const GAP = 32;
-const ROW = 68;
+const GAP = 48;
+const ROW = 76;
 const DRAG_MIN = 4;
 const ZONE_PAD = 8;
 
@@ -88,26 +88,49 @@ const jitter = (i: number) => {
 
 const layout = (list: Entry[], spread: number, lift: number, tilt: number, sizes: (Size | null)[]) => {
   const rows: { items: { i: number; pw: number }[]; width: number }[] = [];
-  let row: { i: number; pw: number }[] = [];
-  let width = 0;
-  list.forEach((item, i) => {
-    const pw = sizes[i]?.w ?? PAD + item.label.length * CHAR;
-    if (row.length && width + GAP + pw > spread * 2) {
-      rows.push({ items: row, width });
-      row = [];
-      width = 0;
-    }
-    row.push({ i, pw });
-    width += (row.length > 1 ? GAP : 0) + pw;
-  });
-  if (row.length) rows.push({ items: row, width });
+
+  if (list.length === 5) {
+    // Exactly 3 on bottom row (ri = 0), 2 on top row (ri = 1)
+    const row0Indices = [0, 1, 2];
+    const row1Indices = [3, 4];
+
+    let w0 = 0;
+    const r0Items = row0Indices.map(i => {
+      const pw = sizes[i]?.w ?? PAD + list[i].label.length * CHAR;
+      w0 += (w0 > 0 ? GAP : 0) + pw;
+      return { i, pw };
+    });
+    rows.push({ items: r0Items, width: w0 });
+
+    let w1 = 0;
+    const r1Items = row1Indices.map(i => {
+      const pw = sizes[i]?.w ?? PAD + list[i].label.length * CHAR;
+      w1 += (w1 > 0 ? GAP : 0) + pw;
+      return { i, pw };
+    });
+    rows.push({ items: r1Items, width: w1 });
+  } else {
+    let row: { i: number; pw: number }[] = [];
+    let width = 0;
+    list.forEach((item, i) => {
+      const pw = sizes[i]?.w ?? PAD + item.label.length * CHAR;
+      if (row.length && width + GAP + pw > spread * 1.4) {
+        rows.push({ items: row, width });
+        row = [];
+        width = 0;
+      }
+      row.push({ i, pw });
+      width += (row.length > 1 ? GAP : 0) + pw;
+    });
+    if (row.length) rows.push({ items: row, width });
+  }
+
   const pos: { x: number; y: number; r: number }[] = [];
   rows.forEach((r, ri) => {
     let x = -r.width / 2;
-    const shift = (ri % 2 ? 1 : -1) * Math.min(16, spread * 0.1);
     r.items.forEach(({ i, pw }) => {
       const j = jitter(i);
-      pos[i] = { x: x + pw / 2 + shift + (j - 0.5) * 6, y: -lift - ri * ROW - j * 6, r: tilt * (j * 2 - 1) };
+      pos[i] = { x: x + pw / 2 + (j - 0.5) * 4, y: -lift - ri * ROW - j * 4, r: tilt * (j * 2 - 1) };
       x += pw + GAP;
     });
   });

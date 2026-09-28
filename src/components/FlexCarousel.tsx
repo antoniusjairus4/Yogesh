@@ -165,12 +165,12 @@ const BEND_PRESETS: Record<BendPreset, PresetValues> = {
   liquid: {
     lensWidth: 0.74,
     lensHeight: 1.18,
-    tilt: 62,
+    tilt: 0,
     roundness: 1,
-    bend: 0.34,
+    bend: 0.18,
     reach: 0.38,
     curl: 'twist',
-    dispersion: 0.45,
+    dispersion: 0.25,
     liquid: 0,
     followCursor: false
   },
@@ -268,9 +268,8 @@ void main() {
   float cardAspect = uSize.x / uSize.y;
   float imageAspect = uImage.x / max(uImage.y, 1.0);
   vec2 scale = imageAspect > cardAspect ? vec2(cardAspect / imageAspect, 1.0) : vec2(1.0, imageAspect / cardAspect);
-  scale /= 1.08;
   vec2 uv = vec2(local.x, 1.0 - local.y);
-  uv = (uv - 0.5) * scale + 0.5;
+  uv = clamp((uv - 0.5) * scale + 0.5, 0.0, 1.0);
   uv.x += uShift * (1.0 - scale.x) * 0.5;
   vec3 image = texture(tMap, uv).rgb;
   vec3 color = mix(uPlaceholder, image, uReady);

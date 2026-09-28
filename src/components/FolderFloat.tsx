@@ -383,7 +383,7 @@ const FolderFloat: React.FC<FolderFloatProps> = ({
     try {
       e.currentTarget.releasePointerCapture(e.pointerId);
     } catch {}
-    if (!d.moved && e.type === 'pointerup') pick(item, i);
+    // Drag finished; onClick handles link pick selection
   };
 
   const hover = trigger === 'hover';
@@ -459,7 +459,8 @@ const FolderFloat: React.FC<FolderFloatProps> = ({
               onPointerUp={e => up(e, i, item)}
               onPointerCancel={e => up(e, i, item)}
               onClick={e => {
-                if (!world.current.live || e.detail === 0) pick(item, i);
+                e.stopPropagation();
+                pick(item, i);
               }}
             >
               <span className="folder-float__drift">{item.label}</span>

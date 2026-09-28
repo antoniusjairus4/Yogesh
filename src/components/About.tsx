@@ -10,9 +10,14 @@ import {
   ChevronLeft,
   ChevronRight,
   BookOpen,
-  FileText
+  FileText,
+  ArrowRight,
+  RotateCw,
+  ExternalLink
 } from 'lucide-react';
 import { ScubaGallery } from './ScubaGallery';
+import FlipCard from './FlipCard';
+import { PDF_PUBLICATIONS } from '../data/pdfPublicationsData';
 
 
 interface AboutProps {

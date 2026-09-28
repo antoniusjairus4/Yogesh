@@ -1,3 +1,5 @@
+import { getAssetUrl } from '../utils/baseUrl';
+
 export interface PdfPublication {
   id: string;
   title: string;
@@ -11,7 +13,7 @@ export interface PdfPublication {
   description: string;
 }
 
-export const PDF_PUBLICATIONS: PdfPublication[] = [
+const RAW_PDF_PUBLICATIONS: PdfPublication[] = [
   {
     id: "paper-01",
     title: "Annotated Checklist of Octocorallia (Cnidaria: Anthozoa) from Indian Seas",
@@ -829,3 +831,9 @@ export const PDF_PUBLICATIONS: PdfPublication[] = [
     description: "Ecological paper investigating benthic species richness and macro-fauna diversity."
   }
 ];
+
+export const PDF_PUBLICATIONS: PdfPublication[] = RAW_PDF_PUBLICATIONS.map(pub => ({
+  ...pub,
+  pdfUrl: getAssetUrl(pub.pdfUrl)
+}));
+

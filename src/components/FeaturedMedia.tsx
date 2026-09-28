@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NEWSPAPER_FEATURES, NewspaperFeature } from '../data/newspaperData';
+import { getAssetUrl } from '../utils/baseUrl';
 import { 
   FileText, 
   Calendar, 
@@ -229,7 +230,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
         className="absolute inset-0 z-0 pointer-events-none overflow-hidden transition-opacity duration-700 ease-out"
       >
         <img 
-          src="/portfolio/research_table_bg.jpg" 
+          src={getAssetUrl("/portfolio/research_table_bg.jpg")} 
           alt="Research Desk Workspace Surface" 
           className="w-full h-full object-cover object-center filter brightness-[0.70] contrast-[1.08]"
         />

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { getAssetUrl } from '../utils/baseUrl';
 
 export const SecondPageVideo: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -22,7 +23,7 @@ export const SecondPageVideo: React.FC = () => {
         loop
         playsInline
       >
-        <source src="/videos/2nd_page.mp4" type="video/mp4" />
+        <source src={getAssetUrl("/videos/2nd_page.mp4")} type="video/mp4" />
         Your browser does not support HTML5 video background.
       </video>
     </div>

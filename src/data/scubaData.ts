@@ -1,3 +1,5 @@
+import { getAssetUrl } from '../utils/baseUrl';
+
 export interface ScubaPhoto {
   id: string;
   url: string;
@@ -9,7 +11,7 @@ export interface ScubaPhoto {
   description: string;
 }
 
-export const SCUBA_PHOTOS: ScubaPhoto[] = [
+const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   {
     id: 'photo-1',
     url: '/Images_gallery/Turtle from Visakhapatnam.jpg',
@@ -454,3 +456,9 @@ export const SCUBA_PHOTOS: ScubaPhoto[] = [
     description: 'Focusing on crevice-dwelling crustaceans and echinoderms.'
   }
 ];
+
+export const SCUBA_PHOTOS: ScubaPhoto[] = RAW_SCUBA_PHOTOS.map(photo => ({
+  ...photo,
+  url: getAssetUrl(photo.url)
+}));
+

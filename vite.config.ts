@@ -4,11 +4,11 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/Yogesh/',
   plugins: [
     react(),
     tailwindcss(),
   ],
-  base: './',
   server: {
     port: 5173,
     strictPort: true,

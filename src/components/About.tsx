@@ -20,6 +20,7 @@ import FlipCard from './FlipCard';
 import FolderFloat from './FolderFloat';
 import { PDF_PUBLICATIONS } from '../data/pdfPublicationsData';
 import { PROFILE_DATA } from '../data/portfolioData';
+import { getAssetUrl } from '../utils/baseUrl';
 
 
 interface AboutProps {
@@ -156,7 +157,7 @@ export const About: React.FC<AboutProps> = ({
             e.currentTarget.play().catch(() => {});
           }}
         >
-          <source src="/videos/2nd_page.mp4" type="video/mp4" />
+          <source src={getAssetUrl("/videos/2nd_page.mp4")} type="video/mp4" />
           Your browser does not support HTML5 video background.
         </video>
 

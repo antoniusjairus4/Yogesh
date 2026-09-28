@@ -6,6 +6,7 @@ import { About } from './components/About';
 import { FeaturedMedia } from './components/FeaturedMedia';
 import { ResearchPage } from './components/ResearchPage';
 import { ScubaArchivePage } from './components/ScubaArchivePage';
+import { getAssetUrl } from './utils/baseUrl';
 
 export const App: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -178,7 +179,7 @@ export const App: React.FC = () => {
           }`}
         >
           <img 
-            src="/background_paper_publication.png" 
+            src={getAssetUrl("/background_paper_publication.png")} 
             alt="Library Background" 
             className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
           />
@@ -214,7 +215,7 @@ export const App: React.FC = () => {
           }`}
         >
           <img 
-            src="/scuba_archive_bg.jpg" 
+            src={getAssetUrl("/scuba_archive_bg.jpg")} 
             alt="Underwater Shipwreck Background" 
             className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
           />

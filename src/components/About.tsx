@@ -419,7 +419,7 @@ export const About: React.FC<AboutProps> = ({
               </p>
               <button
                 onClick={onViewPressArchives}
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-base tracking-wide transition-all shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:shadow-[0_0_45px_rgba(255,255,255,0.4)] cursor-pointer hover:scale-105 border border-white/80"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-base tracking-wide transition-all shadow-md hover:shadow-lg cursor-pointer hover:scale-105 border border-white/80"
               >
                 <span>View Featured Newspaper Clippings</span>
                 <span className="text-lg">→</span>
@@ -537,7 +537,7 @@ export const About: React.FC<AboutProps> = ({
                                 window.open(paper.pdfUrl, '_blank', 'noopener,noreferrer');
                               }
                             }}
-                            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_24px_rgba(224,173,91,0.4)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.6)] cursor-pointer scale-105"
+                            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer scale-105"
                           >
                             <ExternalLink className="w-4 h-4" />
                             <span>Open PDF</span>

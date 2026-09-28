@@ -161,7 +161,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
                 onClick={() => setSelectedCategory(tab.id as any)}
                 className={`px-4 py-2.5 rounded-xl font-sans font-medium text-xs tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border ${
                   isActive
-                    ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-[0_0_20px_rgba(224,173,91,0.3)] scale-105'
+                    ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-sm scale-105'
                     : 'bg-slate-900/90 backdrop-blur-md text-slate-300 hover:text-white border-slate-800 hover:border-[#e0ad5b]/50'
                 }`}
               >

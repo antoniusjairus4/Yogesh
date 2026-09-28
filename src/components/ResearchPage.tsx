@@ -132,7 +132,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-4 py-2.5 rounded-xl text-xs font-mono font-medium tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border ${
                   isActive
-                    ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-[0_0_20px_rgba(224,173,91,0.3)] scale-105'
+                    ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-sm scale-105'
                     : 'bg-[#0a181c]/95 backdrop-blur-md text-stone-300 hover:text-white border-[#173841] hover:border-[#e0ad5b]/50'
                 }`}
               >
@@ -268,7 +268,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                               window.open(paper.pdfUrl, '_blank', 'noopener,noreferrer');
                             }
                           }}
-                          className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-sm uppercase tracking-wider transition-all duration-300 shadow-[0_4px_24px_rgba(224,173,91,0.4)] hover:shadow-[0_4px_32px_rgba(255,255,255,0.6)] scale-110 hover:scale-115 cursor-pointer"
+                          className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-sm uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg scale-110 hover:scale-115 cursor-pointer"
                         >
                           <ExternalLink className="w-4 h-4" />
                           <span>Open PDF</span>

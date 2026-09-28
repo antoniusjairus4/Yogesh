@@ -601,10 +601,10 @@ export const About: React.FC<AboutProps> = ({
                 labelColor="#e0ad5b"
                 items={[
                   { label: `📱 Phone: ${PROFILE_DATA.mobile}`, value: "tel:+919476006830" },
-                  { label: `✉️ Email: ${PROFILE_DATA.email}`, value: "mailto:coralyogesh@yahoo.co.in" },
-                  { label: "💼 LinkedIn Profile", value: "https://www.linkedin.com/search/results/all/?keywords=Dr.%20J.S.%20Yogesh%20Kumar" },
-                  { label: "🎓 Google Scholar", value: "https://scholar.google.com/scholar?q=J+S+Yogesh+Kumar" },
-                  { label: "🔬 ResearchGate", value: "https://www.researchgate.net/search?q=J%20S%20Yogesh%20Kumar" }
+                  { label: `✉️ Email: ${PROFILE_DATA.email}`, value: `mailto:${PROFILE_DATA.email}` },
+                  { label: "💼 LinkedIn Profile", value: PROFILE_DATA.linkedIn },
+                  { label: "🔬 ResearchGate Profile", value: PROFILE_DATA.researchGate },
+                  { label: "🏛️ ZSI Scientist Profile", value: PROFILE_DATA.zsiProfile }
                 ]}
                 onSelect={(value) => {
                   if (value.startsWith('http') || value.startsWith('mailto') || value.startsWith('tel')) {

@@ -7,6 +7,9 @@ export interface ProfileData {
   address: string;
   mobile: string;
   email: string;
+  researchGate: string;
+  linkedIn: string;
+  zsiProfile: string;
   padiId: string;
   padiYear: string;
   heroTagline: string;
@@ -61,7 +64,10 @@ export const PROFILE_DATA: ProfileData = {
   ministry: "Ministry of Environment, Forest and Climate Change (MoEFCC), Govt. of India",
   address: "Canning, West Bengal - 743329, India",
   mobile: "+91 94760 06830",
-  email: "coralyogesh@yahoo.co.in",
+  email: "yogeshkumar.js@zsi.gov.in",
+  researchGate: "https://www.researchgate.net/profile/J-S-Yogesh-Kumar",
+  linkedIn: "https://www.linkedin.com/in/yogesh-kumar-a69b5410/",
+  zsiProfile: "https://zsi.gov.in/rc-scientist-profile?rc=56",
   padiId: "DM – 494151",
   padiYear: "PADI Certified Dive Master (2007)",
   heroTagline: "Pioneering Marine Octocoral Taxonomy, Coral Reef Resilience & Sunderbans Fauna",

@@ -258,15 +258,6 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
     description: 'Rich underwater habitat featuring gorgonians, sponges, and schooling marine organisms.'
   },
   {
-    id: 'photo-26',
-    url: '/Images_gallery/DSC09721.JPG',
-    title: 'Deep Ocean Subsurface Expedition',
-    category: 'Expeditions',
-    location: 'Outer Wall Drop-Off',
-    depth: '35m',
-    description: 'High-contrast deep water dive recording pristine benthic assemblages.'
-  },
-  {
     id: 'photo-27',
     url: '/Images_gallery/DSCN1156.JPG',
     title: 'Benthic Marine Transect',

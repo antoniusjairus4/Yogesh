@@ -591,9 +591,9 @@ export const About: React.FC<AboutProps> = ({
                 drift={0}
                 width={240}
                 height={150}
-                spread={260}
-                lift={45}
-                tilt={8}
+                spread={270}
+                lift={65}
+                tilt={6}
                 folderColor="#112932"
                 frontColor="#0b1b21"
                 paperColor="#e0ad5b"
@@ -608,8 +608,11 @@ export const About: React.FC<AboutProps> = ({
                   { label: "🏛️ ZSI Scientist Profile", value: PROFILE_DATA.zsiProfile }
                 ]}
                 onSelect={(value) => {
-                  if (value.startsWith('http') || value.startsWith('mailto') || value.startsWith('tel')) {
-                    window.open(value, value.startsWith('http') ? '_blank' : '_self');
+                  if (!value) return;
+                  if (value.startsWith('tel:') || value.startsWith('mailto:')) {
+                    window.location.href = value;
+                  } else if (value.startsWith('http://') || value.startsWith('https://')) {
+                    window.open(value, '_blank', 'noopener,noreferrer');
                   }
                 }}
               />

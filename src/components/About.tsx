@@ -419,7 +419,7 @@ export const About: React.FC<AboutProps> = ({
               </p>
               <button
                 onClick={onViewPressArchives}
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-base tracking-wide transition-all shadow-md hover:shadow-lg cursor-pointer hover:scale-105 border border-white/80"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-base tracking-wide border border-white/80 cursor-pointer tactile-btn"
               >
                 <span>View Featured Newspaper Clippings</span>
                 <span className="text-lg">→</span>
@@ -456,7 +456,7 @@ export const About: React.FC<AboutProps> = ({
 
                 <button
                   onClick={onViewResearchPage}
-                  className="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#e0ad5b]/90 hover:bg-[#e0ad5b] text-slate-950 font-outfit font-bold text-xs tracking-wider uppercase transition-all shadow-md cursor-pointer hover:scale-105"
+                  className="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#e0ad5b]/90 hover:bg-[#e0ad5b] text-slate-950 font-outfit font-bold text-xs tracking-wider uppercase cursor-pointer tactile-btn"
                 >
                   <span>View All Papers</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -537,7 +537,7 @@ export const About: React.FC<AboutProps> = ({
                                 window.open(paper.pdfUrl, '_blank', 'noopener,noreferrer');
                               }
                             }}
-                            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer scale-105"
+                            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider cursor-pointer tactile-btn"
                           >
                             <ExternalLink className="w-4 h-4" />
                             <span>Open PDF</span>
@@ -553,7 +553,7 @@ export const About: React.FC<AboutProps> = ({
               <div className="text-center pt-2">
                 <button
                   onClick={onViewResearchPage}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#e0ad5b] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer hover:scale-105 border border-white/50"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#e0ad5b] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest cursor-pointer border border-white/50 tactile-btn"
                 >
                   <span>Explore Full Research Publications Library</span>
                   <ArrowRight className="w-3.5 h-3.5" />

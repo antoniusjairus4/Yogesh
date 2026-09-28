@@ -100,7 +100,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-800">
           <button
             onClick={onBackToPortfolio}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition-all text-xs font-mono font-medium cursor-pointer shadow-md backdrop-blur-md hover:scale-105"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs font-mono font-medium cursor-pointer backdrop-blur-md tactile-btn"
           >
             <ArrowLeft className="w-4 h-4 text-[#e0ad5b]" />
             <span>Back to Scientific Journey</span>

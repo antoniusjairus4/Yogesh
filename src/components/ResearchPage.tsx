@@ -77,7 +77,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#173841]/80">
           <button
             onClick={onBackToPortfolio}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0a181c]/95 hover:bg-[#12272e] text-stone-300 hover:text-white border border-[#173841] transition-all text-xs font-mono font-medium cursor-pointer shadow-md backdrop-blur-md hover:scale-105"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0a181c]/95 hover:bg-[#12272e] text-stone-300 hover:text-white border border-[#173841] text-xs font-mono font-medium cursor-pointer backdrop-blur-md tactile-btn"
           >
             <ArrowLeft className="w-4 h-4 text-[#e0ad5b]" />
             <span>Back to Scientific Journey</span>
@@ -268,7 +268,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                               window.open(paper.pdfUrl, '_blank', 'noopener,noreferrer');
                             }
                           }}
-                          className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-sm uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg scale-110 hover:scale-115 cursor-pointer"
+                          className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-sm uppercase tracking-wider cursor-pointer tactile-btn"
                         >
                           <ExternalLink className="w-4 h-4" />
                           <span>Open PDF</span>

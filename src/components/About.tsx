@@ -19,6 +19,7 @@ import { ScubaGallery } from './ScubaGallery';
 import FlipCard from './FlipCard';
 import FolderFloat from './FolderFloat';
 import AccordionGallery from './AccordionGallery';
+import DriftWall from './DriftWall';
 import { PDF_PUBLICATIONS } from '../data/pdfPublicationsData';
 import { PROFILE_DATA } from '../data/portfolioData';
 import { getAssetUrl } from '../utils/baseUrl';
@@ -590,6 +591,47 @@ export const About: React.FC<AboutProps> = ({
                 expandRatio={0.52}
                 trigger="hover"
                 height={500}
+              />
+            </div>
+          </motion.div>
+
+          {/* Client Videos DriftWall */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mt-20 pt-16 border-t border-white/10 w-full flex flex-col items-center"
+          >
+            <h3 className="font-outfit font-black text-2xl sm:text-4xl text-white tracking-tight mb-8 text-center z-10">
+              Field Expedition Footage
+            </h3>
+            <div className="w-full h-[500px] sm:h-[700px] overflow-hidden relative">
+              <DriftWall
+                items={[
+                  { image: getAssetUrl('/videos/expeditions/P4120235.MOV'), title: 'Expedition 1' },
+                  { image: getAssetUrl('/videos/expeditions/P4130571.MOV'), title: 'Expedition 2' },
+                  { image: getAssetUrl('/videos/expeditions/P4170222.MOV'), title: 'Expedition 3' },
+                  { image: getAssetUrl('/videos/expeditions/P4170256.MOV'), title: 'Expedition 4' },
+                  { image: getAssetUrl('/videos/expeditions/P4170268.MOV'), title: 'Expedition 5' },
+                  { image: getAssetUrl('/videos/expeditions/4.MOV'), title: 'Expedition 6' }
+                ]}
+                columns={4}
+                tileWidth={260}
+                tileHeight={180}
+                gap={24}
+                tilt={10}
+                turn={-12}
+                perspective={1000}
+                depth={100}
+                speed={30}
+                direction="up"
+                variance={0.5}
+                parallax={0.8}
+                lift={40}
+                fade={0.5}
+                dim={0.7}
+                overlayColor="#000000"
               />
             </div>
           </motion.div>

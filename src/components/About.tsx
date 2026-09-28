@@ -18,6 +18,7 @@ import {
 import { ScubaGallery } from './ScubaGallery';
 import FlipCard from './FlipCard';
 import FolderFloat from './FolderFloat';
+import AccordionGallery from './AccordionGallery';
 import { PDF_PUBLICATIONS } from '../data/pdfPublicationsData';
 import { PROFILE_DATA } from '../data/portfolioData';
 import { getAssetUrl } from '../utils/baseUrl';
@@ -564,6 +565,34 @@ export const About: React.FC<AboutProps> = ({
               </div>
             </motion.div>
           )}
+
+          {/* Field Work Images Accordion Gallery */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mt-20 pt-16 border-t border-white/10 w-full flex flex-col items-center"
+          >
+            <h3 className="font-outfit font-black text-2xl sm:text-4xl text-white tracking-tight mb-8 text-center">
+              Field Work Images
+            </h3>
+            <div className="w-full max-w-6xl mx-auto h-[460px] sm:h-[500px]">
+              <AccordionGallery
+                items={[
+                  { image: getAssetUrl('/mass/DSCN0271.JPG'), label: 'Expedition' },
+                  { image: getAssetUrl('/mass/IMG-20260413-WA0026.jpg'), label: 'Field Documentation' },
+                  { image: getAssetUrl('/mass/IMG-20260413-WA0126.jpg'), label: 'Research' },
+                  { image: getAssetUrl('/mass/IMG_20181011_165356.jpg'), label: 'Specimen Collection' },
+                  { image: getAssetUrl('/mass/Wall (1).JPG'), label: 'Field Site' }
+                ]}
+                defaultIndex={2}
+                expandRatio={0.52}
+                trigger="hover"
+                height={500}
+              />
+            </div>
+          </motion.div>
 
           {/* Footer Contact Section with Interactive FolderFloat */}
           <motion.div

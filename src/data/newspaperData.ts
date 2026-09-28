@@ -1,3 +1,5 @@
+import { getAssetUrl } from '../utils/baseUrl';
+
 export interface NewspaperFeature {
   id: string;
   image: string;
@@ -15,7 +17,7 @@ export interface NewspaperFeature {
   };
 }
 
-export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
+const RAW_NEWSPAPER_FEATURES: NewspaperFeature[] = [
   {
     id: 'scan0015',
     image: '/newspapers/scan0015.jpg',
@@ -259,3 +261,9 @@ export const NEWSPAPER_FEATURES: NewspaperFeature[] = [
     }
   }
 ];
+
+export const NEWSPAPER_FEATURES: NewspaperFeature[] = RAW_NEWSPAPER_FEATURES.map(feat => ({
+  ...feat,
+  image: getAssetUrl(feat.image)
+}));
+

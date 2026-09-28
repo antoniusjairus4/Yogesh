@@ -435,13 +435,23 @@ const FolderFloat: React.FC<FolderFloatProps> = ({
       <div ref={anchorRef} className="folder-float__items">
         {list.map((item, i) => {
           const p = pos[i];
+          const isLink = item.value.startsWith('http') || item.value.startsWith('mailto:') || item.value.startsWith('tel:');
+          const isExternal = item.value.startsWith('http');
+          const Tag = isLink ? 'a' : 'button';
+
           return (
-            <button
+            <Tag
               key={`${item.value}-${i}`}
-              ref={el => {
-                pillRefs.current[i] = el;
+              ref={(el: HTMLElement | null) => {
+                pillRefs.current[i] = el as HTMLButtonElement | null;
               }}
-              type="button"
+              {...(isLink
+                ? {
+                    href: item.value,
+                    target: isExternal ? '_blank' : undefined,
+                    rel: isExternal ? 'noopener noreferrer' : undefined,
+                  }
+                : { type: 'button' })}
               className="folder-float__item"
               tabIndex={open ? 0 : -1}
               aria-hidden={!open}
@@ -454,17 +464,17 @@ const FolderFloat: React.FC<FolderFloatProps> = ({
                   '--r': `${p.r.toFixed(2)}deg`
                 } as CSSProperties
               }
-              onPointerDown={e => down(e, i)}
-              onPointerMove={e => move(e, i)}
-              onPointerUp={e => up(e, i, item)}
-              onPointerCancel={e => up(e, i, item)}
+              onPointerDown={e => down(e as any, i)}
+              onPointerMove={e => move(e as any, i)}
+              onPointerUp={e => up(e as any, i, item)}
+              onPointerCancel={e => up(e as any, i, item)}
               onClick={e => {
                 e.stopPropagation();
                 pick(item, i);
               }}
             >
               <span className="folder-float__drift">{item.label}</span>
-            </button>
+            </Tag>
           );
         })}
       </div>

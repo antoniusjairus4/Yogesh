@@ -571,26 +571,27 @@ export const About: React.FC<AboutProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mt-28 pt-12 border-t border-white/10 flex flex-col items-center justify-center text-center pb-12"
+            className="mt-32 pt-16 border-t border-white/10 flex flex-col items-center justify-center text-center pb-28"
           >
             <h3 className="font-outfit font-black text-2xl sm:text-4xl text-white tracking-tight mb-2">
               Contact &amp; Academic Profiles
             </h3>
-            <p className="text-slate-300 text-sm max-w-xl mb-12 font-normal">
-              Hover or tap the directory folder below to reveal direct contact channels, phone, email, and scientific research networks.
+            <p className="text-slate-300 text-sm max-w-xl mb-4 font-normal">
+              Click the directory folder below to reveal direct contact channels, phone, email, and scientific research networks.
             </p>
 
-            <div className="relative my-8 flex items-center justify-center min-h-[220px]">
+            <div className="relative mt-24 mb-8 flex items-center justify-center min-h-[300px]">
               <FolderFloat
                 label="Contact Profiles"
-                sublabel="Hover for 5 links"
-                trigger="hover"
+                sublabel="Click to reveal 5 links"
+                trigger="click"
+                closeOnSelect={false}
                 physics={true}
                 drift={0.6}
                 width={240}
                 height={150}
-                spread={230}
-                lift={40}
+                spread={240}
+                lift={45}
                 tilt={10}
                 folderColor="#112932"
                 frontColor="#0b1b21"

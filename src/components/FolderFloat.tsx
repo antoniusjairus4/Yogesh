@@ -74,10 +74,10 @@ const DEFAULT_ITEMS: FolderFloatItem[] = [
   'Logo feels small',
   'Love the new hero'
 ];
-const PAD = 28;
-const CHAR = 6.8;
-const GAP = 12;
-const ROW = 52;
+const PAD = 44;
+const CHAR = 9;
+const GAP = 32;
+const ROW = 68;
 const DRAG_MIN = 4;
 const ZONE_PAD = 8;
 

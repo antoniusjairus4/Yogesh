@@ -25,7 +25,7 @@
   width: var(--ff-w);
   padding-top: var(--ff-tab);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 1;
 }
@@ -82,9 +82,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 5px;
+  gap: 6px;
   height: 76%;
-  padding: 14px 16px;
+  padding: 16px 20px;
   box-sizing: border-box;
   border-radius: var(--ff-r);
   background: linear-gradient(180deg, color-mix(in srgb, var(--ff-front) 92%, #fff), var(--ff-front) 60%);
@@ -96,13 +96,13 @@
 }
 
 .folder-float__label {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .folder-float__sub {
-  font-size: 11px;
-  opacity: 0.55;
+  font-size: 13px;
+  opacity: 0.65;
 }
 
 .folder-float__trigger {
@@ -161,15 +161,19 @@
   justify-content: center;
   text-decoration: none;
   margin: 0;
-  padding: 0 14px;
-  height: 34px;
-  border: 0;
-  border-radius: 17px;
-  background: var(--ff-item);
-  color: var(--ff-item-ink);
+  padding: 0 20px;
+  height: 44px;
+  border: 1px solid rgba(0, 245, 212, 0.25);
+  border-radius: 22px;
+  background: var(--ff-item, rgba(13, 36, 44, 0.92));
+  color: var(--ff-item-ink, #f8fafc);
   font: inherit;
+  font-size: 15px;
+  font-weight: 500;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.35);
   cursor: pointer;
   outline: none;
   opacity: 0;
@@ -180,7 +184,10 @@
   transition:
     transform var(--ff-close) var(--ff-ease-out) calc((var(--ff-n) - 1 - var(--i)) * var(--ff-stagger) * 0.5),
     opacity 160ms ease calc((var(--ff-n) - 1 - var(--i)) * var(--ff-stagger) * 0.5 + var(--ff-close) * 0.45),
-    scale 160ms var(--ff-ease-out);
+    scale 160ms var(--ff-ease-out),
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .folder-float[data-open] .folder-float__item {
@@ -190,7 +197,10 @@
   transition:
     transform var(--ff-open) var(--ff-spring) calc(var(--i) * var(--ff-stagger)),
     opacity 160ms ease calc(var(--i) * var(--ff-stagger)),
-    scale 160ms var(--ff-ease-out);
+    scale 160ms var(--ff-ease-out),
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .folder-float[data-live] .folder-float__item {
@@ -204,12 +214,18 @@
 
 @media (hover: hover) and (pointer: fine) {
   .folder-float[data-open] .folder-float__item:hover {
-    scale: 1.05;
+    transform: translate(calc(-50% + var(--x)), calc(var(--y) - 1px)) rotate(var(--r)) scale(1.04);
+    border-color: rgba(0, 245, 212, 0.45);
+    background: rgba(16, 44, 54, 0.96);
+    box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.45), 0 6px 16px rgba(0, 245, 212, 0.15);
   }
 }
 
 .folder-float[data-open] .folder-float__item:active {
-  scale: 0.97;
+  transform: translate(calc(-50% + var(--x)), calc(var(--y) + 2.5px)) rotate(var(--r)) scale(0.97) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+  filter: brightness(0.92) !important;
+  transition-duration: 70ms !important;
 }
 
 .folder-float__item[data-pop] {

@@ -571,28 +571,28 @@ export const About: React.FC<AboutProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mt-32 pt-16 border-t border-white/10 flex flex-col items-center justify-center text-center pb-28"
+            className="mt-32 pt-16 border-t border-white/10 flex flex-col items-center justify-center text-center pb-32"
           >
             <h3 className="font-outfit font-black text-2xl sm:text-4xl text-white tracking-tight mb-2">
               Contact &amp; Academic Profiles
             </h3>
-            <p className="text-slate-300 text-sm max-w-xl mb-4 font-normal">
+            <p className="text-slate-300 text-sm max-w-xl mb-2 font-normal">
               Click the directory folder below to reveal direct contact channels, phone, email, and scientific research networks.
             </p>
 
-            <div className="relative mt-24 mb-8 flex items-center justify-center min-h-[300px]">
+            <div className="relative mt-44 sm:mt-52 mb-12 flex items-center justify-center min-h-[340px]">
               <FolderFloat
                 label="Contact Profiles"
                 sublabel="Click to reveal 5 links"
                 trigger="click"
                 closeOnSelect={false}
                 physics={true}
-                drift={0.6}
+                drift={0.5}
                 width={240}
                 height={150}
-                spread={240}
+                spread={300}
                 lift={45}
-                tilt={10}
+                tilt={8}
                 folderColor="#112932"
                 frontColor="#0b1b21"
                 paperColor="#e0ad5b"
@@ -600,11 +600,11 @@ export const About: React.FC<AboutProps> = ({
                 itemTextColor="#f8fafc"
                 labelColor="#e0ad5b"
                 items={[
-                  { label: `📱 Mobile: ${PROFILE_DATA.mobile}`, value: "tel:+919476006830" },
+                  { label: `📱 Phone: ${PROFILE_DATA.mobile}`, value: "tel:+919476006830" },
                   { label: `✉️ Email: ${PROFILE_DATA.email}`, value: "mailto:coralyogesh@yahoo.co.in" },
-                  { label: "💼 LinkedIn: Dr. J.S. Yogesh Kumar", value: "https://www.linkedin.com/search/results/all/?keywords=Dr.%20J.S.%20Yogesh%20Kumar" },
-                  { label: "🎓 Google Scholar: Dr. J.S. Yogesh Kumar", value: "https://scholar.google.com/scholar?q=J+S+Yogesh+Kumar" },
-                  { label: "🔬 ResearchGate: Dr. J.S. Yogesh Kumar", value: "https://www.researchgate.net/search?q=J%20S%20Yogesh%20Kumar" }
+                  { label: "💼 LinkedIn Profile", value: "https://www.linkedin.com/search/results/all/?keywords=Dr.%20J.S.%20Yogesh%20Kumar" },
+                  { label: "🎓 Google Scholar", value: "https://scholar.google.com/scholar?q=J+S+Yogesh+Kumar" },
+                  { label: "🔬 ResearchGate", value: "https://www.researchgate.net/search?q=J%20S%20Yogesh%20Kumar" }
                 ]}
                 onSelect={(value) => {
                   if (value.startsWith('http') || value.startsWith('mailto') || value.startsWith('tel')) {

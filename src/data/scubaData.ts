@@ -454,6 +454,132 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
     location: 'Reef Crevice',
     depth: '13m',
     description: 'Focusing on crevice-dwelling crustaceans and echinoderms.'
+  },
+  {
+    id: 'photo-48',
+    url: '/Images_gallery/Cavernularia pusilla.JPG',
+    title: 'Cavernularia pusilla',
+    scientificName: 'Cavernularia pusilla',
+    category: 'Corals',
+    location: 'Deep Sand Patch',
+    depth: '18m',
+    description: 'A fascinating specimen of Cavernularia pusilla anchoring in the soft sediment.'
+  },
+  {
+    id: 'photo-49',
+    url: '/Images_gallery/Cephalopholis formosa (Shaw, 1812).JPG',
+    title: 'Bluelined Hind',
+    scientificName: 'Cephalopholis formosa (Shaw, 1812)',
+    category: 'Fauna',
+    location: 'Coral Reef Pinnacle',
+    depth: '15m',
+    description: 'Vibrant bluelined hind recorded during marine surveys.'
+  },
+  {
+    id: 'photo-50',
+    url: '/Images_gallery/Chaetodon deccusatus Cuvier, 1829.JPG',
+    title: 'Indian Vagabond Butterflyfish',
+    scientificName: 'Chaetodon deccusatus Cuvier, 1829',
+    category: 'Fauna',
+    location: 'Shallow Reef Crest',
+    depth: '8m',
+    description: 'A beautiful butterflyfish specimen foraging along the shallow reef.'
+  },
+  {
+    id: 'photo-51',
+    url: '/Images_gallery/Dendronephthya.JPG',
+    title: 'Dendronephthya Soft Coral',
+    scientificName: 'Dendronephthya sp.',
+    category: 'Corals',
+    location: 'Current-Swept Slope',
+    depth: '22m',
+    description: 'Brightly colored Dendronephthya soft coral providing habitat complexity.'
+  },
+  {
+    id: 'photo-52',
+    url: '/Images_gallery/Diodon hystrix Linnaeus, 1758.JPG',
+    title: 'Spot-fin Porcupinefish',
+    scientificName: 'Diodon hystrix Linnaeus, 1758',
+    category: 'Fauna',
+    location: 'Reef Crevice',
+    depth: '14m',
+    description: 'Porcupinefish hiding within the structural complexity of the coral reef.'
+  },
+  {
+    id: 'photo-53',
+    url: '/Images_gallery/Gymnothorax favagineus Bloch, Schneider, 1801.JPG',
+    title: 'Laced Moray Eel',
+    scientificName: 'Gymnothorax favagineus Bloch, Schneider, 1801',
+    category: 'Fauna',
+    location: 'Rocky Overhang',
+    depth: '16m',
+    description: 'A large laced moray eel encountered resting in a rocky overhang.'
+  },
+  {
+    id: 'photo-54',
+    url: '/Images_gallery/IMG_3100.JPG',
+    title: 'Reef Ecology Survey',
+    category: 'Expeditions',
+    location: 'Fringing Reef Zone',
+    depth: '12m',
+    description: 'Field documentation of benthic coral health and species distribution.'
+  },
+  {
+    id: 'photo-55',
+    url: '/Images_gallery/Isis hippuris.JPG',
+    title: 'Golden Sea Fan',
+    scientificName: 'Isis hippuris',
+    category: 'Corals',
+    location: 'Outer Reef Slope',
+    depth: '20m',
+    description: 'A branching Isis hippuris colony observed in strong current zones.'
+  },
+  {
+    id: 'photo-56',
+    url: '/Images_gallery/P4180346.JPG',
+    title: 'Benthic Fauna Documentation',
+    category: 'Expeditions',
+    location: 'Submerged Pinnacle',
+    depth: '25m',
+    description: 'High-resolution capture of the rich macro fauna diversity on the reef.'
+  },
+  {
+    id: 'photo-57',
+    url: '/Images_gallery/P4180357.JPG',
+    title: 'Deep Water Exploration',
+    category: 'Expeditions',
+    location: 'Oceanic Drop-Off',
+    depth: '30m',
+    description: 'SCUBA diving assessment along the steep oceanic drop-off walls.'
+  },
+  {
+    id: 'photo-58',
+    url: '/Images_gallery/P4180358.JPG',
+    title: 'Marine Sanctuary Documentation',
+    category: 'Expeditions',
+    location: 'Marine Protected Area',
+    depth: '18m',
+    description: 'Continuous monitoring of structural coral health in the protected sanctuary.'
+  },
+  {
+    id: 'photo-59',
+    url: '/Images_gallery/Platax teira (Forsskal, 1775).JPG',
+    title: 'Longfin Batfish',
+    scientificName: 'Platax teira (Forsskal, 1775)',
+    category: 'Fauna',
+    location: 'Mid-Water Column',
+    depth: '10m',
+    description: 'A curious longfin batfish swimming through the water column above the reef.'
+  },
+  {
+    id: 'photo-60',
+    url: '/Images_gallery/Torpedo marmorata Risso, 1810.JPG',
+    title: 'Marbled Electric Ray',
+    scientificName: 'Torpedo marmorata Risso, 1810',
+    category: 'Fauna',
+    location: 'Sandy Benthic Zone',
+    depth: '22m',
+    description: 'A rare encounter with the marbled electric ray resting on the sandy bottom.'
   }
 ];
 

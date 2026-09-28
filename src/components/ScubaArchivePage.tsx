@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   SCUBA_PHOTOS, 
@@ -272,16 +273,18 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
       </div>
 
       {/* FULLSCREEN LIGHTBOX MODAL */}
-      <AnimatePresence>
-        {activePhotoIndex !== null && currentPhoto && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => setActivePhotoIndex(null)}
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 lg:p-10"
-          >
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {activePhotoIndex !== null && currentPhoto && (
+            <motion.div
+              key="lightbox-modal"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setActivePhotoIndex(null)}
+              className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 lg:p-10"
+            >
             <div 
               onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-6xl max-h-[92vh] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col lg:flex-row"
@@ -381,7 +384,9 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+      document.body
+    )}
 
     </div>
   );

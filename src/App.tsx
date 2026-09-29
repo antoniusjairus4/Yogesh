@@ -33,6 +33,9 @@ export const App: React.FC = () => {
       } else if (navId === 'contact') {
         const el = document.getElementById('contact');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
+      } else if (navId === 'career') {
+        const el = document.getElementById('career');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
       }
       return;
     }
@@ -40,7 +43,19 @@ export const App: React.FC = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setActivePage(targetPage);
-    setTimeout(() => setIsTransitioning(false), TRANSITION_DURATION);
+    setTimeout(() => {
+      setIsTransitioning(false);
+      if (navId === 'career') {
+        const el = document.getElementById('career');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      } else if (navId === 'scuba') {
+        const el = document.getElementById('scuba-gallery');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      } else if (navId === 'contact') {
+        const el = document.getElementById('contact');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, TRANSITION_DURATION);
   };
 
   // Intercept wheel/touch gestures on Page 1 -> Page 2 transition

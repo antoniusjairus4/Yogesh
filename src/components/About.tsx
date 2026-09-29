@@ -410,24 +410,40 @@ export const About: React.FC<AboutProps> = ({
             </div>
           </div>
 
-          {/* Page 3 Callout Banner Button */}
+          {/* Featured Press Hero Intro Section */}
           {onViewPressArchives && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="mt-16 text-center pt-8 border-t border-white/10 flex flex-col items-center gap-4"
+              className="mt-20 pt-16 border-t border-white/10 text-center flex flex-col items-center"
             >
-              <p className="text-white/80 text-sm font-semibold">
-                Explore Press Archives &amp; National News Coverage
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e0ad5b]/10 border border-[#e0ad5b]/30 text-[#e0ad5b] text-xs font-semibold uppercase tracking-widest mb-3">
+                <FileText className="w-3.5 h-3.5" />
+                <span>MEDIA COVERAGE &amp; PRESS ARCHIVES</span>
+              </div>
+
+              <h2 className="font-serif font-bold text-3xl sm:text-5xl text-white tracking-tight leading-tight mb-3">
+                National &amp; Regional Press Coverage
+              </h2>
+
+              <p className="text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed font-normal mb-6 px-2">
+                Archival features across major Tamil and English national news publications documenting Dr. J.S. Yogesh Kumar&apos;s marine biodiversity research, pioneer SCUBA diving training for fishermen youth, and 57-day sea turtle conservation milestones.
               </p>
-              <button
-                onClick={onViewPressArchives}
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-base tracking-wide border border-white/80 cursor-pointer tactile-btn"
-              >
-                <span>View Featured Newspaper Clippings</span>
-                <span className="text-lg">→</span>
-              </button>
+
+              <div className="flex flex-col items-center gap-3">
+                <p className="text-slate-400 text-xs sm:text-sm font-medium">
+                  Explore Press Archives &amp; National News Coverage
+                </p>
+
+                <button
+                  onClick={onViewPressArchives}
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-base tracking-wide border border-white/80 cursor-pointer tactile-btn shadow-lg"
+                >
+                  <span>View Featured Newspaper Clippings</span>
+                  <span className="text-lg">→</span>
+                </button>
+              </div>
             </motion.div>
           )}
 

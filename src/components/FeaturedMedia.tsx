@@ -464,21 +464,17 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="mb-10 text-left"
               >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-[#c5a880]/40 bg-[#121215]/90 text-[#c5a880] text-[11px] font-mono tracking-widest uppercase mb-4 shadow-md backdrop-blur-md">
-                  <FileText className="w-3.5 h-3.5 text-[#c5a880]" />
-                  <span>Media Coverage &amp; Press Archives</span>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e0ad5b]/10 border border-[#e0ad5b]/30 text-[#e0ad5b] text-xs font-semibold uppercase tracking-widest mb-3 shadow-md backdrop-blur-md">
+                  <FileText className="w-3.5 h-3.5 text-[#e0ad5b]" />
+                  <span>MEDIA COVERAGE &amp; PRESS ARCHIVES</span>
                 </div>
                 
-                <h1 className="font-serif font-bold text-4xl sm:text-6xl lg:text-7xl text-[#f3f1ec] tracking-tight mb-2 leading-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
-                  Featured in...
+                <h1 className="font-serif font-bold text-4xl sm:text-6xl text-[#f3f1ec] tracking-tight mb-3 leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+                  National &amp; Regional Press Coverage
                 </h1>
                 
-                <h2 className="font-serif font-normal text-xl sm:text-2xl text-[#c5a880] tracking-wide italic mb-4 drop-shadow-md">
-                  Newspapers &amp; Press Highlights
-                </h2>
-                
-                <p className="text-stone-200 text-sm sm:text-base max-w-3xl leading-relaxed font-normal border-l-2 border-[#c5a880]/60 pl-4 py-2 bg-[#090807]/75 p-4 rounded-r-lg border-y border-r border-[#c5a880]/20 backdrop-blur-md shadow-xl">
-                  Exploration of major Tamil and English national news publications documenting Dr. J.S. Yogesh Kumar&apos;s marine ecosystem research, pioneer SCUBA diving training for fishermen youth, and 57-day sea turtle conservation milestones. Click any clipping below for full article translation and details.
+                <p className="text-stone-300 text-sm sm:text-base max-w-3xl leading-relaxed font-normal border-l-2 border-[#e0ad5b]/60 pl-4 py-2 bg-[#090807]/75 rounded-r-lg border-y border-r border-[#e0ad5b]/20 backdrop-blur-md shadow-xl">
+                  Archival features across major Tamil and English national news publications documenting Dr. J.S. Yogesh Kumar&apos;s marine biodiversity research, pioneer SCUBA diving training for fishermen youth, and 57-day sea turtle conservation milestones. Click any clipping below for full article translation and details.
                 </p>
               </motion.div>
 

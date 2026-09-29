@@ -742,9 +742,9 @@ export const About: React.FC<AboutProps> = ({
                 closeOnSelect={false}
                 physics={false}
                 drift={0}
-                width={typeof window !== 'undefined' && window.innerWidth < 640 ? Math.min(window.innerWidth - 40, 290) : 320}
+                width={typeof window !== 'undefined' && window.innerWidth < 640 ? 260 : 320}
                 height={190}
-                spread={typeof window !== 'undefined' && window.innerWidth < 640 ? Math.min(window.innerWidth - 30, 300) : 520}
+                spread={typeof window !== 'undefined' && window.innerWidth < 640 ? 360 : 520}
                 lift={100}
                 tilt={1}
                 folderColor="#112932"

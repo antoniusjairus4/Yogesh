@@ -19,7 +19,6 @@ import { ScubaGallery } from './ScubaGallery';
 import FlipCard from './FlipCard';
 import FolderFloat from './FolderFloat';
 import AccordionGallery from './AccordionGallery';
-import DriftWall from './DriftWall';
 import { PDF_PUBLICATIONS } from '../data/pdfPublicationsData';
 import { PROFILE_DATA } from '../data/portfolioData';
 import { getAssetUrl } from '../utils/baseUrl';
@@ -581,11 +580,11 @@ export const About: React.FC<AboutProps> = ({
             <div className="w-full max-w-6xl mx-auto h-[460px] sm:h-[500px]">
               <AccordionGallery
                 items={[
-                  { image: getAssetUrl('/mass/DSCN0271.JPG'), label: 'Expedition' },
+                  { image: getAssetUrl('/mass/DSCN0271.jpg'), label: 'Expedition' },
                   { image: getAssetUrl('/mass/IMG-20260413-WA0026.jpg'), label: 'Field Documentation' },
                   { image: getAssetUrl('/mass/IMG-20260413-WA0126.jpg'), label: 'Research' },
                   { image: getAssetUrl('/mass/IMG_20181011_165356.jpg'), label: 'Specimen Collection' },
-                  { image: getAssetUrl('/mass/Wall (1).JPG'), label: 'Field Site' }
+                  { image: getAssetUrl('/mass/Wall (1).jpg'), label: 'Field Site' }
                 ]}
                 defaultIndex={2}
                 expandRatio={0.52}
@@ -594,6 +593,12 @@ export const About: React.FC<AboutProps> = ({
               />
             </div>
           </motion.div>
+
+        </div> {/* End of max-w inner container */}
+
+        {/* BOTTOM BLACK BACKGROUND SECTION */}
+        <div className="w-full bg-[#000000] relative z-20">
+          <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 lg:px-12 pb-36">
 
           {/* Footer Contact Section with Interactive FolderFloat */}
           <motion.div
@@ -649,7 +654,9 @@ export const About: React.FC<AboutProps> = ({
             </div>
           </motion.div>
 
-        </div>
+          </div> {/* End of max-w for black background */}
+        </div> {/* End of black background wrapper */}
+
       </div>
 
     </div>

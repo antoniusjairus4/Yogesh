@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { PROFILE_DATA } from '../data/portfolioData';
 import { ScrollIndicator } from './ScrollIndicator';
 import { getAssetUrl } from '../utils/baseUrl';
+import GlassSurface from './GlassSurface';
 
 interface HeroProps {
   videoRef: React.RefObject<HTMLVideoElement | null>;
@@ -217,24 +218,41 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
             <span>PADI Dive Master (DM-494151)</span>
           </motion.div>
 
-          {/* Liquid Glass Card (Image REMOVED as requested with red X) */}
+          {/* GlassSurface React Bits Card Component */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="w-full apple-liquid-glass p-5 sm:p-6 text-center lg:text-left"
+            className="w-full"
           >
-            <p className="text-slate-100 text-xs sm:text-sm leading-relaxed mb-4 font-sans font-normal">
-              {PROFILE_DATA.bioSummary}
-            </p>
+            <GlassSurface
+              width="100%"
+              height="auto"
+              borderRadius={24}
+              backgroundOpacity={0.08}
+              brightness={45}
+              blur={12}
+              distortionScale={-140}
+              redOffset={4}
+              greenOffset={12}
+              blueOffset={24}
+              mixBlendMode="screen"
+              className="w-full text-center lg:text-left"
+            >
+              <div className="w-full p-2 sm:p-3">
+                <p className="text-slate-100 text-xs sm:text-sm leading-relaxed mb-4 font-sans font-normal text-center lg:text-left">
+                  {PROFILE_DATA.bioSummary}
+                </p>
 
-            {/* Equal 4-Column Grid with Animated Stat Counters */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 w-full divide-x-0 sm:divide-x divide-white/15 border-t border-white/10 pt-4">
-              <AnimatedStat target={80} suffix="+" label="Total Publications" delayMs={0} />
-              <AnimatedStat target={37} suffix="" label="SCI Indexed Papers" delayMs={120} />
-              <AnimatedStat target={14} suffix="" label="Funded Projects" delayMs={240} />
-              <AnimatedStat target={11} suffix="" label="Career Milestones" delayMs={360} />
-            </div>
+                {/* Equal 4-Column Grid with Animated Stat Counters */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 w-full divide-x-0 sm:divide-x divide-white/15 border-t border-white/10 pt-4">
+                  <AnimatedStat target={80} suffix="+" label="Total Publications" delayMs={0} />
+                  <AnimatedStat target={37} suffix="" label="SCI Indexed Papers" delayMs={120} />
+                  <AnimatedStat target={14} suffix="" label="Funded Projects" delayMs={240} />
+                  <AnimatedStat target={11} suffix="" label="Career Milestones" delayMs={360} />
+                </div>
+              </div>
+            </GlassSurface>
           </motion.div>
 
         </div>

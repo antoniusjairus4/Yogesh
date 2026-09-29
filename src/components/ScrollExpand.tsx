@@ -253,6 +253,8 @@ export const ScrollExpand: React.FC<ScrollExpandProps> = ({
         className="absolute inset-0 w-full h-full object-cover origin-center select-none [will-change:transform]"
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         draggable={false}
       />
     );

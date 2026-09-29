@@ -1,12 +1,20 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { About } from './components/About';
-import { FeaturedMedia } from './components/FeaturedMedia';
-import { ResearchPage } from './components/ResearchPage';
-import { ScubaArchivePage } from './components/ScubaArchivePage';
 import { getAssetUrl } from './utils/baseUrl';
+
+const FeaturedMedia = React.lazy(() => import('./components/FeaturedMedia'));
+const ResearchPage = React.lazy(() => import('./components/ResearchPage'));
+const ScubaArchivePage = React.lazy(() => import('./components/ScubaArchivePage'));
+
+const PageFallback: React.FC = () => (
+  <div className="w-full h-full min-h-[400px] bg-[#050b14] flex flex-col items-center justify-center gap-4 text-slate-300">
+    <div className="w-10 h-10 border-2 border-[#c5a880] border-t-transparent rounded-full animate-spin" />
+    <span className="text-xs font-mono tracking-widest text-[#c5a880] uppercase">Loading Content...</span>
+  </div>
+);
 
 export const App: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -195,9 +203,11 @@ export const App: React.FC = () => {
             activePage === 3 ? 'pointer-events-auto' : 'pointer-events-none'
           }`}
         >
-          <FeaturedMedia 
-            onScrollBackToAbout={() => handleNavigateTo(2)} 
-          />
+          <Suspense fallback={<PageFallback />}>
+            <FeaturedMedia 
+              onScrollBackToAbout={() => handleNavigateTo(2)} 
+            />
+          </Suspense>
         </motion.div>
 
         {/* Fixed Library Background for Page 4 (Viewport-fixed, unaffected by scroll transforms) */}
@@ -207,8 +217,10 @@ export const App: React.FC = () => {
           }`}
         >
           <img 
-            src={getAssetUrl("/background_paper_publication.png")} 
+            src={getAssetUrl("/background_paper_publication.webp")} 
             alt="Library Background" 
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/60 pointer-events-none" />
@@ -230,9 +242,11 @@ export const App: React.FC = () => {
             activePage === 4 ? 'pointer-events-auto' : 'pointer-events-none'
           }`}
         >
-          <ResearchPage 
-            onBackToPortfolio={() => handleNavigateTo(2)} 
-          />
+          <Suspense fallback={<PageFallback />}>
+            <ResearchPage 
+              onBackToPortfolio={() => handleNavigateTo(2)} 
+            />
+          </Suspense>
         </motion.div>
 
         {/* Fixed Shipwreck Underwater Background for Page 5 (Viewport-fixed, unaffected by scroll transforms) */}
@@ -242,8 +256,10 @@ export const App: React.FC = () => {
           }`}
         >
           <img 
-            src={getAssetUrl("/scuba_archive_bg.jpg")} 
+            src={getAssetUrl("/scuba_archive_bg.webp")} 
             alt="Underwater Shipwreck Background" 
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/70 pointer-events-none" />
@@ -265,10 +281,12 @@ export const App: React.FC = () => {
             activePage === 5 ? 'pointer-events-auto' : 'pointer-events-none'
           }`}
         >
-          <ScubaArchivePage 
-            onBackToPortfolio={() => handleNavigateTo(2)} 
-            initialPhotoId={selectedScubaPhotoId}
-          />
+          <Suspense fallback={<PageFallback />}>
+            <ScubaArchivePage 
+              onBackToPortfolio={() => handleNavigateTo(2)} 
+              initialPhotoId={selectedScubaPhotoId}
+            />
+          </Suspense>
         </motion.div>
 
       </main>

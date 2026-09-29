@@ -126,7 +126,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
           muted
           playsInline
           loop={false}
-          poster={getAssetUrl("/portfolio/poster.png")}
+          poster={getAssetUrl("/portfolio/poster.webp")}
           onEnded={() => setIsVideoEnded(true)}
         >
           <source src={getAssetUrl("/videos/Yogesh_landing.mp4")} type="video/mp4" />
@@ -150,7 +150,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
         >
           <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl">
             <img
-              src={getAssetUrl("/portfolio/landing_img.JPG")}
+              src={getAssetUrl("/portfolio/landing_img.webp")}
               alt="Dr. J.S. Yogesh Kumar"
               className="w-56 h-72 sm:w-68 sm:h-88 md:w-76 md:h-96 lg:w-84 lg:h-[26rem] xl:w-96 xl:h-[30rem] object-cover object-top transform hover:scale-105 transition-transform duration-500"
             />

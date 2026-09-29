@@ -73,7 +73,7 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
 const snap = (deg: number) => Math.round(deg / 180) * 180;
 const isBack = (deg: number) => Math.abs(Math.round(deg / 180)) % 2 === 1;
 
-export const FlipCard: React.FC<FlipCardProps> = ({
+export const FlipCard: React.FC<FlipCardProps> = React.memo(({
   front = null,
   back = null,
   flipped,
@@ -344,6 +344,6 @@ export const FlipCard: React.FC<FlipCardProps> = ({
       </motion.div>
     </div>
   );
-};
+});
 
 export default FlipCard;

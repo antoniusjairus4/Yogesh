@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NEWSPAPER_FEATURES, NewspaperFeature } from '../data/newspaperData';
 import { getAssetUrl } from '../utils/baseUrl';
@@ -27,6 +27,82 @@ interface FeaturedMediaProps {
   onScrollBackToAbout?: () => void;
 }
 
+const PressCard = React.memo<{
+  feature: NewspaperFeature;
+  idx: number;
+  onSelect: (feature: NewspaperFeature) => void;
+}>(({ feature, idx, onSelect }) => {
+  const handleClick = useCallback(() => {
+    onSelect(feature);
+  }, [feature, onSelect]);
+
+  return (
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 30, scale: 0.92, rotateX: 8 },
+        visible: { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1, 
+          rotateX: 0,
+          transition: { duration: 0.5, delay: idx * 0.06, ease: [0.22, 1, 0.36, 1] }
+        }
+      }}
+      onClick={handleClick}
+      className="group relative rounded-xl bg-[#121215] border border-stone-800 hover:border-stone-500 overflow-hidden flex flex-col cursor-pointer transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-1"
+    >
+      <div className="relative h-[270px] w-full overflow-hidden bg-[#09090b] shrink-0 border-b border-stone-800">
+        <img
+          src={feature.image}
+          alt={feature.headlineEnglish}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-full object-cover object-top filter brightness-90 group-hover:brightness-100 transition-all duration-500"
+        />
+        
+        <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+          <span className="px-2.5 py-1 rounded bg-[#09090b]/90 border border-stone-800 text-stone-200 font-mono text-[11px] tracking-wide">
+            {feature.newspaper}
+          </span>
+          <span className="px-2.5 py-1 rounded bg-[#09090b]/90 border border-stone-800 text-[#c5a880] font-mono text-[11px] tracking-wider uppercase">
+            {feature.date}
+          </span>
+        </div>
+
+        <div className="absolute bottom-3 right-3 p-1.5 rounded bg-[#09090b]/90 text-stone-300 opacity-0 group-hover:opacity-100 transition-opacity duration-200 border border-stone-800">
+          <Maximize2 className="w-4 h-4 text-[#c5a880]" />
+        </div>
+      </div>
+
+      <div className="p-5 sm:p-6 flex flex-col justify-between flex-grow bg-[#121215]">
+        <div>
+          <div className="flex items-center gap-2 text-xs font-mono text-stone-400 mb-2.5">
+            <MapPin className="w-3.5 h-3.5 text-[#c5a880] shrink-0" />
+            <span className="truncate">{feature.location}</span>
+          </div>
+
+          <h3 className="font-serif font-bold text-base sm:text-lg text-[#f3f1ec] mb-2 leading-snug group-hover:text-[#c5a880] transition-colors">
+            {feature.headlineTamil}
+          </h3>
+
+          <h4 className="font-sans font-normal text-xs sm:text-sm text-stone-300 mb-3 line-clamp-2 leading-relaxed">
+            {feature.headlineEnglish}
+          </h4>
+
+          <p className="text-xs text-stone-400 leading-relaxed line-clamp-3 mb-4 font-normal border-t border-stone-800/70 pt-2.5">
+            {feature.summary}
+          </p>
+        </div>
+
+        <div className="pt-2 flex items-center justify-between text-xs font-mono text-[#c5a880] group-hover:text-white transition-colors border-t border-stone-800/50">
+          <span>READ ARTICLE &amp; STORY</span>
+          <span className="text-sm group-hover:translate-x-1 transition-transform">→</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+});
+
 export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbout }) => {
   const [selectedFeature, setSelectedFeature] = useState<NewspaperFeature | null>(null);
   const [isZoomedImage, setIsZoomedImage] = useState(false);
@@ -34,11 +110,13 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
   const containerRef = useRef<HTMLDivElement>(null);
   const wallScrollRef = useRef<HTMLDivElement>(null);
 
-  // Scroll progress state continuous from 0.0 (0%) to 1.0 (100%)
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
 
-  // Landmark feature (scan0021 - Sea Turtle Protection) is elevated to Featured Spotlight Hero
+  const handleSelectFeature = useCallback((feature: NewspaperFeature) => {
+    setSelectedFeature(feature);
+  }, []);
+
   const featuredSpotlight = NEWSPAPER_FEATURES.find(f => f.id === 'scan0021') || NEWSPAPER_FEATURES[6];
   const remainingFeatures = NEWSPAPER_FEATURES.filter(f => f.id !== featuredSpotlight.id);
 
@@ -230,8 +308,10 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
         className="absolute inset-0 z-0 pointer-events-none overflow-hidden transition-opacity duration-700 ease-out"
       >
         <img 
-          src={getAssetUrl("/portfolio/research_table_bg.jpg")} 
+          src={getAssetUrl("/portfolio/research_table_bg.webp")} 
           alt="Research Desk Workspace Surface" 
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover object-center filter brightness-[0.70] contrast-[1.08]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#070605]/85 via-[#070605]/35 to-[#070605]/75" />
@@ -242,7 +322,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
         {onScrollBackToAbout ? (
           <button
             onClick={onScrollBackToAbout}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#141416]/90 hover:bg-[#1a1a1e] text-stone-300 hover:text-white border border-stone-800 transition-colors text-xs font-medium cursor-pointer shadow-md backdrop-blur-md"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#141416]/95 hover:bg-[#1a1a1e] text-stone-300 hover:text-white border border-stone-800 transition-colors text-xs font-medium cursor-pointer shadow-md"
           >
             <ArrowLeft className="w-3.5 h-3.5 text-[#c5a880]" />
             <span>Back to Scientific Journey</span>
@@ -254,7 +334,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
           <div className="flex items-center gap-2">
             <button
               onClick={handleUnfoldStepClick}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#161410]/95 hover:bg-[#201d17] border border-[#c5a880]/50 text-[#c5a880] text-xs font-mono tracking-wider shadow-xl backdrop-blur-md transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#161410]/95 hover:bg-[#201d17] border border-[#c5a880]/50 text-[#c5a880] text-xs font-mono tracking-wider shadow-xl transition-colors cursor-pointer"
             >
               <span className={`w-2.5 h-2.5 rounded-full ${p >= 0.95 ? 'bg-emerald-400' : 'bg-[#c5a880] animate-pulse'}`} />
               <span className="font-bold">
@@ -267,7 +347,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
             {p < 0.95 && (
               <button
                 onClick={handleSkipToWall}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#201c16]/90 hover:bg-[#2c261e] border border-stone-700 text-stone-300 hover:text-white text-xs font-mono transition-colors cursor-pointer shadow-md backdrop-blur-md"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#201c16]/95 hover:bg-[#2c261e] border border-stone-700 text-stone-300 hover:text-white text-xs font-mono transition-colors cursor-pointer shadow-md"
                 title="Skip un-crumpling animation"
               >
                 <span>Skip to Wall</span>
@@ -464,7 +544,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="mb-10 text-left"
               >
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e0ad5b]/10 border border-[#e0ad5b]/30 text-[#e0ad5b] text-xs font-semibold uppercase tracking-widest mb-3 shadow-md backdrop-blur-md">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e0ad5b]/10 border border-[#e0ad5b]/30 text-[#e0ad5b] text-xs font-semibold uppercase tracking-widest mb-3 shadow-md">
                   <FileText className="w-3.5 h-3.5 text-[#e0ad5b]" />
                   <span>MEDIA COVERAGE &amp; PRESS ARCHIVES</span>
                 </div>
@@ -473,7 +553,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
                   National &amp; Regional Press Coverage
                 </h1>
                 
-                <p className="text-stone-300 text-sm sm:text-base max-w-3xl leading-relaxed font-normal border-l-2 border-[#e0ad5b]/60 pl-4 py-2 bg-[#090807]/75 rounded-r-lg border-y border-r border-[#e0ad5b]/20 backdrop-blur-md shadow-xl">
+                <p className="text-stone-300 text-sm sm:text-base max-w-3xl leading-relaxed font-normal border-l-2 border-[#e0ad5b]/60 pl-4 py-2 bg-[#090807]/90 rounded-r-lg border-y border-r border-[#e0ad5b]/20 shadow-xl">
                   Archival features across major Tamil and English national news publications documenting Dr. J.S. Yogesh Kumar&apos;s marine biodiversity research, pioneer SCUBA diving training for fishermen youth, and 57-day sea turtle conservation milestones. Click any clipping below for full article translation and details.
                 </p>
               </motion.div>
@@ -491,6 +571,8 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
                   <img
                     src={featuredSpotlight.image}
                     alt={featuredSpotlight.headlineEnglish}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-top filter brightness-90 group-hover:brightness-100 transition-all duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#121215]/80 via-transparent to-transparent opacity-60" />
@@ -563,77 +645,12 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               >
                 {remainingFeatures.map((feature, idx) => (
-                  <motion.div
+                  <PressCard
                     key={feature.id}
-                    variants={{
-                      hidden: { opacity: 0, y: 30, scale: 0.92, rotateX: 8 },
-                      visible: { 
-                        opacity: 1, 
-                        y: 0, 
-                        scale: 1, 
-                        rotateX: 0,
-                        transition: { duration: 0.5, delay: idx * 0.06, ease: [0.22, 1, 0.36, 1] }
-                      }
-                    }}
-                    onClick={() => setSelectedFeature(feature)}
-                    className="group relative rounded-xl bg-[#121215] border border-stone-800 hover:border-stone-500 overflow-hidden flex flex-col cursor-pointer transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-1"
-                  >
-                    {/* Image Container with Framing */}
-                    <div className="relative h-[270px] w-full overflow-hidden bg-[#09090b] shrink-0 border-b border-stone-800">
-                      <img
-                        src={feature.image}
-                        alt={feature.headlineEnglish}
-                        className="w-full h-full object-cover object-top filter brightness-90 group-hover:brightness-100 transition-all duration-500"
-                      />
-                      
-                      {/* Publication Badge */}
-                      <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-                        <span className="px-2.5 py-1 rounded bg-[#09090b]/90 border border-stone-800 text-stone-200 font-mono text-[11px] tracking-wide">
-                          {feature.newspaper}
-                        </span>
-                        <span className="px-2.5 py-1 rounded bg-[#09090b]/90 border border-stone-800 text-[#c5a880] font-mono text-[11px] tracking-wider uppercase">
-                          {feature.date}
-                        </span>
-                      </div>
-
-                      {/* Zoom Icon Hint */}
-                      <div className="absolute bottom-3 right-3 p-1.5 rounded bg-[#09090b]/90 text-stone-300 opacity-0 group-hover:opacity-100 transition-opacity duration-200 border border-stone-800">
-                        <Maximize2 className="w-4 h-4 text-[#c5a880]" />
-                      </div>
-                    </div>
-
-                    {/* Content Section */}
-                    <div className="p-5 sm:p-6 flex flex-col justify-between flex-grow bg-[#121215]">
-                      <div>
-                        {/* Location Badge */}
-                        <div className="flex items-center gap-2 text-xs font-mono text-stone-400 mb-2.5">
-                          <MapPin className="w-3.5 h-3.5 text-[#c5a880] shrink-0" />
-                          <span className="truncate">{feature.location}</span>
-                        </div>
-
-                        {/* Tamil Headline */}
-                        <h3 className="font-serif font-bold text-base sm:text-lg text-[#f3f1ec] mb-2 leading-snug group-hover:text-[#c5a880] transition-colors">
-                          {feature.headlineTamil}
-                        </h3>
-
-                        {/* English Headline */}
-                        <h4 className="font-sans font-normal text-xs sm:text-sm text-stone-300 mb-3 line-clamp-2 leading-relaxed">
-                          {feature.headlineEnglish}
-                        </h4>
-
-                        {/* Summary */}
-                        <p className="text-xs text-stone-400 leading-relaxed line-clamp-3 mb-4 font-normal border-t border-stone-800/70 pt-2.5">
-                          {feature.summary}
-                        </p>
-                      </div>
-
-                      {/* Action Link */}
-                      <div className="pt-2 flex items-center justify-between text-xs font-mono text-[#c5a880] group-hover:text-white transition-colors border-t border-stone-800/50">
-                        <span>READ ARTICLE &amp; STORY</span>
-                        <span className="text-sm group-hover:translate-x-1 transition-transform">→</span>
-                      </div>
-                    </div>
-                  </motion.div>
+                    feature={feature}
+                    idx={idx}
+                    onSelect={handleSelectFeature}
+                  />
                 ))}
               </motion.div>
 
@@ -830,3 +847,5 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
     </div>
   );
 };
+
+export default FeaturedMedia;

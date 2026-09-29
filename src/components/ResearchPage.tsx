@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PDF_PUBLICATIONS, PdfPublication } from '../data/pdfPublicationsData';
 import { 
@@ -29,6 +29,14 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedPdf, setSelectedPdf] = useState<PdfPublication | null>(null);
+
+  const handleOpenPdf = useCallback((paper: PdfPublication) => {
+    setSelectedPdf(paper);
+  }, []);
+
+  const handleClosePdf = useCallback(() => {
+    setSelectedPdf(null);
+  }, []);
 
   // Keyboard navigation & modal shortcuts
   useEffect(() => {
@@ -77,7 +85,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#173841]/80">
           <button
             onClick={onBackToPortfolio}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0a181c]/95 hover:bg-[#12272e] text-stone-300 hover:text-white border border-[#173841] text-xs font-mono font-medium cursor-pointer backdrop-blur-md tactile-btn"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0a181c]/95 hover:bg-[#12272e] text-stone-300 hover:text-white border border-[#173841] text-xs font-mono font-medium cursor-pointer tactile-btn"
           >
             <ArrowLeft className="w-4 h-4 text-[#e0ad5b]" />
             <span>Back to Scientific Journey</span>
@@ -104,7 +112,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search paper title, species, journal, year..."
-                className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#0a181c]/95 backdrop-blur-md border border-[#173841] text-stone-200 placeholder-stone-400 text-xs font-mono focus:outline-none focus:border-[#e0ad5b] focus:ring-1 focus:ring-[#e0ad5b]/30 transition-colors shadow-lg"
+                className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#0a181c]/95 border border-[#173841] text-stone-200 placeholder-stone-400 text-xs font-mono focus:outline-none focus:border-[#e0ad5b] focus:ring-1 focus:ring-[#e0ad5b]/30 transition-colors shadow-lg"
               />
               {searchQuery && (
                 <button
@@ -133,7 +141,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                 className={`px-4 py-2.5 rounded-xl text-xs font-mono font-medium tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border tactile-btn ${
                   isActive
                     ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-sm'
-                    : 'bg-[#0c1f26]/95 backdrop-blur-md text-stone-100 font-semibold border-[#265360] hover:border-[#e0ad5b]/80 hover:text-white hover:bg-[#122e38]'
+                    : 'bg-[#0c1f26]/95 text-stone-100 font-semibold border-[#265360] hover:border-[#e0ad5b]/80 hover:text-white hover:bg-[#122e38]'
                 }`}
               >
                 <span>{cat}</span>
@@ -151,7 +159,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
 
         {/* Empty Search Result */}
         {filteredPapers.length === 0 ? (
-          <div className="text-center py-20 bg-[#0a181c]/95 backdrop-blur-md rounded-3xl border border-[#173841] my-8">
+          <div className="text-center py-20 bg-[#0a181c]/95 rounded-3xl border border-[#173841] my-8">
             <FileText className="w-12 h-12 text-stone-500 mx-auto mb-3" />
             <h3 className="text-lg font-serif font-medium text-stone-200 mb-1">No research papers match your query</h3>
             <p className="text-stone-400 text-xs font-mono">Try clearing your search query or selecting a different category filter.</p>
@@ -205,7 +213,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                     ariaLabel={`Research paper: ${paper.title}`}
                     className="w-full h-[370px]"
                     front={
-                      <div className="w-full h-full p-6 flex flex-col justify-between bg-[#0a181c]/95 backdrop-blur-md border border-[#173841]/80 hover:border-[#e0ad5b]/80 rounded-2xl transition-all duration-300 shadow-[0_12px_32px_rgba(0,0,0,0.75)]">
+                      <div className="w-full h-full p-6 flex flex-col justify-between bg-[#0a181c]/95 border border-[#173841]/80 hover:border-[#e0ad5b]/80 rounded-2xl transition-all duration-300 shadow-[0_12px_32px_rgba(0,0,0,0.75)]">
                         <div>
                           {/* Category Tag & Year Row */}
                           <div className="flex items-center justify-between gap-2 mb-3">

@@ -79,7 +79,7 @@ export const ScubaGallery: React.FC<ScubaGalleryProps> = ({ onViewScubaArchive }
                   className={`px-4 py-2.5 rounded-xl font-sans text-xs tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border tactile-btn ${
                     isActive
                       ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-sm'
-                      : 'bg-[#0c1f26]/95 backdrop-blur-md text-slate-100 font-semibold border-[#265360] hover:border-[#e0ad5b]/80 hover:text-white hover:bg-[#122e38]'
+                      : 'bg-[#0c1f26]/95 text-slate-100 font-semibold border-[#265360] hover:border-[#e0ad5b]/80 hover:text-white hover:bg-[#122e38]'
                   }`}
                 >
                   <span>{tab.label}</span>
@@ -103,7 +103,7 @@ export const ScubaGallery: React.FC<ScubaGalleryProps> = ({ onViewScubaArchive }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search species, taxonomy, location..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0c1f26]/95 backdrop-blur-md border border-[#265360] text-slate-100 placeholder-slate-400 text-xs font-mono focus:outline-none focus:border-[#e0ad5b] focus:ring-1 focus:ring-[#e0ad5b]/40 transition-all shadow-md"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0c1f26]/95 border border-[#265360] text-slate-100 placeholder-slate-400 text-xs font-mono focus:outline-none focus:border-[#e0ad5b] focus:ring-1 focus:ring-[#e0ad5b]/40 transition-all shadow-md"
             />
             {searchQuery && (
               <button

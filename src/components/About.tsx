@@ -211,6 +211,8 @@ export const About: React.FC<AboutProps> = ({
                     <img
                       src={photo.url}
                       alt={photo.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent" />
@@ -247,6 +249,8 @@ export const About: React.FC<AboutProps> = ({
                       <img
                         src={photo.url}
                         alt={photo.title}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
@@ -508,7 +512,7 @@ export const About: React.FC<AboutProps> = ({
                       ariaLabel={`Research paper: ${paper.title}`}
                       className="w-full h-full"
                       front={
-                        <div className="w-full h-full p-6 flex flex-col justify-between bg-[#0a181c]/95 backdrop-blur-md border border-[#173841]/80 hover:border-[#e0ad5b]/80 rounded-2xl transition-all duration-300 shadow-[0_12px_32px_rgba(0,0,0,0.75)]">
+                        <div className="w-full h-full p-6 flex flex-col justify-between bg-[#0a181c]/95 border border-[#173841]/80 hover:border-[#e0ad5b]/80 rounded-2xl transition-all duration-300 shadow-[0_12px_32px_rgba(0,0,0,0.75)]">
                           <div>
                             <div className="flex items-center justify-between gap-2 mb-3">
                               <span className="px-2.5 py-0.5 rounded-md bg-[#10242a] text-[#e0ad5b] text-[11px] font-mono font-semibold border border-[#1b434e] uppercase tracking-wider">
@@ -597,11 +601,11 @@ export const About: React.FC<AboutProps> = ({
             <div className="w-full max-w-6xl mx-auto h-[460px] sm:h-[500px]">
               <AccordionGallery
                 items={[
-                  { image: getAssetUrl('/mass/DSCN0271.jpg'), label: 'Expedition' },
-                  { image: getAssetUrl('/mass/IMG-20260413-WA0026.jpg'), label: 'Field Documentation' },
-                  { image: getAssetUrl('/mass/IMG-20260413-WA0126.jpg'), label: 'Research' },
-                  { image: getAssetUrl('/mass/IMG_20181011_165356.jpg'), label: 'Specimen Collection' },
-                  { image: getAssetUrl('/mass/Wall (1).jpg'), label: 'Field Site' }
+                  { image: getAssetUrl('/mass/DSCN0271.webp'), label: 'Expedition' },
+                  { image: getAssetUrl('/mass/IMG-20260413-WA0026.webp'), label: 'Field Documentation' },
+                  { image: getAssetUrl('/mass/IMG-20260413-WA0126.webp'), label: 'Research' },
+                  { image: getAssetUrl('/mass/IMG_20181011_165356.webp'), label: 'Specimen Collection' },
+                  { image: getAssetUrl('/mass/Wall (1).webp'), label: 'Field Site' }
                 ]}
                 defaultIndex={2}
                 expandRatio={0.52}

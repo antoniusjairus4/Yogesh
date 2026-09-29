@@ -67,7 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-out pt-[env(safe-area-inset-top)] bg-[#040917]/95 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.7)]"
+      className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-out pt-[env(safe-area-inset-top)] bg-[#050b14]/95 border-b border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.7)]"
     >
       <div className="max-w-[1240px] mx-auto px-4 sm:px-8 w-full h-16 sm:h-18 flex items-center justify-between">
         

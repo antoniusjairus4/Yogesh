@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -21,6 +21,83 @@ interface ScubaArchivePageProps {
   onBackToPortfolio: () => void;
   initialPhotoId?: string | null;
 }
+
+const ScubaPhotoCard = React.memo<{
+  photo: ScubaPhoto;
+  idx: number;
+  onOpenLightbox: (photo: ScubaPhoto) => void;
+}>(({ photo, idx, onOpenLightbox }) => {
+  const handleClick = useCallback(() => {
+    onOpenLightbox(photo);
+  }, [photo, onOpenLightbox]);
+
+  return (
+    <motion.div
+      layout
+      key={photo.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.35, delay: Math.min(idx * 0.03, 0.4) }}
+      onClick={handleClick}
+      className="group relative bg-slate-900/90 border border-slate-800/80 rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-1.5 hover:border-slate-700 transition-all duration-300 shadow-lg hover:shadow-2xl flex flex-col w-full h-full"
+    >
+      <div className="relative overflow-hidden bg-slate-950 shrink-0 w-full h-[260px] sm:h-[280px] lg:h-[300px]">
+        <img
+          src={photo.url}
+          alt={photo.title}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+        />
+        
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/15 to-transparent opacity-80" />
+        
+        <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2 pointer-events-none z-10">
+          {photo.depth ? (
+            <span className="px-2.5 py-1 rounded-md bg-slate-950/90 text-xs font-mono font-medium text-slate-200 border border-white/10 shadow-sm">
+              Depth: {photo.depth}
+            </span>
+          ) : <span />}
+
+          <div className="p-2 rounded-md bg-slate-950/90 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/10 shadow-sm">
+            <Maximize2 className="w-4 h-4" />
+          </div>
+        </div>
+      </div>
+
+      <div className="p-5 sm:p-6 bg-slate-900/90 flex flex-col justify-between flex-grow border-t border-slate-800/80">
+        <div>
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <span className="px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-300 text-xs font-medium uppercase tracking-wide border border-slate-700/60">
+              {photo.category}
+            </span>
+            {photo.location && (
+              <span className="text-xs text-slate-400 flex items-center gap-1.5 font-normal truncate max-w-[160px]">
+                <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                <span className="truncate">{photo.location}</span>
+              </span>
+            )}
+          </div>
+
+          <h3 className="font-serif font-semibold text-lg sm:text-xl text-slate-100 group-hover:text-white transition-colors leading-snug mb-1">
+            {photo.title}
+          </h3>
+
+          {photo.scientificName && (
+            <p className="text-sm text-slate-400 italic font-serif font-normal mb-2">
+              {photo.scientificName}
+            </p>
+          )}
+
+          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-normal font-sans line-clamp-3">
+            {photo.description}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+});
 
 export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({ 
   onBackToPortfolio,
@@ -73,13 +150,6 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activePhotoIndex]);
 
-  const handleOpenLightbox = (photo: ScubaPhoto) => {
-    const index = filteredPhotos.findIndex((p) => p.id === photo.id);
-    if (index !== -1) {
-      setActivePhotoIndex(index);
-    }
-  };
-
   const handlePrevPhoto = () => {
     if (activePhotoIndex === null) return;
     setActivePhotoIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : filteredPhotos.length - 1));
@@ -89,6 +159,13 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
     if (activePhotoIndex === null) return;
     setActivePhotoIndex((prev) => (prev !== null && prev < filteredPhotos.length - 1 ? prev + 1 : 0));
   };
+
+  const handleOpenLightbox = useCallback((photo: ScubaPhoto) => {
+    const index = filteredPhotos.findIndex((p) => p.id === photo.id);
+    if (index !== -1) {
+      setActivePhotoIndex(index);
+    }
+  }, [filteredPhotos]);
 
   const currentPhoto = activePhotoIndex !== null ? filteredPhotos[activePhotoIndex] : null;
 
@@ -101,7 +178,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-800">
           <button
             onClick={onBackToPortfolio}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs font-mono font-medium cursor-pointer backdrop-blur-md tactile-btn"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs font-mono font-medium cursor-pointer tactile-btn"
           >
             <ArrowLeft className="w-4 h-4 text-[#e0ad5b]" />
             <span>Back to Scientific Journey</span>
@@ -133,7 +210,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search species, taxonomy, location..."
-                className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#0c1f26]/95 backdrop-blur-md border border-[#265360] text-slate-100 placeholder-slate-400 text-xs font-mono focus:outline-none focus:border-[#e0ad5b] focus:ring-1 focus:ring-[#e0ad5b]/40 transition-all shadow-md"
+                className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#0c1f26]/95 border border-[#265360] text-slate-100 placeholder-slate-400 text-xs font-mono focus:outline-none focus:border-[#e0ad5b] focus:ring-1 focus:ring-[#e0ad5b]/40 transition-all shadow-md"
               />
               {searchQuery && (
                 <button
@@ -163,7 +240,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
                 className={`px-4 py-2.5 rounded-xl font-sans text-xs tracking-wide transition-all shrink-0 cursor-pointer flex items-center gap-2 border tactile-btn ${
                   isActive
                     ? 'bg-[#e0ad5b] text-[#050e11] font-bold border-[#e0ad5b] shadow-sm'
-                    : 'bg-[#0c1f26]/95 backdrop-blur-md text-slate-100 font-semibold border-[#265360] hover:border-[#e0ad5b]/80 hover:text-white hover:bg-[#122e38]'
+                    : 'bg-[#0c1f26]/95 text-slate-100 font-semibold border-[#265360] hover:border-[#e0ad5b]/80 hover:text-white hover:bg-[#122e38]'
                 }`}
               >
                 <span>{tab.label}</span>
@@ -199,73 +276,12 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full"
           >
             {filteredPhotos.map((photo, idx) => (
-              <motion.div
-                layout
+              <ScubaPhotoCard
                 key={photo.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.35, delay: Math.min(idx * 0.03, 0.4) }}
-                onClick={() => handleOpenLightbox(photo)}
-                className="group relative bg-slate-900/90 border border-slate-800/80 rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-1.5 hover:border-slate-700 transition-all duration-300 shadow-lg hover:shadow-2xl flex flex-col w-full h-full"
-              >
-                {/* Image Container */}
-                <div className="relative overflow-hidden bg-slate-950 shrink-0 w-full h-[260px] sm:h-[280px] lg:h-[300px]">
-                  <img
-                    src={photo.url}
-                    alt={photo.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
-                  />
-                  
-                  {/* Overlay Gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/15 to-transparent opacity-80" />
-                  
-                  {/* Top Badges */}
-                  <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2 pointer-events-none z-10">
-                    {photo.depth ? (
-                      <span className="px-2.5 py-1 rounded-md bg-slate-950/80 backdrop-blur-sm text-xs font-mono font-medium text-slate-200 border border-white/10 shadow-sm">
-                        Depth: {photo.depth}
-                      </span>
-                    ) : <span />}
-
-                    <div className="p-2 rounded-md bg-slate-950/80 text-slate-300 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/10 shadow-sm">
-                      <Maximize2 className="w-4 h-4" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Card Metadata Banner */}
-                <div className="p-5 sm:p-6 bg-slate-900/90 flex flex-col justify-between flex-grow border-t border-slate-800/80">
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className="px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-300 text-xs font-medium uppercase tracking-wide border border-slate-700/60">
-                        {photo.category}
-                      </span>
-                      {photo.location && (
-                        <span className="text-xs text-slate-400 flex items-center gap-1.5 font-normal truncate max-w-[160px]">
-                          <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                          <span className="truncate">{photo.location}</span>
-                        </span>
-                      )}
-                    </div>
-
-                    <h3 className="font-serif font-semibold text-lg sm:text-xl text-slate-100 group-hover:text-white transition-colors leading-snug mb-1">
-                      {photo.title}
-                    </h3>
-
-                    {photo.scientificName && (
-                      <p className="text-sm text-slate-400 italic font-serif font-normal mb-2">
-                        {photo.scientificName}
-                      </p>
-                    )}
-
-                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-normal font-sans line-clamp-3">
-                      {photo.description}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
+                photo={photo}
+                idx={idx}
+                onOpenLightbox={handleOpenLightbox}
+              />
             ))}
           </motion.div>
         )}
@@ -323,7 +339,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
                   className="max-w-full max-h-[76vh] object-contain rounded-lg shadow-xl"
                 />
 
-                <div className="absolute bottom-4 left-4 px-3 py-1 rounded-md bg-slate-900/90 backdrop-blur-sm text-xs font-mono font-medium text-slate-300 border border-slate-800">
+                <div className="absolute bottom-4 left-4 px-3 py-1 rounded-md bg-slate-900/95 text-xs font-mono font-medium text-slate-300 border border-slate-800">
                   {activePhotoIndex + 1} / {filteredPhotos.length}
                 </div>
               </div>

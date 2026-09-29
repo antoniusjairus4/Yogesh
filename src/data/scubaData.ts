@@ -14,7 +14,7 @@ export interface ScubaPhoto {
 const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   {
     id: 'photo-1',
-    url: '/Images_gallery/Turtle from Visakhapatnam.jpg',
+    url: '/Images_gallery/Turtle from Visakhapatnam.webp',
     title: 'Sea Turtle Coastal Encounter',
     scientificName: 'Cheloniidae sp.',
     category: 'Fauna',
@@ -24,7 +24,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-2',
-    url: '/Images_gallery/angelfish-blue ringed2.JPG',
+    url: '/Images_gallery/angelfish-blue ringed2.webp',
     title: 'Blue-Ringed Angelfish',
     scientificName: 'Pomacanthus annularis',
     category: 'Fauna',
@@ -34,7 +34,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-3',
-    url: '/Images_gallery/Acanthastrea regularis Veron, 2000,.JPG',
+    url: '/Images_gallery/Acanthastrea regularis Veron, 2000,.webp',
     title: 'Regular Star Coral',
     scientificName: 'Acanthastrea regularis (Veron, 2000)',
     category: 'Corals',
@@ -44,7 +44,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-4',
-    url: '/Images_gallery/Acanthogorgia spinosa Hiles, 1899.JPG',
+    url: '/Images_gallery/Acanthogorgia spinosa Hiles, 1899.webp',
     title: 'Spiny Gorgonian Sea Fan',
     scientificName: 'Acanthogorgia spinosa (Hiles, 1899)',
     category: 'Corals',
@@ -54,7 +54,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-5',
-    url: '/Images_gallery/Annella reticulata (Ellis & Solander, 1786).JPG',
+    url: '/Images_gallery/Annella reticulata (Ellis & Solander, 1786).webp',
     title: 'Reticulated Sea Fan',
     scientificName: 'Annella reticulata (Ellis & Solander, 1786)',
     category: 'Corals',
@@ -64,7 +64,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-6',
-    url: '/Images_gallery/Armina semperi.jpg',
+    url: '/Images_gallery/Armina semperi.webp',
     title: 'Striped Sea Nudibranch',
     scientificName: 'Armina semperi',
     category: 'Fauna',
@@ -74,7 +74,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-7',
-    url: '/Images_gallery/Cavernularia pusilla (Philippi, 1835).JPG',
+    url: '/Images_gallery/Cavernularia pusilla (Philippi, 1835).webp',
     title: 'Benthic Sea Pen',
     scientificName: 'Cavernularia pusilla (Philippi, 1835)',
     category: 'Corals',
@@ -84,7 +84,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-8',
-    url: '/Images_gallery/Cirrhipathes anguina (Dana, 1846).jpg',
+    url: '/Images_gallery/Cirrhipathes anguina (Dana, 1846).webp',
     title: 'Wire Coral Spiral',
     scientificName: 'Cirrhipathes anguina (Dana, 1846)',
     category: 'Corals',
@@ -94,7 +94,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-9',
-    url: '/Images_gallery/Cirrhipathes contorta van Pesch, 1910.jpg',
+    url: '/Images_gallery/Cirrhipathes contorta van Pesch, 1910.webp',
     title: 'Contorted Wire Coral',
     scientificName: 'Cirrhipathes contorta (van Pesch, 1910)',
     category: 'Corals',
@@ -104,7 +104,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-10',
-    url: '/Images_gallery/Cladiella australis (Macfadyen, 1936) a.JPG',
+    url: '/Images_gallery/Cladiella australis (Macfadyen, 1936) a.webp',
     title: 'Blubber Soft Coral',
     scientificName: 'Cladiella australis (Macfadyen, 1936)',
     category: 'Corals',
@@ -114,7 +114,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-11',
-    url: '/Images_gallery/Comanthus parvicirrus.JPG',
+    url: '/Images_gallery/Comanthus parvicirrus.webp',
     title: 'Feather Star Crinoid',
     scientificName: 'Comanthus parvicirrus',
     category: 'Fauna',
@@ -124,7 +124,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-12',
-    url: '/Images_gallery/Dendronephthya persica.JPG',
+    url: '/Images_gallery/Dendronephthya persica.webp',
     title: 'Persian Carnation Coral',
     scientificName: 'Dendronephthya persica',
     category: 'Corals',
@@ -134,7 +134,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-13',
-    url: '/Images_gallery/Dendrophyllia sp (1).JPG',
+    url: '/Images_gallery/Dendrophyllia sp (1).webp',
     title: 'Sun Cup Coral',
     scientificName: 'Dendrophyllia sp.',
     category: 'Corals',
@@ -144,7 +144,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-14',
-    url: '/Images_gallery/Halgerda tessellata (Bergh, 1880).JPG',
+    url: '/Images_gallery/Halgerda tessellata (Bergh, 1880).webp',
     title: 'Tessellated Nudibranch',
     scientificName: 'Halgerda tessellata (Bergh, 1880)',
     category: 'Fauna',
@@ -154,7 +154,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-15',
-    url: '/Images_gallery/Melithaea caledonica (Grasshoff, 1999).JPG',
+    url: '/Images_gallery/Melithaea caledonica (Grasshoff, 1999).webp',
     title: 'Caledonian Gorgonian Fan',
     scientificName: 'Melithaea caledonica (Grasshoff, 1999)',
     category: 'Corals',
@@ -164,7 +164,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-16',
-    url: '/Images_gallery/Montipora florida Nemenzo, 1967 (2).jpg',
+    url: '/Images_gallery/Montipora florida Nemenzo, 1967 (2).webp',
     title: 'Pore Plate Coral',
     scientificName: 'Montipora florida (Nemenzo, 1967)',
     category: 'Corals',
@@ -174,7 +174,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-17',
-    url: '/Images_gallery/Narcine entemedor  Jordan &  Starks,  1895 (1).JPG',
+    url: '/Images_gallery/Narcine entemedor  Jordan &  Starks,  1895 (1).webp',
     title: 'Giant Electric Ray',
     scientificName: 'Narcine entemedor (Jordan & Starks, 1895)',
     category: 'Fauna',
@@ -184,7 +184,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-18',
-    url: '/Images_gallery/Phyllidia ocellata Cuvier, 1804.JPG',
+    url: '/Images_gallery/Phyllidia ocellata Cuvier, 1804.webp',
     title: 'Ocellated Nudibranch',
     scientificName: 'Phyllidia ocellata (Cuvier, 1804)',
     category: 'Fauna',
@@ -194,7 +194,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-19',
-    url: '/Images_gallery/Spirobranchus giganteus (Pallas, 1766).JPG',
+    url: '/Images_gallery/Spirobranchus giganteus (Pallas, 1766).webp',
     title: 'Christmas Tree Worm',
     scientificName: 'Spirobranchus giganteus (Pallas, 1766)',
     category: 'Fauna',
@@ -204,7 +204,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-20',
-    url: '/Images_gallery/Stichopathes solorensis van Pesch, 1914.jpg',
+    url: '/Images_gallery/Stichopathes solorensis van Pesch, 1914.webp',
     title: 'Black Whip Coral',
     scientificName: 'Stichopathes solorensis (van Pesch, 1914)',
     category: 'Corals',
@@ -214,7 +214,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-21',
-    url: '/Images_gallery/DSC00540.JPG',
+    url: '/Images_gallery/DSC00540.webp',
     title: 'Reef Biodiversity Survey',
     category: 'Expeditions',
     location: 'Marine Sanctuary Zone',
@@ -223,7 +223,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-22',
-    url: '/Images_gallery/DSC00996.JPG',
+    url: '/Images_gallery/DSC00996.webp',
     title: 'Submerged Coral Pinnacle',
     category: 'Expeditions',
     location: 'Offshore Reef Apex',
@@ -232,7 +232,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-23',
-    url: '/Images_gallery/DSC03389.JPG',
+    url: '/Images_gallery/DSC03389.webp',
     title: 'Deep Reef Ecosystem Mapping',
     category: 'Expeditions',
     location: 'Benthic Mapping Transect',
@@ -241,7 +241,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-24',
-    url: '/Images_gallery/DSC03435.JPG',
+    url: '/Images_gallery/DSC03435.webp',
     title: 'Coral Colony Assessment',
     category: 'Expeditions',
     location: 'Marine Protected Area',
@@ -250,7 +250,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-25',
-    url: '/Images_gallery/DSC06790.JPG',
+    url: '/Images_gallery/DSC06790.webp',
     title: 'Submerged Habitats & Fauna',
     category: 'Expeditions',
     location: 'Island Archipelago Waters',
@@ -259,7 +259,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-27',
-    url: '/Images_gallery/DSCN1156.JPG',
+    url: '/Images_gallery/DSCN1156.webp',
     title: 'Benthic Marine Transect',
     category: 'Expeditions',
     location: 'Coastal Coral Slope',
@@ -268,7 +268,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-28',
-    url: '/Images_gallery/DSCN1201.JPG',
+    url: '/Images_gallery/DSCN1201.webp',
     title: 'Macro Reef Life Observation',
     category: 'Expeditions',
     location: 'Shallow Patch Reef',
@@ -277,7 +277,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-29',
-    url: '/Images_gallery/DSCN1253.JPG',
+    url: '/Images_gallery/DSCN1253.webp',
     title: 'Subsurface Coral Structural Survey',
     category: 'Expeditions',
     location: 'Reef Crest Transect',
@@ -286,7 +286,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-30',
-    url: '/Images_gallery/DSCN1359.JPG',
+    url: '/Images_gallery/DSCN1359.webp',
     title: 'Marine Fauna & Benthos',
     category: 'Expeditions',
     location: 'Offshore Shoal',
@@ -295,7 +295,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-31',
-    url: '/Images_gallery/DSCN1405.JPG',
+    url: '/Images_gallery/DSCN1405.webp',
     title: 'Octocoral Reef Community',
     category: 'Corals',
     location: 'Current-Swept Slope',
@@ -304,7 +304,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-32',
-    url: '/Images_gallery/DSCN1444.JPG',
+    url: '/Images_gallery/DSCN1444.webp',
     title: 'Reef Slope Substrate Analysis',
     category: 'Expeditions',
     location: 'Deep Reef Slope',
@@ -313,7 +313,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-33',
-    url: '/Images_gallery/DSCN1475.JPG',
+    url: '/Images_gallery/DSCN1475.webp',
     title: 'Submerged Wall Documentation',
     category: 'Expeditions',
     location: 'Vertical Coral Wall',
@@ -322,7 +322,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-34',
-    url: '/Images_gallery/DSCN5887.JPG',
+    url: '/Images_gallery/DSCN5887.webp',
     title: 'Pristine Coral Sanctuary',
     category: 'Expeditions',
     location: 'Andaman & Nicobar Waters',
@@ -331,7 +331,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-35',
-    url: '/Images_gallery/DSCN5896.JPG',
+    url: '/Images_gallery/DSCN5896.webp',
     title: 'Massive Coral Structure',
     category: 'Corals',
     location: 'Deep Lagoon Passage',
@@ -340,7 +340,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-36',
-    url: '/Images_gallery/DSCN5911.JPG',
+    url: '/Images_gallery/DSCN5911.webp',
     title: 'Macro Benthic Details',
     category: 'Expeditions',
     location: 'Coral Rubble Field',
@@ -349,7 +349,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-37',
-    url: '/Images_gallery/DSCN5932.JPG',
+    url: '/Images_gallery/DSCN5932.webp',
     title: 'Oceanic Reef Slope Survey',
     category: 'Expeditions',
     location: 'Outer Barrier Reef',
@@ -358,7 +358,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-38',
-    url: '/Images_gallery/DSCN7220.JPG',
+    url: '/Images_gallery/DSCN7220.webp',
     title: 'Bioluminescent Reef Haven',
     category: 'Expeditions',
     location: 'Deep Reef Drop-off',
@@ -367,7 +367,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-39',
-    url: '/Images_gallery/G0140863.JPG',
+    url: '/Images_gallery/G0140863.webp',
     title: 'Action Underwater Exploration',
     category: 'Expeditions',
     location: 'Active Dive Site',
@@ -376,7 +376,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-40',
-    url: '/Images_gallery/IMG_0324.JPG',
+    url: '/Images_gallery/IMG_0324.webp',
     title: 'Marine Ecosystem Survey',
     category: 'Expeditions',
     location: 'Fringing Reef Zone',
@@ -385,7 +385,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-41',
-    url: '/Images_gallery/IMG_2271.JPG',
+    url: '/Images_gallery/IMG_2271.webp',
     title: 'Subsurface Exploration Log',
     category: 'Expeditions',
     location: 'Coastal Water Reserve',
@@ -394,7 +394,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-42',
-    url: '/Images_gallery/IMG_3031.JPG',
+    url: '/Images_gallery/IMG_3031.webp',
     title: 'Submerged Pinnacle Habitat',
     category: 'Expeditions',
     location: 'Submerged Pinnacle',
@@ -403,7 +403,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-43',
-    url: '/Images_gallery/IMG_3108.JPG',
+    url: '/Images_gallery/IMG_3108.webp',
     title: 'Tropical Reef Canopy',
     category: 'Corals',
     location: 'Shallow Reef Crest',
@@ -412,7 +412,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-44',
-    url: '/Images_gallery/IMG_8791.jpg',
+    url: '/Images_gallery/IMG_8791.webp',
     title: 'Benthic Species Macro Log',
     category: 'Fauna',
     location: 'Deep Sand Patch',
@@ -421,7 +421,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-45',
-    url: '/Images_gallery/IMG_9468.jpg',
+    url: '/Images_gallery/IMG_9468.webp',
     title: 'Deep Ocean Coral Survey',
     category: 'Corals',
     location: 'Deep Shelf Transect',
@@ -430,7 +430,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-46',
-    url: '/Images_gallery/20230921_092319.jpg',
+    url: '/Images_gallery/20230921_092319.webp',
     title: 'Field Dive Operation 2023',
     category: 'Expeditions',
     location: 'National Marine Survey Site',
@@ -439,7 +439,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-47',
-    url: '/Images_gallery/236_3628.JPG',
+    url: '/Images_gallery/236_3628.webp',
     title: 'Invertebrate Habitat Record',
     category: 'Fauna',
     location: 'Reef Crevice',
@@ -448,7 +448,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-48',
-    url: '/Images_gallery/Cavernularia pusilla.JPG',
+    url: '/Images_gallery/Cavernularia pusilla.webp',
     title: 'Cavernularia pusilla',
     scientificName: 'Cavernularia pusilla',
     category: 'Corals',
@@ -458,7 +458,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-49',
-    url: '/Images_gallery/Cephalopholis formosa (Shaw, 1812).JPG',
+    url: '/Images_gallery/Cephalopholis formosa (Shaw, 1812).webp',
     title: 'Bluelined Hind',
     scientificName: 'Cephalopholis formosa (Shaw, 1812)',
     category: 'Fauna',
@@ -468,7 +468,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-50',
-    url: '/Images_gallery/Chaetodon deccusatus Cuvier, 1829.JPG',
+    url: '/Images_gallery/Chaetodon deccusatus Cuvier, 1829.webp',
     title: 'Indian Vagabond Butterflyfish',
     scientificName: 'Chaetodon deccusatus Cuvier, 1829',
     category: 'Fauna',
@@ -478,7 +478,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-51',
-    url: '/Images_gallery/Dendronephthya.JPG',
+    url: '/Images_gallery/Dendronephthya.webp',
     title: 'Dendronephthya Soft Coral',
     scientificName: 'Dendronephthya sp.',
     category: 'Corals',
@@ -488,7 +488,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-52',
-    url: '/Images_gallery/Diodon hystrix Linnaeus, 1758.JPG',
+    url: '/Images_gallery/Diodon hystrix Linnaeus, 1758.webp',
     title: 'Spot-fin Porcupinefish',
     scientificName: 'Diodon hystrix Linnaeus, 1758',
     category: 'Fauna',
@@ -498,7 +498,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-53',
-    url: '/Images_gallery/Gymnothorax favagineus Bloch, Schneider, 1801.JPG',
+    url: '/Images_gallery/Gymnothorax favagineus Bloch, Schneider, 1801.webp',
     title: 'Laced Moray Eel',
     scientificName: 'Gymnothorax favagineus Bloch, Schneider, 1801',
     category: 'Fauna',
@@ -508,7 +508,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-54',
-    url: '/Images_gallery/IMG_3100.JPG',
+    url: '/Images_gallery/IMG_3100.webp',
     title: 'Reef Ecology Survey',
     category: 'Expeditions',
     location: 'Fringing Reef Zone',
@@ -517,7 +517,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-55',
-    url: '/Images_gallery/Isis hippuris.JPG',
+    url: '/Images_gallery/Isis hippuris.webp',
     title: 'Golden Sea Fan',
     scientificName: 'Isis hippuris',
     category: 'Corals',
@@ -527,7 +527,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-56',
-    url: '/Images_gallery/P4180346.JPG',
+    url: '/Images_gallery/P4180346.webp',
     title: 'Benthic Fauna Documentation',
     category: 'Expeditions',
     location: 'Submerged Pinnacle',
@@ -536,7 +536,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-57',
-    url: '/Images_gallery/P4180357.JPG',
+    url: '/Images_gallery/P4180357.webp',
     title: 'Deep Water Exploration',
     category: 'Expeditions',
     location: 'Oceanic Drop-Off',
@@ -545,7 +545,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-58',
-    url: '/Images_gallery/P4180358.JPG',
+    url: '/Images_gallery/P4180358.webp',
     title: 'Marine Sanctuary Documentation',
     category: 'Expeditions',
     location: 'Marine Protected Area',
@@ -554,7 +554,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-59',
-    url: '/Images_gallery/Platax teira (Forsskal, 1775).JPG',
+    url: '/Images_gallery/Platax teira (Forsskal, 1775).webp',
     title: 'Longfin Batfish',
     scientificName: 'Platax teira (Forsskal, 1775)',
     category: 'Fauna',
@@ -564,7 +564,7 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   },
   {
     id: 'photo-60',
-    url: '/Images_gallery/Torpedo marmorata Risso, 1810.JPG',
+    url: '/Images_gallery/Torpedo marmorata Risso, 1810.webp',
     title: 'Marbled Electric Ray',
     scientificName: 'Torpedo marmorata Risso, 1810',
     category: 'Fauna',

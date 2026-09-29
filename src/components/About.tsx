@@ -142,17 +142,51 @@ export const About: React.FC<AboutProps> = ({
     return 'blur-none opacity-100 scale-100 border-white/15 hover:border-white/40 transition-all duration-500 ease-out cursor-pointer';
   };
 
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.playsInline = true;
+      videoRef.current.play().catch(() => {});
+    }
+
+    const handleTouchStart = () => {
+      if (videoRef.current && videoRef.current.paused) {
+        videoRef.current.muted = true;
+        videoRef.current.play().catch(() => {});
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true, once: true });
+    window.addEventListener('scroll', handleTouchStart, { passive: true, once: true });
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('scroll', handleTouchStart);
+    };
+  }, []);
+
   return (
     <div className="relative w-full h-screen overflow-hidden bg-slate-950 text-slate-100 z-20">
       
       {/* 1. FIXED BACKGROUND VIDEO (Stationary full-bleed behind entire page) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video
+          ref={videoRef}
           className="w-full h-full object-cover object-center transform scale-105 sm:scale-110 origin-center filter brightness-110 contrast-105"
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
+          onLoadedMetadata={(e) => {
+            e.currentTarget.muted = true;
+            e.currentTarget.play().catch(() => {});
+          }}
+          onCanPlay={(e) => {
+            e.currentTarget.muted = true;
+            e.currentTarget.play().catch(() => {});
+          }}
           onEnded={(e) => {
             e.currentTarget.currentTime = 0;
             e.currentTarget.play().catch(() => {});

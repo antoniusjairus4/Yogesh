@@ -246,6 +246,15 @@ export const ScrollExpand: React.FC<ScrollExpandProps> = ({
         muted
         loop
         playsInline
+        preload="auto"
+        onLoadedMetadata={(e) => {
+          e.currentTarget.muted = true;
+          e.currentTarget.play().catch(() => {});
+        }}
+        onCanPlay={(e) => {
+          e.currentTarget.muted = true;
+          e.currentTarget.play().catch(() => {});
+        }}
       />
     ) : (
       <img

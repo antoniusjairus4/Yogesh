@@ -105,10 +105,24 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
-      video.play().catch(() => {
-        console.log("Autoplay policy handled");
-      });
+      video.muted = true;
+      video.playsInline = true;
+      video.play().catch(() => {});
     }
+
+    const handleTouchStart = () => {
+      if (videoRef.current && videoRef.current.paused) {
+        videoRef.current.muted = true;
+        videoRef.current.play().catch(() => {});
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true, once: true });
+    window.addEventListener('scroll', handleTouchStart, { passive: true, once: true });
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('scroll', handleTouchStart);
+    };
   }, [videoRef]);
 
   const words = FULL_NAME.split(" ");
@@ -125,8 +139,16 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
           autoPlay
           muted
           playsInline
-          loop={false}
+          preload="auto"
           poster={getAssetUrl("/portfolio/poster.webp")}
+          onLoadedMetadata={(e) => {
+            e.currentTarget.muted = true;
+            e.currentTarget.play().catch(() => {});
+          }}
+          onCanPlay={(e) => {
+            e.currentTarget.muted = true;
+            e.currentTarget.play().catch(() => {});
+          }}
           onEnded={() => setIsVideoEnded(true)}
         >
           <source src={getAssetUrl("/videos/Yogesh_landing.mp4")} type="video/mp4" />

@@ -169,7 +169,7 @@ export const About: React.FC<AboutProps> = ({
       {/* 2. FOREGROUND SCROLLABLE CONTAINER */}
       <div 
         ref={scrollableContentRef} 
-        className="relative z-10 w-full h-full overflow-y-auto pt-24 pb-36 px-4 sm:px-8 lg:px-12 scroll-smooth custom-scrollbar"
+        className="relative z-10 w-full h-full overflow-y-auto pt-24 pb-0 px-4 sm:px-8 lg:px-12 scroll-smooth custom-scrollbar"
       >
         <div className="max-w-[1400px] mx-auto w-full">
               {/* Header */}
@@ -594,12 +594,6 @@ export const About: React.FC<AboutProps> = ({
             </div>
           </motion.div>
 
-        </div> {/* End of max-w inner container */}
-
-        {/* BOTTOM BLACK BACKGROUND SECTION */}
-        <div className="w-full bg-[#000000] relative z-20">
-          <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 lg:px-12 pb-36">
-
           {/* Footer Contact Section with Interactive FolderFloat */}
           <motion.div
             id="contact"
@@ -607,7 +601,7 @@ export const About: React.FC<AboutProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mt-32 pt-16 border-t border-white/10 flex flex-col items-center justify-center text-center pb-32"
+            className="mt-32 pt-16 border-t border-white/10 flex flex-col items-center justify-center text-center pb-20"
           >
             <h3 className="font-outfit font-black text-2xl sm:text-4xl text-white tracking-tight mb-2">
               Contact &amp; Academic Profiles
@@ -616,7 +610,7 @@ export const About: React.FC<AboutProps> = ({
               Click the directory folder below to reveal direct contact channels, phone, email, and scientific research networks.
             </p>
 
-            <div className="relative mt-44 sm:mt-52 mb-12 flex items-center justify-center min-h-[340px]">
+            <div className="relative mt-64 sm:mt-80 flex items-center justify-center">
               <FolderFloat
                 label="Contact Profiles"
                 sublabel="Click to reveal 5 links"
@@ -654,8 +648,7 @@ export const About: React.FC<AboutProps> = ({
             </div>
           </motion.div>
 
-          </div> {/* End of max-w for black background */}
-        </div> {/* End of black background wrapper */}
+        </div> {/* End of max-w inner container */}
 
       </div>
 

@@ -228,14 +228,16 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
             <GlassSurface
               width="100%"
               height="auto"
-              borderRadius={24}
+              borderRadius={28}
+              borderWidth={0.22}
+              displace={3}
               backgroundOpacity={0.08}
               brightness={45}
               blur={12}
-              distortionScale={-140}
+              distortionScale={-160}
               redOffset={4}
-              greenOffset={12}
-              blueOffset={24}
+              greenOffset={14}
+              blueOffset={28}
               mixBlendMode="screen"
               className="w-full text-center lg:text-left"
             >

@@ -119,15 +119,14 @@ export const App: React.FC = () => {
         <motion.div
           initial={false}
           animate={{
-            scale: activePage === 1 ? 1 : 0.94,
+            scale: activePage === 1 ? 1 : 0.96,
             opacity: activePage === 1 ? 1 : 0,
-            filter: activePage === 1 ? 'blur(0px)' : 'blur(16px)',
           }}
           transition={{
-            duration: 1.1,
+            duration: 0.8,
             ease: [0.22, 1, 0.36, 1],
           }}
-          style={{ willChange: 'transform, opacity, filter' }}
+          style={{ willChange: 'transform, opacity' }}
           className={`absolute inset-0 z-10 w-full h-full flex items-center justify-center origin-center transform-gpu ${
             activePage === 1 ? 'pointer-events-auto' : 'pointer-events-none'
           }`}
@@ -156,15 +155,14 @@ export const App: React.FC = () => {
         <motion.div
           initial={false}
           animate={{
-            scale: activePage === 2 ? 1 : 0.9,
+            scale: activePage === 2 ? 1 : 0.95,
             opacity: activePage === 2 ? 1 : 0,
-            filter: activePage === 2 ? 'blur(0px)' : 'blur(12px)',
           }}
           transition={{
-            duration: 1.1,
+            duration: 0.8,
             ease: [0.22, 1, 0.36, 1],
           }}
-          style={{ willChange: 'transform, opacity, filter' }}
+          style={{ willChange: 'transform, opacity' }}
           className={`absolute inset-0 z-20 w-full h-full overflow-hidden origin-center transform-gpu ${
             activePage === 2 ? 'pointer-events-auto' : 'pointer-events-none'
           }`}
@@ -185,15 +183,14 @@ export const App: React.FC = () => {
         <motion.div
           initial={false}
           animate={{
-            scale: activePage === 3 ? 1 : 0.9,
+            scale: activePage === 3 ? 1 : 0.95,
             opacity: activePage === 3 ? 1 : 0,
-            filter: activePage === 3 ? 'blur(0px)' : 'blur(12px)',
           }}
           transition={{
-            duration: 1.1,
+            duration: 0.8,
             ease: [0.22, 1, 0.36, 1],
           }}
-          style={{ willChange: 'transform, opacity, filter' }}
+          style={{ willChange: 'transform, opacity' }}
           className={`absolute inset-0 z-30 w-full h-full overflow-hidden origin-center transform-gpu ${
             activePage === 3 ? 'pointer-events-auto' : 'pointer-events-none'
           }`}
@@ -221,15 +218,14 @@ export const App: React.FC = () => {
         <motion.div
           initial={false}
           animate={{
-            scale: activePage === 4 ? 1 : 0.9,
+            scale: activePage === 4 ? 1 : 0.95,
             opacity: activePage === 4 ? 1 : 0,
-            filter: activePage === 4 ? 'blur(0px)' : 'blur(12px)',
           }}
           transition={{
-            duration: 1.1,
+            duration: 0.8,
             ease: [0.22, 1, 0.36, 1],
           }}
-          style={{ willChange: 'transform, opacity, filter' }}
+          style={{ willChange: 'transform, opacity' }}
           className={`absolute inset-0 z-40 w-full h-full overflow-y-auto origin-center transform-gpu ${
             activePage === 4 ? 'pointer-events-auto' : 'pointer-events-none'
           }`}
@@ -257,15 +253,14 @@ export const App: React.FC = () => {
         <motion.div
           initial={false}
           animate={{
-            scale: activePage === 5 ? 1 : 0.9,
+            scale: activePage === 5 ? 1 : 0.95,
             opacity: activePage === 5 ? 1 : 0,
-            filter: activePage === 5 ? 'blur(0px)' : 'blur(12px)',
           }}
           transition={{
-            duration: 1.1,
+            duration: 0.8,
             ease: [0.22, 1, 0.36, 1],
           }}
-          style={{ willChange: 'transform, opacity, filter' }}
+          style={{ willChange: 'transform, opacity' }}
           className={`absolute inset-0 z-45 w-full h-full overflow-y-auto origin-center transform-gpu ${
             activePage === 5 ? 'pointer-events-auto' : 'pointer-events-none'
           }`}

@@ -111,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }
           aria-expanded={isMobileOpen}
           aria-controls="mobile-menu-overlay"
           aria-label={isMobileOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-          className="md:hidden p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-100 hover:text-white bg-white/10 rounded-xl hover:bg-white/20 transition-colors focus:outline-none"
+          className="md:hidden p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-100 hover:text-white bg-white/10 rounded-xl hover:bg-white/20 transition-colors focus:outline-none"
         >
           {isMobileOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
         </button>
@@ -133,7 +133,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }
               type="button"
               onClick={() => setIsMobileOpen(false)}
               aria-label="Close menu"
-              className="absolute top-[calc(1.25rem+env(safe-area-inset-top))] right-5 p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors focus:outline-none"
+              className="absolute top-5 right-5 p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors focus:outline-none"
             >
               <X className="w-6 h-6" />
             </button>

@@ -241,7 +241,7 @@ export const About: React.FC<AboutProps> = ({
                   className={`bg-slate-950 border border-white/10 overflow-hidden rounded-3xl group flex flex-col w-full ${getPhotoCardFocusStyle(idx)}`}
                 >
                   {/* Image Container */}
-                  <div className="relative aspect-[4/3] sm:h-[420px] lg:h-[480px] w-full overflow-hidden shrink-0">
+                  <div className="relative h-[340px] sm:h-[420px] lg:h-[480px] w-full overflow-hidden shrink-0">
                     <img
                       src={photo.url}
                       alt={photo.title}
@@ -279,7 +279,7 @@ export const About: React.FC<AboutProps> = ({
                     onMouseLeave={() => setHoveredPhotoIndex(null)}
                     className={`bg-slate-950 border border-white/10 overflow-hidden rounded-3xl group flex flex-col w-full ${getPhotoCardFocusStyle(photoIndex)}`}
                   >
-                    <div className="relative aspect-[4/3] sm:h-[340px] lg:h-[380px] w-full overflow-hidden shrink-0">
+                    <div className="relative h-[280px] sm:h-[340px] lg:h-[380px] w-full overflow-hidden shrink-0">
                       <img
                         src={photo.url}
                         alt={photo.title}
@@ -320,7 +320,7 @@ export const About: React.FC<AboutProps> = ({
                 <button
                   onClick={() => setActiveTimelineIndex((prev) => Math.max(0, prev - 1))}
                   disabled={activeTimelineIndex === 0}
-                  className={`p-3.5 sm:p-3 min-w-[44px] min-h-[44px] rounded-2xl bg-[#050B14] text-[#F8FAFC] transition-all border border-slate-800 shadow-md cursor-pointer flex items-center justify-center ${
+                  className={`p-3 rounded-2xl bg-[#050B14] text-[#F8FAFC] transition-all border border-slate-800 shadow-md cursor-pointer ${
                     activeTimelineIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:border-[#9D8DF1]/70 hover:text-[#9D8DF1]'
                   }`}
                   aria-label="Previous position"
@@ -330,7 +330,7 @@ export const About: React.FC<AboutProps> = ({
                 <button
                   onClick={() => setActiveTimelineIndex((prev) => Math.min(CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1, prev + 1))}
                   disabled={activeTimelineIndex === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1}
-                  className={`p-3.5 sm:p-3 min-w-[44px] min-h-[44px] rounded-2xl bg-[#050B14] text-[#F8FAFC] transition-all border border-slate-800 shadow-md cursor-pointer flex items-center justify-center ${
+                  className={`p-3 rounded-2xl bg-[#050B14] text-[#F8FAFC] transition-all border border-slate-800 shadow-md cursor-pointer ${
                     activeTimelineIndex === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:border-[#9D8DF1]/70 hover:text-[#9D8DF1]'
                   }`}
                   aria-label="Next position"
@@ -340,60 +340,8 @@ export const About: React.FC<AboutProps> = ({
               </div>
             </div>
 
-            {/* MOBILE NATIVE SCROLL-SNAP CAROUSEL (Below md: breakpoint) */}
-            <div className="md:hidden w-full overflow-x-auto snap-x snap-mandatory py-4 flex gap-4 custom-scrollbar">
-              {CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.map((item, index) => {
-                const isCurrent = index === CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.length - 1;
-                return (
-                  <div
-                    key={index}
-                    className="snap-center shrink-0 w-[88vw] max-w-[340px] flex flex-col"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black shrink-0 bg-[#4CC9F0] text-[#050B14]">
-                        {index + 1}
-                      </span>
-                      <div className="h-[2px] flex-grow rounded-full bg-[#4CC9F0]/40" />
-                    </div>
-
-                    <div className="p-5 rounded-2xl bg-[#050B14] border border-slate-800 shadow-xl flex flex-col justify-between min-h-[320px]">
-                      <div>
-                        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F8FAFC]">
-                            <Calendar className="w-3.5 h-3.5 text-[#4CC9F0]" />
-                            <span>{item.period}</span>
-                          </div>
-                          {isCurrent && (
-                            <span className="px-2 py-0.5 rounded text-[10px] font-black bg-[#4CC9F0]/15 text-[#4CC9F0] border border-[#4CC9F0]/40 uppercase tracking-widest">
-                              Current Rank
-                            </span>
-                          )}
-                        </div>
-
-                        <h4 className="font-outfit font-black text-lg text-[#F8FAFC] mb-2 leading-snug tracking-tight">
-                          {item.title}
-                        </h4>
-
-                        <div className="flex items-start gap-1.5 text-xs text-[#94A3B8] mb-3 font-medium">
-                          <MapPin className="w-4 h-4 text-[#4CC9F0] shrink-0 mt-0.5" />
-                          <span className="leading-relaxed text-[#F8FAFC]">{item.location}</span>
-                        </div>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 mt-auto">
-                        <p className="text-xs text-[#94A3B8] leading-relaxed font-normal">
-                          <strong className="text-[#F8FAFC] font-bold block mb-0.5">Key Focus &amp; Responsibilities:</strong>
-                          {item.focus}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* DESKTOP 3D SPATIAL STAGE (md: and above only) */}
-            <div className="hidden md:flex relative w-full h-[460px] sm:h-[500px] overflow-visible items-center justify-center perspective-[1200px] transform-gpu my-4 select-none px-4">
+            {/* 3D SPATIAL STAGE */}
+            <div className="relative w-full h-[460px] sm:h-[500px] overflow-visible flex items-center justify-center perspective-[1200px] transform-gpu my-4 select-none px-4">
               
               {CHRONOLOGICAL_CAREER_PAST_TO_PRESENT.map((item, index) => {
                 const offset = index - activeTimelineIndex;
@@ -576,11 +524,11 @@ export const About: React.FC<AboutProps> = ({
               {/* 3 Featured Paper Cards Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 {PDF_PUBLICATIONS.slice(0, 3).map((paper) => (
-                  <div key={paper.id} className="w-full h-auto min-h-[360px]">
+                  <div key={paper.id} className="w-full h-[360px]">
                     <FlipCard
                       axis="y"
                       flipOnClick={true}
-                      draggable={false}
+                      draggable={true}
                       tilt={true}
                       tiltMax={10}
                       glare={true}
@@ -625,27 +573,10 @@ export const About: React.FC<AboutProps> = ({
                             </p>
                           </div>
 
-                          <div className="pt-3 border-t border-[#173841]/70 flex flex-col sm:flex-row items-center justify-between gap-2">
-                            <a
-                              href={paper.pdfUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              data-no-flip
-                              onPointerDown={(e) => e.stopPropagation()}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                if (paper.pdfUrl) {
-                                  window.open(paper.pdfUrl, '_blank', 'noopener,noreferrer');
-                                }
-                              }}
-                              className="md:hidden inline-flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] w-full rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider cursor-pointer shadow-md"
-                            >
-                              <ExternalLink className="w-4 h-4" />
-                              <span>Open PDF Directly</span>
-                            </a>
-                            <div className="hidden md:inline-flex items-center gap-1.5 text-xs font-mono text-[#e0ad5b]/90 font-medium tracking-wide mx-auto">
+                          <div className="pt-3 border-t border-[#173841]/70 flex items-center justify-center">
+                            <div className="inline-flex items-center gap-1.5 text-xs font-mono text-[#e0ad5b]/90 font-medium tracking-wide">
                               <RotateCw className="w-3.5 h-3.5" />
-                              <span>Click card to flip</span>
+                              <span>Click card to reveal PDF</span>
                             </div>
                           </div>
                         </div>
@@ -664,7 +595,7 @@ export const About: React.FC<AboutProps> = ({
                                 window.open(paper.pdfUrl, '_blank', 'noopener,noreferrer');
                               }
                             }}
-                            className="inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[44px] rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider cursor-pointer tactile-btn"
+                            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider cursor-pointer tactile-btn"
                           >
                             <ExternalLink className="w-4 h-4" />
                             <span>Open PDF</span>
@@ -712,7 +643,7 @@ export const About: React.FC<AboutProps> = ({
                 ]}
                 defaultIndex={2}
                 expandRatio={0.52}
-                trigger={typeof window !== 'undefined' && window.innerWidth < 768 ? 'click' : 'hover'}
+                trigger="hover"
                 height={500}
               />
             </div>
@@ -734,7 +665,7 @@ export const About: React.FC<AboutProps> = ({
               Click the directory folder below to reveal direct contact channels, phone, email, and scientific research networks.
             </p>
 
-            <div className="relative mt-44 sm:mt-80 flex items-center justify-center w-full max-w-full overflow-x-hidden py-4">
+            <div className="relative mt-64 sm:mt-80 flex items-center justify-center">
               <FolderFloat
                 label="Contact Profiles"
                 sublabel="Click to reveal 5 links"
@@ -742,9 +673,9 @@ export const About: React.FC<AboutProps> = ({
                 closeOnSelect={false}
                 physics={false}
                 drift={0}
-                width={typeof window !== 'undefined' && window.innerWidth < 640 ? 260 : 320}
+                width={320}
                 height={190}
-                spread={typeof window !== 'undefined' && window.innerWidth < 640 ? 360 : 520}
+                spread={520}
                 lift={100}
                 tilt={1}
                 folderColor="#112932"

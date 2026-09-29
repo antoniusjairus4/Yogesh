@@ -63,7 +63,7 @@ const AnimatedStat: React.FC<AnimatedStatProps> = ({ target, suffix = '', label,
 
   return (
     <div 
-      className="flex flex-col items-center justify-center p-3 sm:py-2 sm:px-3 min-w-[44px] min-h-[44px] h-full"
+      className="flex flex-col items-center justify-center p-2.5 sm:py-2 sm:px-3 h-full"
       aria-label={`${target}${suffix} ${label}`}
     >
       <div 
@@ -189,7 +189,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
             transition={{ duration: 0.6 }}
             className="mb-4 w-full text-center lg:text-left"
           >
-            <h1 className="font-outfit font-black text-2xl xs:text-3xl sm:text-6xl md:text-6xl lg:text-[4.2rem] text-white tracking-tight leading-[1.1] py-1 flex flex-wrap justify-center lg:justify-start items-center gap-x-2 sm:gap-x-4">
+            <h1 className="font-outfit font-black text-3xl xs:text-4xl sm:text-6xl md:text-6xl lg:text-[4.2rem] text-white tracking-tight leading-[1.1] py-1 flex flex-wrap justify-center lg:justify-start items-center gap-x-2.5 sm:gap-x-4">
               {words.map((word, wIdx) => {
                 const wordStartIdx = globalCharIndexTracker;
                 globalCharIndexTracker += word.length + 1;
@@ -221,7 +221,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
               })}
 
               {!isTypingDone && (
-                <span className="inline-block w-1 sm:w-2 h-6 sm:h-12 bg-sky-400 animate-pulse ml-1 align-middle rounded-full" />
+                <span className="inline-block w-1 sm:w-2 h-7 sm:h-12 bg-sky-400 animate-pulse ml-1 align-middle rounded-full" />
               )}
             </h1>
           </motion.div>
@@ -231,13 +231,13 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="w-full flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-5 text-slate-200 text-xs sm:text-sm font-medium tracking-wide"
+            className="w-full flex flex-wrap items-center justify-center lg:justify-start gap-x-3 gap-y-1.5 mb-5 text-slate-200 text-xs sm:text-sm font-medium tracking-wide"
           >
-            <span className="px-2.5 py-1 rounded-lg bg-white/10 border border-white/15 sm:bg-transparent sm:border-none sm:p-0">Scientist E &amp; Officer-in-Charge</span>
+            <span>Scientist E &amp; Officer-in-Charge</span>
             <span className="text-slate-500 hidden sm:inline">•</span>
-            <span className="px-2.5 py-1 rounded-lg bg-white/10 border border-white/15 sm:bg-transparent sm:border-none sm:p-0">Zoological Survey of India (ZSI)</span>
+            <span>Zoological Survey of India (ZSI)</span>
             <span className="text-slate-500 hidden sm:inline">•</span>
-            <span className="px-2.5 py-1 rounded-lg bg-white/10 border border-white/15 sm:bg-transparent sm:border-none sm:p-0">PADI Dive Master (DM-494151)</span>
+            <span>PADI Dive Master (DM-494151)</span>
           </motion.div>
 
           {/* GlassSurface React Bits Card Component */}

@@ -171,7 +171,7 @@ export const About: React.FC<AboutProps> = ({
         ref={scrollableContentRef} 
         className="relative z-10 w-full h-full overflow-y-auto pt-24 pb-0 px-4 sm:px-8 lg:px-12 scroll-smooth custom-scrollbar"
       >
-        <div className="max-w-[1400px] mx-auto w-full">
+        <div id="career" className="max-w-[1400px] mx-auto w-full">
               {/* Header */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -566,8 +566,9 @@ export const About: React.FC<AboutProps> = ({
             </motion.div>
           )}
 
-          {/* Field Work Images Accordion Gallery */}
+          {/* Scuba Visuals Accordion Gallery */}
           <motion.div
+            id="scuba-gallery"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -575,7 +576,7 @@ export const About: React.FC<AboutProps> = ({
             className="mt-20 pt-16 border-t border-white/10 w-full flex flex-col items-center"
           >
             <h3 className="font-outfit font-black text-2xl sm:text-4xl text-white tracking-tight mb-8 text-center">
-              Field Work Images
+              Scuba Visuals
             </h3>
             <div className="w-full max-w-6xl mx-auto h-[460px] sm:h-[500px]">
               <AccordionGallery

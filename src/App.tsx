@@ -19,9 +19,25 @@ export const App: React.FC = () => {
   const touchStartY = useRef<number | null>(null);
   const TRANSITION_DURATION = 1100;
 
-  const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4 | 5) => {
-    setScrollToScuba(false);
-    if (activePage === targetPage || isTransitioning) return;
+  const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4 | 5, navId?: string) => {
+    if (navId === 'scuba') {
+      setScrollToScuba(true);
+    } else {
+      setScrollToScuba(false);
+    }
+
+    if (activePage === targetPage) {
+      if (navId === 'scuba') {
+        const el = document.getElementById('scuba-gallery');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      } else if (navId === 'contact') {
+        const el = document.getElementById('contact');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
+
+    if (isTransitioning) return;
     setIsTransitioning(true);
     setActivePage(targetPage);
     setTimeout(() => setIsTransitioning(false), TRANSITION_DURATION);

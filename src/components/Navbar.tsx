@@ -18,7 +18,7 @@ export const NAV_ITEMS: NavItem[] = [
 
 interface NavbarProps {
   activePage?: 1 | 2 | 3 | 4 | 5;
-  onNavigatePage?: (page: 1 | 2 | 3 | 4 | 5) => void;
+  onNavigatePage?: (page: 1 | 2 | 3 | 4 | 5, navId?: string) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }) => {
@@ -61,7 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }
     e.preventDefault();
     setIsMobileOpen(false);
     if (onNavigatePage) {
-      onNavigatePage(item.page);
+      onNavigatePage(item.page, item.id);
     }
   };
 

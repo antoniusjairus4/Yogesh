@@ -25,16 +25,21 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // Track scroll position
+  // Track scroll position across all nested scroll containers
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    const handleScroll = (e: Event) => {
+      const target = e.target as HTMLElement | Document;
+      if (target && 'scrollTop' in target) {
+        setIsScrolled((target as HTMLElement).scrollTop > 20);
+      } else {
+        setIsScrolled(window.scrollY > 20);
+      }
     };
 
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    handleScroll({ target: document } as any);
+    window.addEventListener('scroll', handleScroll, { capture: true, passive: true });
+    return () => window.removeEventListener('scroll', handleScroll, { capture: true } as any);
+  }, [activePage]);
 
   // Lock body scroll when mobile menu is open & listen for Esc key
   useEffect(() => {

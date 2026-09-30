@@ -274,9 +274,6 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                           onPointerDown={(e) => e.stopPropagation()}
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (paper.pdfUrl) {
-                              window.open(paper.pdfUrl, '_blank', 'noopener,noreferrer');
-                            }
                           }}
                           className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-sm uppercase tracking-wider cursor-pointer tactile-btn"
                         >
@@ -303,7 +300,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={() => setSelectedPdf(null)}
-            className="fixed inset-0 z-50 bg-[#050d10]/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-hidden pointer-events-auto"
+            className="fixed inset-0 z-[100] bg-[#050d10]/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-hidden pointer-events-auto"
           >
             <motion.div
               initial={{ scale: 0.96, y: 15 }}

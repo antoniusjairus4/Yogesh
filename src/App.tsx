@@ -22,29 +22,19 @@ export const App: React.FC = () => {
   const [activePage, setActivePage] = useState<1 | 2 | 3 | 4 | 5>(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [scrollToScuba, setScrollToScuba] = useState(false);
+  const [navTargetSection, setNavTargetSection] = useState<string>('');
   const [selectedScubaPhotoId, setSelectedScubaPhotoId] = useState<string | null>(null);
 
   const touchStartY = useRef<number | null>(null);
   const TRANSITION_DURATION = 1100;
 
   const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4 | 5, navId?: string) => {
-    if (navId === 'scuba') {
-      setScrollToScuba(true);
-    } else {
-      setScrollToScuba(false);
+    if (navId) {
+      setNavTargetSection(navId);
+      setScrollToScuba(navId === 'scuba');
     }
 
     if (activePage === targetPage) {
-      if (navId === 'scuba') {
-        const el = document.getElementById('scuba-gallery');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      } else if (navId === 'contact') {
-        const el = document.getElementById('contact');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      } else if (navId === 'career') {
-        const el = document.getElementById('career');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }
       return;
     }
 
@@ -53,16 +43,6 @@ export const App: React.FC = () => {
     setActivePage(targetPage);
     setTimeout(() => {
       setIsTransitioning(false);
-      if (navId === 'career') {
-        const el = document.getElementById('career');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      } else if (navId === 'scuba') {
-        const el = document.getElementById('scuba-gallery');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      } else if (navId === 'contact') {
-        const el = document.getElementById('contact');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }
     }, TRANSITION_DURATION);
   };
 
@@ -184,6 +164,7 @@ export const App: React.FC = () => {
               handleNavigateTo(5);
             }}
             scrollToScubaSection={scrollToScuba}
+            navTargetSection={navTargetSection}
           />
         </motion.div>
 

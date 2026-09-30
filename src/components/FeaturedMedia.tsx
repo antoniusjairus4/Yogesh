@@ -299,7 +299,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden text-stone-200 z-20 font-sans select-none bg-[#050505] touch-none"
+      className="relative w-full h-screen overflow-hidden text-stone-200 z-20 font-sans select-none bg-[#050505]"
     >
       
       {/* RICH ARCHIVAL RESEARCH DESK WORKSPACE BACKGROUND IMAGE (PITCH BLACK UNTIL PAPER UN-CRUMPLES) */}
@@ -668,7 +668,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={() => setSelectedFeature(null)}
-            className="fixed inset-0 z-50 bg-[#09090b]/95 flex items-center justify-center p-3 sm:p-6 overflow-hidden pointer-events-auto"
+            className="fixed inset-0 z-[100] bg-[#09090b]/95 flex items-center justify-center p-3 sm:p-6 overflow-hidden pointer-events-auto"
           >
             {/* Modal Inner Container */}
             <motion.div
@@ -821,7 +821,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsZoomedImage(false)}
-            className="fixed inset-0 z-50 bg-[#09090b]/98 flex flex-col items-center justify-center p-4 cursor-zoom-out pointer-events-auto"
+            className="fixed inset-0 z-[110] bg-[#09090b]/98 flex flex-col items-center justify-center p-4 cursor-zoom-out pointer-events-auto"
           >
             <button
               onClick={() => setIsZoomedImage(false)}

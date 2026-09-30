@@ -30,6 +30,7 @@ interface AboutProps {
   onViewResearchPage?: () => void;
   onViewScubaArchive?: (photoId?: string) => void;
   scrollToScubaSection?: boolean;
+  navTargetSection?: string;
 }
 
 export const About: React.FC<AboutProps> = ({ 
@@ -37,7 +38,8 @@ export const About: React.FC<AboutProps> = ({
   onViewPressArchives,
   onViewResearchPage,
   onViewScubaArchive,
-  scrollToScubaSection
+  scrollToScubaSection,
+  navTargetSection
 }) => {
   const scrollableContentRef = useRef<HTMLDivElement>(null);
   const topExpeditionsRef = useRef<HTMLDivElement>(null);
@@ -50,23 +52,46 @@ export const About: React.FC<AboutProps> = ({
   // State to track which timeline card is dynamically centered in viewport focus
   const [activeTimelineIndex, setActiveTimelineIndex] = React.useState<number>(0);
 
-  // Scroll to Scuba Section if requested via prop (e.g. Navbar click)
-  useEffect(() => {
-    if (scrollToScubaSection && scrollableContentRef.current) {
-      const target = document.getElementById('scuba-gallery');
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  }, [scrollToScubaSection]);
+  const scrollToSection = (sectionId: string) => {
+    const container = scrollableContentRef.current;
+    if (!container || !sectionId) return;
 
-  // Natural Vertical Scroll Listener:
+    if (sectionId === 'career' || sectionId === 'top') {
+      container.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    const targetId = sectionId === 'scuba' ? 'scuba-gallery' : sectionId;
+    const target = document.getElementById(targetId);
+    if (target) {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const relativeTop = targetRect.top - containerRect.top + container.scrollTop;
+
+      container.scrollTo({
+        top: Math.max(0, relativeTop - 20),
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Scroll to section when prop changes
+  useEffect(() => {
+    if (navTargetSection) {
+      scrollToSection(navTargetSection);
+    } else if (scrollToScubaSection) {
+      scrollToSection('scuba');
+    }
+  }, [navTargetSection, scrollToScubaSection]);
+
+  // Natural Vertical Scroll & Touch Listener for returning to Hero
   useEffect(() => {
     const contentEl = scrollableContentRef.current;
     if (!contentEl) return;
 
+    let touchStartY = 0;
+
     const handleWheel = (e: WheelEvent) => {
-      // Scroll up to Hero when at top of About page
       if (e.deltaY < -15 && contentEl.scrollTop <= 5) {
         if (onScrollBackToHero) {
           e.preventDefault();
@@ -75,9 +100,28 @@ export const About: React.FC<AboutProps> = ({
       }
     };
 
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (contentEl.scrollTop <= 2) {
+        const currentY = e.touches[0].clientY;
+        const diffY = currentY - touchStartY; // positive means swipe down
+        if (diffY > 50 && onScrollBackToHero) {
+          onScrollBackToHero();
+          touchStartY = currentY;
+        }
+      }
+    };
+
     contentEl.addEventListener('wheel', handleWheel, { passive: false });
+    contentEl.addEventListener('touchstart', handleTouchStart, { passive: true });
+    contentEl.addEventListener('touchmove', handleTouchMove, { passive: true });
     return () => {
       contentEl.removeEventListener('wheel', handleWheel);
+      contentEl.removeEventListener('touchstart', handleTouchStart);
+      contentEl.removeEventListener('touchmove', handleTouchMove);
     };
   }, [onScrollBackToHero]);
 
@@ -591,9 +635,6 @@ export const About: React.FC<AboutProps> = ({
                             onPointerDown={(e) => e.stopPropagation()}
                             onClick={(e) => {
                               e.stopPropagation();
-                              if (paper.pdfUrl) {
-                                window.open(paper.pdfUrl, '_blank', 'noopener,noreferrer');
-                              }
                             }}
                             className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#e0ad5b] hover:bg-white text-[#050e11] font-mono font-black text-xs uppercase tracking-wider cursor-pointer tactile-btn"
                           >

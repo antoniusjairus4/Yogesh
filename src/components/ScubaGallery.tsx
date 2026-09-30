@@ -129,6 +129,7 @@ export const ScubaGallery: React.FC<ScubaGalleryProps> = ({ onViewScubaArchive }
               squeeze={0.2}
               focusOnClick
               captions
+              captureWheel={false}
               onSelect={(index) => {
                 if (onViewScubaArchive) {
                   onViewScubaArchive(filteredPhotos[index]?.id);

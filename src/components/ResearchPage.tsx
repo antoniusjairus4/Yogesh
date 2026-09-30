@@ -38,6 +38,11 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
     setSelectedPdf(null);
   }, []);
 
+  // Reset scroll position to top on mount
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' as any });
+  }, []);
+
   // Keyboard navigation & modal shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

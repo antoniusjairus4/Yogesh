@@ -122,6 +122,11 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
     });
   }, [selectedCategory, searchQuery]);
 
+  // Reset scroll position to top on mount
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' as any });
+  }, []);
+
   // Handle initial photo opening if passed from parent
   useEffect(() => {
     if (initialPhotoId) {

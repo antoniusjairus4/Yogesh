@@ -31,6 +31,7 @@ interface AboutProps {
   onViewScubaArchive?: (photoId?: string) => void;
   scrollToScubaSection?: boolean;
   navTargetSection?: string;
+  navTargetKey?: number;
 }
 
 export const About: React.FC<AboutProps> = ({ 
@@ -39,7 +40,8 @@ export const About: React.FC<AboutProps> = ({
   onViewResearchPage,
   onViewScubaArchive,
   scrollToScubaSection,
-  navTargetSection
+  navTargetSection,
+  navTargetKey
 }) => {
   const scrollableContentRef = useRef<HTMLDivElement>(null);
   const topExpeditionsRef = useRef<HTMLDivElement>(null);
@@ -82,7 +84,7 @@ export const About: React.FC<AboutProps> = ({
     } else if (scrollToScubaSection) {
       scrollToSection('scuba');
     }
-  }, [navTargetSection, scrollToScubaSection]);
+  }, [navTargetSection, navTargetKey, scrollToScubaSection]);
 
   // Natural Vertical Scroll & Touch Listener for returning to Hero
   useEffect(() => {

@@ -110,7 +110,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
   const containerRef = useRef<HTMLDivElement>(null);
   const wallScrollRef = useRef<HTMLDivElement>(null);
 
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(1.0);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
 
   const handleSelectFeature = useCallback((feature: NewspaperFeature) => {

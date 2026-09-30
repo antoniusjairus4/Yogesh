@@ -21,8 +21,7 @@ export const App: React.FC = () => {
   const [isVideoEnded, setIsVideoEnded] = useState(false);
   const [activePage, setActivePage] = useState<1 | 2 | 3 | 4 | 5>(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [scrollToScuba, setScrollToScuba] = useState(false);
-  const [navTargetSection, setNavTargetSection] = useState<string>('');
+  const [navTargetSection, setNavTargetSection] = useState<{ section: string; timestamp: number } | null>(null);
   const [selectedScubaPhotoId, setSelectedScubaPhotoId] = useState<string | null>(null);
 
   const touchStartY = useRef<number | null>(null);
@@ -30,8 +29,7 @@ export const App: React.FC = () => {
 
   const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4 | 5, navId?: string) => {
     if (navId) {
-      setNavTargetSection(navId);
-      setScrollToScuba(navId === 'scuba');
+      setNavTargetSection({ section: navId, timestamp: Date.now() });
     }
 
     if (activePage === targetPage) {
@@ -164,8 +162,8 @@ export const App: React.FC = () => {
                 setSelectedScubaPhotoId(photoId || null);
                 handleNavigateTo(5);
               }}
-              scrollToScubaSection={scrollToScuba}
-              navTargetSection={navTargetSection}
+              navTargetSection={navTargetSection?.section}
+              navTargetKey={navTargetSection?.timestamp}
             />
           </Suspense>
         </motion.div>

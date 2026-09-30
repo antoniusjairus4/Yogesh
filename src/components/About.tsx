@@ -400,8 +400,11 @@ export const About: React.FC<AboutProps> = ({
                 const getXPos = (off: number) => {
                   if (off === 0) return 0;
                   const sign = off < 0 ? -1 : 1;
-                  if (Math.abs(off) === 1) return sign * 260;
-                  return sign * 450;
+                  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+                  const step1 = isMobile ? 85 : 260;
+                  const step2 = isMobile ? 160 : 450;
+                  if (Math.abs(off) === 1) return sign * step1;
+                  return sign * step2;
                 };
 
                 const xPos = getXPos(offset);
@@ -432,7 +435,7 @@ export const About: React.FC<AboutProps> = ({
                       transformStyle: 'preserve-3d',
                       willChange: 'transform, opacity, filter',
                     }}
-                    className={`absolute w-[320px] sm:w-[400px] lg:w-[440px] cursor-pointer origin-center transform-gpu ${
+                    className={`absolute w-[290px] sm:w-[400px] lg:w-[440px] cursor-pointer origin-center transform-gpu ${
                       isSelected ? 'pointer-events-auto' : 'pointer-events-auto hover:opacity-90'
                     }`}
                   >
@@ -716,9 +719,9 @@ export const About: React.FC<AboutProps> = ({
                 closeOnSelect={false}
                 physics={false}
                 drift={0}
-                width={320}
+                width={typeof window !== 'undefined' && window.innerWidth < 640 ? 280 : 320}
                 height={190}
-                spread={520}
+                spread={typeof window !== 'undefined' && window.innerWidth < 640 ? 290 : 520}
                 lift={100}
                 tilt={1}
                 folderColor="#112932"

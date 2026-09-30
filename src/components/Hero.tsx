@@ -139,7 +139,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
           autoPlay
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           poster={getAssetUrl("/portfolio/poster.webp")}
           onLoadedMetadata={(e) => {
             e.currentTarget.muted = true;
@@ -174,6 +174,9 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
             <img
               src={getAssetUrl("/portfolio/landing_img.webp")}
               alt="Dr. J.S. Yogesh Kumar"
+              loading="eager"
+              decoding="async"
+              {...({ fetchpriority: "high" } as any)}
               className="w-56 h-72 sm:w-68 sm:h-88 md:w-76 md:h-96 lg:w-84 lg:h-[26rem] xl:w-96 xl:h-[30rem] object-cover object-top transform hover:scale-105 transition-transform duration-500"
             />
           </div>
@@ -240,44 +243,26 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
             <span>PADI Dive Master (DM-494151)</span>
           </motion.div>
 
-          {/* GlassSurface React Bits Card Component */}
+          {/* GPU-Accelerated Liquid Glass Card Component */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.35 }}
             className="w-full"
           >
-            <GlassSurface
-              width="100%"
-              height="auto"
-              borderRadius={28}
-              borderWidth={0.25}
-              displace={5}
-              backgroundOpacity={0.35}
-              brightness={65}
-              blur={16}
-              saturation={1.8}
-              distortionScale={-220}
-              redOffset={6}
-              greenOffset={18}
-              blueOffset={34}
-              mixBlendMode="screen"
-              className="w-full text-center lg:text-left"
-            >
-              <div className="w-full p-2 sm:p-3">
-                <p className="text-slate-100 text-xs sm:text-sm leading-relaxed mb-4 font-sans font-normal text-center lg:text-left">
-                  {PROFILE_DATA.bioSummary}
-                </p>
+            <div className="w-full apple-liquid-glass p-4 sm:p-6 text-center lg:text-left shadow-2xl">
+              <p className="text-slate-100 text-xs sm:text-sm leading-relaxed mb-4 font-sans font-normal text-center lg:text-left">
+                {PROFILE_DATA.bioSummary}
+              </p>
 
-                {/* Equal 4-Column Grid with Animated Stat Counters */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 w-full divide-x-0 sm:divide-x divide-white/15 border-t border-white/10 pt-4">
-                  <AnimatedStat target={80} suffix="+" label="Total Publications" delayMs={0} />
-                  <AnimatedStat target={37} suffix="" label="SCI Indexed Papers" delayMs={120} />
-                  <AnimatedStat target={14} suffix="" label="Funded Projects" delayMs={240} />
-                  <AnimatedStat target={11} suffix="" label="Career Milestones" delayMs={360} />
-                </div>
+              {/* Equal 4-Column Grid with Animated Stat Counters */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 w-full divide-x-0 sm:divide-x divide-white/15 border-t border-white/10 pt-4">
+                <AnimatedStat target={80} suffix="+" label="Total Publications" delayMs={0} />
+                <AnimatedStat target={37} suffix="" label="SCI Indexed Papers" delayMs={120} />
+                <AnimatedStat target={14} suffix="" label="Funded Projects" delayMs={240} />
+                <AnimatedStat target={11} suffix="" label="Career Milestones" delayMs={360} />
               </div>
-            </GlassSurface>
+            </div>
           </motion.div>
 
         </div>

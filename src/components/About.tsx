@@ -222,7 +222,7 @@ export const About: React.FC<AboutProps> = ({
           muted
           loop
           playsInline
-          preload="auto"
+          preload="none"
           onLoadedMetadata={(e) => {
             e.currentTarget.muted = true;
             e.currentTarget.play().catch(() => {});
@@ -751,5 +751,7 @@ export const About: React.FC<AboutProps> = ({
     </div>
   );
 };
+
+export default About;
 
 

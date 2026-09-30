@@ -2,9 +2,9 @@ import React, { useRef, useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { About } from './components/About';
 import { getAssetUrl } from './utils/baseUrl';
 
+const About = React.lazy(() => import('./components/About'));
 const FeaturedMedia = React.lazy(() => import('./components/FeaturedMedia'));
 const ResearchPage = React.lazy(() => import('./components/ResearchPage'));
 const ScubaArchivePage = React.lazy(() => import('./components/ScubaArchivePage'));
@@ -155,17 +155,19 @@ export const App: React.FC = () => {
             activePage === 2 ? 'pointer-events-auto' : 'pointer-events-none'
           }`}
         >
-          <About 
-            onScrollBackToHero={() => handleNavigateTo(1)} 
-            onViewPressArchives={() => handleNavigateTo(3)}
-            onViewResearchPage={() => handleNavigateTo(4)}
-            onViewScubaArchive={(photoId) => {
-              setSelectedScubaPhotoId(photoId || null);
-              handleNavigateTo(5);
-            }}
-            scrollToScubaSection={scrollToScuba}
-            navTargetSection={navTargetSection}
-          />
+          <Suspense fallback={<PageFallback />}>
+            <About 
+              onScrollBackToHero={() => handleNavigateTo(1)} 
+              onViewPressArchives={() => handleNavigateTo(3)}
+              onViewResearchPage={() => handleNavigateTo(4)}
+              onViewScubaArchive={(photoId?: string) => {
+                setSelectedScubaPhotoId(photoId || null);
+                handleNavigateTo(5);
+              }}
+              scrollToScubaSection={scrollToScuba}
+              navTargetSection={navTargetSection}
+            />
+          </Suspense>
         </motion.div>
 
         {/* Page 3: Featured in... Newspapers & Press Coverage (z-30) */}

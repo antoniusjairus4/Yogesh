@@ -8,6 +8,7 @@ const About = React.lazy(() => import('./components/About'));
 const FeaturedMedia = React.lazy(() => import('./components/FeaturedMedia'));
 const ResearchPage = React.lazy(() => import('./components/ResearchPage'));
 const ScubaArchivePage = React.lazy(() => import('./components/ScubaArchivePage'));
+const CoralResearchPage = React.lazy(() => import('./components/CoralResearchPage'));
 
 const PageFallback: React.FC = () => (
   <div className="w-full h-full min-h-[400px] bg-[#050b14] flex flex-col items-center justify-center gap-4 text-slate-300">
@@ -19,7 +20,7 @@ const PageFallback: React.FC = () => (
 export const App: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVideoEnded, setIsVideoEnded] = useState(false);
-  const [activePage, setActivePage] = useState<1 | 2 | 3 | 4 | 5>(1);
+  const [activePage, setActivePage] = useState<1 | 2 | 3 | 4 | 5 | 6>(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [navTargetSection, setNavTargetSection] = useState<{ section: string; timestamp: number } | null>(null);
   const [selectedScubaPhotoId, setSelectedScubaPhotoId] = useState<string | null>(null);
@@ -27,7 +28,7 @@ export const App: React.FC = () => {
   const touchStartY = useRef<number | null>(null);
   const TRANSITION_DURATION = 1100;
 
-  const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4 | 5, navId?: string) => {
+  const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4 | 5 | 6, navId?: string) => {
     if (navId) {
       setNavTargetSection({ section: navId, timestamp: Date.now() });
     }
@@ -162,6 +163,7 @@ export const App: React.FC = () => {
                 setSelectedScubaPhotoId(photoId || null);
                 handleNavigateTo(5);
               }}
+              onViewCoralResearch={() => handleNavigateTo(6)}
               navTargetSection={navTargetSection?.section}
               navTargetKey={navTargetSection?.timestamp}
             />
@@ -266,6 +268,29 @@ export const App: React.FC = () => {
             <ScubaArchivePage 
               onBackToPortfolio={() => handleNavigateTo(2)} 
               initialPhotoId={selectedScubaPhotoId}
+            />
+          </Suspense>
+        </motion.div>
+
+        {/* Page 6: Corals of the World Species Factsheet & Research Database (z-50) */}
+        <motion.div
+          initial={false}
+          animate={{
+            scale: activePage === 6 ? 1 : 0.95,
+            opacity: activePage === 6 ? 1 : 0,
+          }}
+          transition={{
+            duration: 0.8,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          style={{ willChange: 'transform, opacity' }}
+          className={`absolute inset-0 z-50 w-full h-full overflow-y-auto origin-center transform-gpu ${
+            activePage === 6 ? 'pointer-events-auto' : 'pointer-events-none'
+          }`}
+        >
+          <Suspense fallback={<PageFallback />}>
+            <CoralResearchPage 
+              onBackToPortfolio={() => handleNavigateTo(2)} 
             />
           </Suspense>
         </motion.div>

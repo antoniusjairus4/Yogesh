@@ -29,6 +29,7 @@ interface AboutProps {
   onViewPressArchives?: () => void;
   onViewResearchPage?: () => void;
   onViewScubaArchive?: (photoId?: string) => void;
+  onViewCoralResearch?: () => void;
   scrollToScubaSection?: boolean;
   navTargetSection?: string;
   navTargetKey?: number;
@@ -39,6 +40,7 @@ export const About: React.FC<AboutProps> = ({
   onViewPressArchives,
   onViewResearchPage,
   onViewScubaArchive,
+  onViewCoralResearch,
   scrollToScubaSection,
   navTargetSection,
   navTargetKey
@@ -693,6 +695,36 @@ export const About: React.FC<AboutProps> = ({
                 height={500}
               />
             </div>
+          </motion.div>
+
+          {/* Coral Species Research Catalog Redirect Banner (Before Contact) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mt-24 w-full max-w-4xl mx-auto p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#0a1626] via-[#0d1f36] to-[#0a1626] border border-[#c5a880]/30 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6"
+          >
+            <div className="space-y-2 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#c5a880]/15 text-[#e2ba7d] text-xs font-mono font-bold uppercase tracking-widest border border-[#c5a880]/30">
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Works of Dr. J.S. Yogesh Kumar</span>
+              </div>
+              <h4 className="font-outfit font-black text-xl sm:text-2xl text-white tracking-tight">
+                Coral Taxonomy &amp; Specimen Archive
+              </h4>
+              <p className="text-slate-300 text-xs sm:text-sm max-w-xl leading-relaxed">
+                Explore the structured academic factsheet database of coral species featuring 82 WebP photographic specimen records, botanical taxonomy, habitat data, and diagnostic keys.
+              </p>
+            </div>
+
+            <button
+              onClick={onViewCoralResearch}
+              className="flex-shrink-0 inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#c5a880] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest cursor-pointer border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <span>Explore Coral Research Catalog</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </motion.div>
 
           {/* Footer Contact Section with Interactive FolderFloat */}

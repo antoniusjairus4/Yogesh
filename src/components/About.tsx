@@ -719,8 +719,15 @@ export const About: React.FC<AboutProps> = ({
             </div>
 
             <button
-              onClick={onViewCoralResearch}
-              className="flex-shrink-0 inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#c5a880] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest cursor-pointer border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (onViewCoralResearch) {
+                  onViewCoralResearch();
+                }
+              }}
+              className="flex-shrink-0 inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#c5a880] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest cursor-pointer border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 z-10 relative pointer-events-auto"
             >
               <span>Explore Coral Research Catalog</span>
               <ArrowRight className="w-4 h-4" />

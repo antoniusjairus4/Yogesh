@@ -37,7 +37,6 @@ export const App: React.FC = () => {
       return;
     }
 
-    if (isTransitioning) return;
     setIsTransitioning(true);
     setActivePage(targetPage);
     setTimeout(() => {

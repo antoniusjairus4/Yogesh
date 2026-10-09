@@ -225,6 +225,8 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                     <img 
                       src={getAssetUrl(coral.image)} 
                       alt="" 
+                      loading="lazy"
+                      decoding="async"
                       className="w-10 h-8 object-cover rounded border border-white/10"
                     />
                     <div className="min-w-0 flex-1">
@@ -367,6 +369,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                   <img
                     src={getAssetUrl(selectedCoral.image)}
                     alt={selectedCoral.botanicalName}
+                    decoding="async"
                     className="w-full h-[360px] sm:h-[420px] object-cover"
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 text-xs flex items-center justify-between">
@@ -393,7 +396,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                         c.id === selectedCoral.id ? 'border-[#c5a880] ring-2 ring-[#c5a880]/50' : 'border-[#1b2b3f] opacity-60 hover:opacity-100'
                       }`}
                     >
-                      <img src={getAssetUrl(c.image)} alt="" className="w-full h-full object-cover" />
+                      <img src={getAssetUrl(c.image)} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
                     </button>
                   ))}
                 </div>

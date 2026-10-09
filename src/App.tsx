@@ -101,7 +101,7 @@ export const App: React.FC = () => {
       {/* Locked 100vh Viewport Container */}
       <main className="relative w-full h-full overflow-hidden flex items-center justify-center">
         
-        {/* Page 1: Hero Section (z-10) */}
+        {/* Page 1: Hero Section */}
         <motion.div
           initial={false}
           animate={{
@@ -113,8 +113,8 @@ export const App: React.FC = () => {
             ease: [0.22, 1, 0.36, 1],
           }}
           style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 z-10 w-full h-full flex items-center justify-center origin-center transform-gpu ${
-            activePage === 1 ? 'pointer-events-auto' : 'pointer-events-none'
+          className={`absolute inset-0 w-full h-full flex items-center justify-center origin-center transform-gpu ${
+            activePage === 1 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
           }`}
         >
           <Hero 
@@ -126,7 +126,7 @@ export const App: React.FC = () => {
           />
         </motion.div>
 
-        {/* Hardware-Accelerated Frosted Blur Overlay (z-15) */}
+        {/* Hardware-Accelerated Frosted Blur Overlay */}
         <motion.div
           initial={false}
           animate={{
@@ -134,10 +134,10 @@ export const App: React.FC = () => {
             backdropFilter: isTransitioning ? 'blur(12px)' : 'blur(0px)',
           }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0 z-15 bg-black/50 pointer-events-none transform-gpu"
+          className="absolute inset-0 z-40 bg-black/50 pointer-events-none transform-gpu"
         />
 
-        {/* Page 2: About & Career Portfolio + SCUBA Gallery (z-20) */}
+        {/* Page 2: About & Career Portfolio + SCUBA Gallery */}
         <motion.div
           initial={false}
           animate={{
@@ -149,8 +149,8 @@ export const App: React.FC = () => {
             ease: [0.22, 1, 0.36, 1],
           }}
           style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 z-20 w-full h-full overflow-hidden origin-center transform-gpu ${
-            activePage === 2 ? 'pointer-events-auto' : 'pointer-events-none'
+          className={`absolute inset-0 w-full h-full overflow-hidden origin-center transform-gpu ${
+            activePage === 2 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
           }`}
         >
           <Suspense fallback={<PageFallback />}>
@@ -169,7 +169,7 @@ export const App: React.FC = () => {
           </Suspense>
         </motion.div>
 
-        {/* Page 3: Featured in... Newspapers & Press Coverage (z-30) */}
+        {/* Page 3: Featured in... Newspapers & Press Coverage */}
         <motion.div
           initial={false}
           animate={{
@@ -181,8 +181,8 @@ export const App: React.FC = () => {
             ease: [0.22, 1, 0.36, 1],
           }}
           style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 z-30 w-full h-full overflow-hidden origin-center transform-gpu ${
-            activePage === 3 ? 'pointer-events-auto' : 'pointer-events-none'
+          className={`absolute inset-0 w-full h-full overflow-hidden origin-center transform-gpu ${
+            activePage === 3 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
           }`}
         >
           <Suspense fallback={<PageFallback />}>
@@ -192,7 +192,7 @@ export const App: React.FC = () => {
           </Suspense>
         </motion.div>
 
-        {/* Fixed Library Background for Page 4 (Viewport-fixed, unaffected by scroll transforms) */}
+        {/* Fixed Library Background for Page 4 */}
         <div 
           className={`fixed inset-0 pointer-events-none transition-opacity duration-700 z-35 overflow-hidden ${
             activePage === 4 ? 'opacity-100' : 'opacity-0'
@@ -208,7 +208,7 @@ export const App: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/60 pointer-events-none" />
         </div>
 
-        {/* Page 4: Scientific Research & Academic Publications Demo Page (z-40) */}
+        {/* Page 4: Scientific Research & Academic Publications Demo Page */}
         <motion.div
           initial={false}
           animate={{
@@ -220,8 +220,8 @@ export const App: React.FC = () => {
             ease: [0.22, 1, 0.36, 1],
           }}
           style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 z-40 w-full h-full overflow-y-auto origin-center transform-gpu ${
-            activePage === 4 ? 'pointer-events-auto' : 'pointer-events-none'
+          className={`absolute inset-0 w-full h-full overflow-y-auto origin-center transform-gpu ${
+            activePage === 4 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
           }`}
         >
           <Suspense fallback={<PageFallback />}>
@@ -231,7 +231,7 @@ export const App: React.FC = () => {
           </Suspense>
         </motion.div>
 
-        {/* Fixed Shipwreck Underwater Background for Page 5 (Viewport-fixed, unaffected by scroll transforms) */}
+        {/* Fixed Shipwreck Underwater Background for Page 5 */}
         <div 
           className={`fixed inset-0 pointer-events-none transition-opacity duration-700 z-42 overflow-hidden ${
             activePage === 5 ? 'opacity-100' : 'opacity-0'
@@ -247,7 +247,7 @@ export const App: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/70 pointer-events-none" />
         </div>
 
-        {/* Page 5: Full Subsurface SCUBA Image Archive Page (z-45) */}
+        {/* Page 5: Full Subsurface SCUBA Image Archive Page */}
         <motion.div
           initial={false}
           animate={{
@@ -259,8 +259,8 @@ export const App: React.FC = () => {
             ease: [0.22, 1, 0.36, 1],
           }}
           style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 z-45 w-full h-full overflow-y-auto origin-center transform-gpu ${
-            activePage === 5 ? 'pointer-events-auto' : 'pointer-events-none'
+          className={`absolute inset-0 w-full h-full overflow-y-auto origin-center transform-gpu ${
+            activePage === 5 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
           }`}
         >
           <Suspense fallback={<PageFallback />}>
@@ -271,7 +271,7 @@ export const App: React.FC = () => {
           </Suspense>
         </motion.div>
 
-        {/* Page 6: Corals of the World Species Factsheet & Research Database (z-50) */}
+        {/* Page 6: Corals of the World Species Factsheet & Research Database */}
         <motion.div
           initial={false}
           animate={{
@@ -283,8 +283,8 @@ export const App: React.FC = () => {
             ease: [0.22, 1, 0.36, 1],
           }}
           style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 z-50 w-full h-full overflow-y-auto origin-center transform-gpu ${
-            activePage === 6 ? 'pointer-events-auto' : 'pointer-events-none'
+          className={`absolute inset-0 w-full h-full overflow-y-auto origin-center transform-gpu ${
+            activePage === 6 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
           }`}
         >
           <Suspense fallback={<PageFallback />}>

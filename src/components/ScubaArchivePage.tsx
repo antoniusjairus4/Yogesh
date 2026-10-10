@@ -430,7 +430,9 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
                 <img
                   src={currentPhoto.url}
                   alt={currentPhoto.title}
-                  className="max-w-full max-h-[76vh] object-contain rounded-lg shadow-xl"
+                  draggable={false}
+                  onContextMenu={(e) => e.preventDefault()}
+                  className="max-w-full max-h-[76vh] object-contain rounded-lg shadow-xl select-none"
                 />
 
                 <div className="absolute bottom-4 left-4 px-3 py-1 rounded-md bg-slate-900/95 text-xs font-mono font-medium text-slate-300 border border-slate-800">

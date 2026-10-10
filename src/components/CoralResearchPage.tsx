@@ -408,7 +408,9 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                     src={getAssetUrl(selectedCoral.displayImage || selectedCoral.image)}
                     alt={selectedCoral.botanicalName}
                     decoding="async"
-                    className="w-full h-[360px] sm:h-[420px] object-cover"
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    className="w-full h-[360px] sm:h-[420px] object-cover select-none"
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 text-xs flex items-center justify-between">
                     <span className="font-mono text-slate-200 italic">
@@ -501,7 +503,9 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
               <img
                 src={getAssetUrl(selectedCoral.displayImage || selectedCoral.image)}
                 alt={selectedCoral.botanicalName}
-                className="max-h-[75vh] w-auto object-contain rounded border border-white/10 shadow-2xl"
+                draggable={false}
+                onContextMenu={(e) => e.preventDefault()}
+                className="max-h-[75vh] w-auto object-contain rounded border border-white/10 shadow-2xl select-none"
               />
             </div>
             <div className="text-center font-mono text-xs text-slate-300 flex flex-col items-center gap-2">

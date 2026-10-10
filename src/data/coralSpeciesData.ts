@@ -13,6 +13,8 @@ export interface CoralSpecies {
   description: string;
   identification: string;
   image: string;
+  displayImage: string;
+  downloadImage: string;
 }
 
 // 1. 80 Scleractinia & Hard Coral Specimen Records
@@ -111,7 +113,9 @@ const CORALS_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_, i) => {
     abundance: spec.abundance,
     description: `${spec.description} High-resolution macroscopic photographic record documented during Dr. J.S. Yogesh Kumar's marine research expedition series.`,
     identification: spec.identification,
-    image: `/corals/coral_${numStr}.webp`
+    image: `/specimens/display/coral_${numStr}.webp`,
+    displayImage: `/specimens/display/coral_${numStr}.webp`,
+    downloadImage: `/specimens/downloads/coral_${numStr}.webp`
   };
 });
 
@@ -211,7 +215,9 @@ const OCTOCORALS_DATA: CoralSpecies[] = Array.from({ length: 39 }, (_, i) => {
     abundance: spec.abundance,
     description: `${spec.description} Documented during Dr. J.S. Yogesh Kumar's Octocoral & Gorgonian taxonomy research expeditions.`,
     identification: spec.identification,
-    image: `/octocorals/octocoral_${numStr}.webp`
+    image: `/specimens/display/octocoral_${numStr}.webp`,
+    displayImage: `/specimens/display/octocoral_${numStr}.webp`,
+    downloadImage: `/specimens/downloads/octocoral_${numStr}.webp`
   };
 });
 

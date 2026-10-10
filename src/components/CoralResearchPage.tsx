@@ -274,8 +274,26 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
 
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
+                  onClick={() => {
+                    const cleanName = selectedCoral.botanicalName.split(' (')[0].replace(/[^a-zA-Z0-9_-]/g, '_');
+                    const link = document.createElement('a');
+                    link.href = getAssetUrl(selectedCoral.downloadImage || selectedCoral.image);
+                    link.download = `${selectedCoral.id}_${cleanName}_citation.webp`;
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
+                  className="px-3 py-1.5 rounded bg-[#c5a880] hover:bg-white text-slate-950 border border-white/30 text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow"
+                  title="Download High-Res Citation Specimen Image"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download for Research</span>
+                </button>
+                <button
                   onClick={() => setIsFullscreenModalOpen(true)}
-                  className="px-3 py-1.5 rounded bg-[#15273d] hover:bg-[#1e3857] text-slate-200 border border-[#2b476e] text-xs font-semibold flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded bg-[#15273d] hover:bg-[#1e3857] text-slate-200 border border-[#2b476e] text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
                 >
                   <Maximize2 className="w-3.5 h-3.5 text-[#e2ba7d]" />
                   <span>Full View</span>
@@ -339,7 +357,10 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                       High-resolution WebP digital specimen record stored under ID: <code className="text-[#e2ba7d]">{selectedCoral.id}</code>.
                     </p>
                     <div className="text-[11px] font-mono text-slate-400">
-                      Converted format: WebP (Lossless compressed underwater specimen view)
+                      Clean display view: <code className="text-[#e2ba7d]">{selectedCoral.displayImage || selectedCoral.image}</code>
+                    </div>
+                    <div className="text-[11px] font-mono text-slate-400">
+                      Watermarked research download view: <code className="text-[#e2ba7d]">{selectedCoral.downloadImage}</code>
                     </div>
                   </div>
                 )}
@@ -369,9 +390,22 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
 
               {/* Right Image Display Area */}
               <div className="lg:col-span-6 flex flex-col gap-3">
-                <div className="relative bg-black rounded border border-[#1d3047] overflow-hidden group">
+                <div 
+                  onDoubleClick={() => {
+                    const cleanName = selectedCoral.botanicalName.split(' (')[0].replace(/[^a-zA-Z0-9_-]/g, '_');
+                    const link = document.createElement('a');
+                    link.href = getAssetUrl(selectedCoral.downloadImage || selectedCoral.image);
+                    link.download = `${selectedCoral.id}_${cleanName}_citation.webp`;
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
+                  className="relative bg-black rounded border border-[#1d3047] overflow-hidden group cursor-pointer"
+                  title="Double-click to download High-Res Citation Specimen Image"
+                >
                   <img
-                    src={getAssetUrl(selectedCoral.image)}
+                    src={getAssetUrl(selectedCoral.displayImage || selectedCoral.image)}
                     alt={selectedCoral.botanicalName}
                     decoding="async"
                     className="w-full h-[360px] sm:h-[420px] object-cover"
@@ -380,13 +414,38 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                     <span className="font-mono text-slate-200 italic">
                       {selectedCoral.botanicalName}
                     </span>
-                    <button
-                      onClick={() => setIsFullscreenModalOpen(true)}
-                      className="px-2 py-1 bg-black/60 hover:bg-black text-white text-[11px] font-mono rounded border border-white/20 flex items-center gap-1"
-                    >
-                      <Maximize2 className="w-3 h-3 text-[#e2ba7d]" />
-                      <span>Zoom Specimen</span>
-                    </button>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const cleanName = selectedCoral.botanicalName.split(' (')[0].replace(/[^a-zA-Z0-9_-]/g, '_');
+                          const link = document.createElement('a');
+                          link.href = getAssetUrl(selectedCoral.downloadImage || selectedCoral.image);
+                          link.download = `${selectedCoral.id}_${cleanName}_citation.webp`;
+                          link.target = '_blank';
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                        }}
+                        className="px-2 py-1 bg-[#c5a880] hover:bg-white text-slate-950 text-[11px] font-mono font-bold rounded flex items-center gap-1 cursor-pointer transition-colors"
+                        title="Download for Research"
+                      >
+                        <Download className="w-3 h-3" />
+                        <span>Download</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsFullscreenModalOpen(true);
+                        }}
+                        className="px-2 py-1 bg-black/60 hover:bg-black text-white text-[11px] font-mono rounded border border-white/20 flex items-center gap-1 cursor-pointer"
+                      >
+                        <Maximize2 className="w-3 h-3 text-[#e2ba7d]" />
+                        <span>Zoom</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -425,14 +484,47 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
           </button>
           
           <div className="max-w-5xl w-full flex flex-col items-center gap-4">
-            <img
-              src={getAssetUrl(selectedCoral.image)}
-              alt={selectedCoral.botanicalName}
-              className="max-h-[80vh] w-auto object-contain rounded border border-white/10 shadow-2xl"
-            />
-            <div className="text-center font-mono text-xs text-slate-300">
+            <div 
+              onDoubleClick={() => {
+                const cleanName = selectedCoral.botanicalName.split(' (')[0].replace(/[^a-zA-Z0-9_-]/g, '_');
+                const link = document.createElement('a');
+                link.href = getAssetUrl(selectedCoral.downloadImage || selectedCoral.image);
+                link.download = `${selectedCoral.id}_${cleanName}_citation.webp`;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="relative cursor-pointer group"
+              title="Double-click to download High-Res Citation Specimen Image"
+            >
+              <img
+                src={getAssetUrl(selectedCoral.displayImage || selectedCoral.image)}
+                alt={selectedCoral.botanicalName}
+                className="max-h-[75vh] w-auto object-contain rounded border border-white/10 shadow-2xl"
+              />
+            </div>
+            <div className="text-center font-mono text-xs text-slate-300 flex flex-col items-center gap-2">
               <div className="text-lg font-bold italic text-[#e2ba7d]">{selectedCoral.botanicalName}</div>
               <div>Authority: {selectedCoral.authority} • Family: {selectedCoral.family}</div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const cleanName = selectedCoral.botanicalName.split(' (')[0].replace(/[^a-zA-Z0-9_-]/g, '_');
+                  const link = document.createElement('a');
+                  link.href = getAssetUrl(selectedCoral.downloadImage || selectedCoral.image);
+                  link.download = `${selectedCoral.id}_${cleanName}_citation.webp`;
+                  link.target = '_blank';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="mt-1 px-4 py-2 rounded bg-[#c5a880] hover:bg-white text-slate-950 font-mono font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg"
+              >
+                <Download className="w-4 h-4" />
+                <span>Download Citation Image</span>
+              </button>
             </div>
           </div>
         </div>

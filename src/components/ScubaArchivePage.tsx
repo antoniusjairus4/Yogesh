@@ -18,6 +18,7 @@ import {
   Download,
   CheckCircle2
 } from 'lucide-react';
+import { ResearchContextMenu } from './ResearchContextMenu';
 
 interface ScubaArchivePageProps {
   onBackToPortfolio: () => void;
@@ -30,6 +31,7 @@ const ScubaPhotoCard = React.memo<{
   onOpenLightbox: (photo: ScubaPhoto) => void;
 }>(({ photo, idx, onOpenLightbox }) => {
   const [downloadState, setDownloadState] = useState<'idle' | 'downloading' | 'completed'>('idle');
+  const [menuPos, setMenuPos] = useState<{ x: number; y: number } | null>(null);
 
   const handleClick = useCallback(() => {
     onOpenLightbox(photo);
@@ -65,6 +67,12 @@ const ScubaPhotoCard = React.memo<{
     }, 600);
   }, [photo, downloadState]);
 
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setMenuPos({ x: e.clientX, y: e.clientY });
+  };
+
   return (
     <motion.div
       layout
@@ -74,8 +82,7 @@ const ScubaPhotoCard = React.memo<{
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.35, delay: Math.min(idx * 0.03, 0.4) }}
       onClick={handleClick}
-      onDoubleClick={handleTriggerDownload}
-      title="Double-click to download image for research"
+      title="Right-click for options or double-click to download image for research"
       className="group relative bg-slate-900/90 border border-slate-800/80 rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-1.5 hover:border-slate-700 transition-all duration-300 shadow-lg hover:shadow-2xl flex flex-col w-full h-full"
     >
       <div className="relative overflow-hidden bg-slate-950 shrink-0 w-full h-[260px] sm:h-[280px] lg:h-[300px]">
@@ -86,12 +93,21 @@ const ScubaPhotoCard = React.memo<{
           decoding="async"
           draggable={false}
           onContextMenu={(e) => e.preventDefault()}
-          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none pointer-events-none"
+          onDragStart={(e) => e.preventDefault()}
+          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none -webkit-user-drag-none"
+        />
+
+        {/* Glass Shield Overlay */}
+        <div 
+          onContextMenu={handleContextMenu}
+          onDoubleClick={handleTriggerDownload}
+          onDragStart={(e) => e.preventDefault()}
+          className="absolute inset-0 z-10 select-none bg-transparent cursor-pointer -webkit-user-drag-none"
         />
         
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/15 to-transparent opacity-80" />
+        <div className="absolute inset-0 z-15 bg-gradient-to-t from-slate-950 via-slate-950/15 to-transparent opacity-80 pointer-events-none" />
         
-        <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2 pointer-events-none z-10">
+        <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2 pointer-events-none z-20">
           {photo.depth ? (
             <span className="px-2.5 py-1 rounded-md bg-slate-950/90 text-xs font-mono font-medium text-slate-200 border border-white/10 shadow-sm">
               Depth: {photo.depth}
@@ -155,7 +171,7 @@ const ScubaPhotoCard = React.memo<{
         </div>
 
         <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
-          <span className="text-[11px] font-mono text-slate-500 italic">Double-click to download</span>
+          <span className="text-[11px] font-mono text-slate-500 italic">Right-click / Double-click</span>
           <button
             type="button"
             onClick={handleTriggerDownload}
@@ -184,6 +200,19 @@ const ScubaPhotoCard = React.memo<{
           </button>
         </div>
       </div>
+
+      {menuPos && (
+        <ResearchContextMenu
+          x={menuPos.x}
+          y={menuPos.y}
+          specimenId={photo.id}
+          scientificName={photo.scientificName || photo.title}
+          category={photo.category}
+          downloadPath={photo.downloadUrl || photo.url}
+          onClose={() => setMenuPos(null)}
+          onViewDetails={handleClick}
+        />
+      )}
     </motion.div>
   );
 });
@@ -195,6 +224,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<'All' | 'Corals' | 'Fauna' | 'Expeditions'>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
+  const [lightboxMenuPos, setLightboxMenuPos] = useState<{ x: number; y: number } | null>(null);
 
   // Filtered dataset based on Category & Search Query
   const filteredPhotos = useMemo(() => {
@@ -427,15 +457,45 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
 
               {/* Image View Stage */}
               <div className="relative flex-1 bg-black flex items-center justify-center min-h-[360px] lg:min-h-[560px] overflow-hidden p-4">
-                <img
-                  src={currentPhoto.url}
-                  alt={currentPhoto.title}
-                  draggable={false}
-                  onContextMenu={(e) => e.preventDefault()}
-                  className="max-w-full max-h-[76vh] object-contain rounded-lg shadow-xl select-none"
-                />
+                <div 
+                  className="relative cursor-pointer max-w-full max-h-[76vh]"
+                  title="Right-click for options or double-click to download image for research"
+                >
+                  <img
+                    src={currentPhoto.url}
+                    alt={currentPhoto.title}
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onDragStart={(e) => e.preventDefault()}
+                    className="max-w-full max-h-[76vh] object-contain rounded-lg shadow-xl select-none -webkit-user-drag-none"
+                  />
 
-                <div className="absolute bottom-4 left-4 px-3 py-1 rounded-md bg-slate-900/95 text-xs font-mono font-medium text-slate-300 border border-slate-800">
+                  {/* Glass Shield Overlay */}
+                  <div 
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setLightboxMenuPos({ x: e.clientX, y: e.clientY });
+                    }}
+                    onDoubleClick={() => {
+                      const cleanTitle = currentPhoto.title.replace(/[^a-zA-Z0-9_-]/g, '_');
+                      const downloadFilename = `${currentPhoto.id}_${cleanTitle}_citation.webp`;
+                      const targetUrl = currentPhoto.downloadUrl || currentPhoto.url;
+
+                      const link = document.createElement('a');
+                      link.href = targetUrl;
+                      link.download = downloadFilename;
+                      link.target = '_blank';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
+                    onDragStart={(e) => e.preventDefault()}
+                    className="absolute inset-0 z-10 select-none bg-transparent cursor-pointer -webkit-user-drag-none"
+                  />
+                </div>
+
+                <div className="absolute bottom-4 left-4 z-20 px-3 py-1 rounded-md bg-slate-900/95 text-xs font-mono font-medium text-slate-300 border border-slate-800">
                   {activePhotoIndex + 1} / {filteredPhotos.length}
                 </div>
               </div>
@@ -520,6 +580,19 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
       </AnimatePresence>,
       document.body
     )}
+
+      {/* Custom Context Menu Portal for Lightbox */}
+      {lightboxMenuPos && currentPhoto && (
+        <ResearchContextMenu
+          x={lightboxMenuPos.x}
+          y={lightboxMenuPos.y}
+          specimenId={currentPhoto.id}
+          scientificName={currentPhoto.scientificName || currentPhoto.title}
+          category={currentPhoto.category}
+          downloadPath={currentPhoto.downloadUrl || currentPhoto.url}
+          onClose={() => setLightboxMenuPos(null)}
+        />
+      )}
 
     </div>
   );

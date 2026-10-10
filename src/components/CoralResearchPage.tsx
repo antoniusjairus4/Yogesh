@@ -18,6 +18,8 @@ import {
   BookOpen
 } from 'lucide-react';
 import { getAssetUrl } from '../utils/baseUrl';
+import { SpecimenCard } from './SpecimenCard';
+import { ResearchContextMenu } from './ResearchContextMenu';
 
 interface CoralResearchPageProps {
   onBackToPortfolio: () => void;
@@ -29,6 +31,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
   const [selectedCoral, setSelectedCoral] = useState<CoralSpecies>(CORAL_SPECIES_DATA[0]);
   const [activeTab, setActiveTab] = useState<'Summary' | 'Distribution' | 'Images' | 'Taxonomy'>('Summary');
   const [isFullscreenModalOpen, setIsFullscreenModalOpen] = useState<boolean>(false);
+  const [modalMenuPos, setModalMenuPos] = useState<{ x: number; y: number } | null>(null);
 
   // Filter logic
   const filteredCorals = useMemo(() => {
@@ -391,18 +394,8 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
               {/* Right Image Display Area */}
               <div className="lg:col-span-6 flex flex-col gap-3">
                 <div 
-                  onDoubleClick={() => {
-                    const cleanName = selectedCoral.botanicalName.split(' (')[0].replace(/[^a-zA-Z0-9_-]/g, '_');
-                    const link = document.createElement('a');
-                    link.href = getAssetUrl(selectedCoral.downloadImage || selectedCoral.image);
-                    link.download = `${selectedCoral.id}_${cleanName}_citation.webp`;
-                    link.target = '_blank';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                  }}
                   className="relative bg-black rounded border border-[#1d3047] overflow-hidden group cursor-pointer"
-                  title="Double-click to download High-Res Citation Specimen Image"
+                  title="Right-click for options or double-click to download watermarked specimen"
                 >
                   <img
                     src={getAssetUrl(selectedCoral.displayImage || selectedCoral.image)}
@@ -410,9 +403,32 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                     decoding="async"
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}
-                    className="w-full h-[360px] sm:h-[420px] object-cover select-none"
+                    onDragStart={(e) => e.preventDefault()}
+                    className="w-full h-[360px] sm:h-[420px] object-cover select-none -webkit-user-drag-none"
                   />
-                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 text-xs flex items-center justify-between">
+
+                  {/* Glass Shield Overlay */}
+                  <div 
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setModalMenuPos({ x: e.clientX, y: e.clientY });
+                    }}
+                    onDoubleClick={() => {
+                      const cleanName = selectedCoral.botanicalName.split(' (')[0].replace(/[^a-zA-Z0-9_-]/g, '_');
+                      const link = document.createElement('a');
+                      link.href = getAssetUrl(selectedCoral.downloadImage || selectedCoral.image);
+                      link.download = `${selectedCoral.id}_${cleanName}_citation.webp`;
+                      link.target = '_blank';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
+                    onDragStart={(e) => e.preventDefault()}
+                    className="absolute inset-0 z-10 select-none bg-transparent cursor-pointer -webkit-user-drag-none"
+                  />
+
+                  <div className="absolute bottom-0 inset-x-0 z-20 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 text-xs flex items-center justify-between">
                     <span className="font-mono text-slate-200 italic">
                       {selectedCoral.botanicalName}
                     </span>
@@ -487,25 +503,37 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
           
           <div className="max-w-5xl w-full flex flex-col items-center gap-4">
             <div 
-              onDoubleClick={() => {
-                const cleanName = selectedCoral.botanicalName.split(' (')[0].replace(/[^a-zA-Z0-9_-]/g, '_');
-                const link = document.createElement('a');
-                link.href = getAssetUrl(selectedCoral.downloadImage || selectedCoral.image);
-                link.download = `${selectedCoral.id}_${cleanName}_citation.webp`;
-                link.target = '_blank';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-              }}
               className="relative cursor-pointer group"
-              title="Double-click to download High-Res Citation Specimen Image"
+              title="Right-click for options or double-click to download watermarked specimen"
             >
               <img
                 src={getAssetUrl(selectedCoral.displayImage || selectedCoral.image)}
                 alt={selectedCoral.botanicalName}
                 draggable={false}
                 onContextMenu={(e) => e.preventDefault()}
-                className="max-h-[75vh] w-auto object-contain rounded border border-white/10 shadow-2xl select-none"
+                onDragStart={(e) => e.preventDefault()}
+                className="max-h-[75vh] w-auto object-contain rounded border border-white/10 shadow-2xl select-none -webkit-user-drag-none"
+              />
+
+              {/* Glass Shield Overlay */}
+              <div 
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setModalMenuPos({ x: e.clientX, y: e.clientY });
+                }}
+                onDoubleClick={() => {
+                  const cleanName = selectedCoral.botanicalName.split(' (')[0].replace(/[^a-zA-Z0-9_-]/g, '_');
+                  const link = document.createElement('a');
+                  link.href = getAssetUrl(selectedCoral.downloadImage || selectedCoral.image);
+                  link.download = `${selectedCoral.id}_${cleanName}_citation.webp`;
+                  link.target = '_blank';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                onDragStart={(e) => e.preventDefault()}
+                className="absolute inset-0 z-10 select-none bg-transparent cursor-pointer -webkit-user-drag-none"
               />
             </div>
             <div className="text-center font-mono text-xs text-slate-300 flex flex-col items-center gap-2">
@@ -532,6 +560,24 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
             </div>
           </div>
         </div>
+      )}
+
+      {/* Custom Context Menu Portal for Preview Modals */}
+      {modalMenuPos && (
+        <ResearchContextMenu
+          x={modalMenuPos.x}
+          y={modalMenuPos.y}
+          specimenId={selectedCoral.id}
+          scientificName={selectedCoral.botanicalName}
+          authority={selectedCoral.authority}
+          family={selectedCoral.family}
+          category={selectedCoral.category}
+          downloadPath={selectedCoral.downloadImage || selectedCoral.image}
+          onClose={() => setModalMenuPos(null)}
+          onViewDetails={() => {
+            setActiveTab('Taxonomy');
+          }}
+        />
       )}
 
       {/* Footer */}

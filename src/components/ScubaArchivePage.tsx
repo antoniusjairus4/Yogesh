@@ -14,7 +14,9 @@ import {
   Layers, 
   Maximize2,
   Info,
-  ArrowLeft
+  ArrowLeft,
+  Download,
+  CheckCircle2
 } from 'lucide-react';
 
 interface ScubaArchivePageProps {
@@ -27,9 +29,41 @@ const ScubaPhotoCard = React.memo<{
   idx: number;
   onOpenLightbox: (photo: ScubaPhoto) => void;
 }>(({ photo, idx, onOpenLightbox }) => {
+  const [downloadState, setDownloadState] = useState<'idle' | 'downloading' | 'completed'>('idle');
+
   const handleClick = useCallback(() => {
     onOpenLightbox(photo);
   }, [photo, onOpenLightbox]);
+
+  const handleTriggerDownload = useCallback((e?: React.MouseEvent | React.SyntheticEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (downloadState === 'downloading') return;
+
+    setDownloadState('downloading');
+
+    const cleanTitle = photo.title.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const downloadFilename = `${photo.id}_${cleanTitle}_citation.webp`;
+    const targetUrl = photo.downloadUrl || photo.url;
+
+    const link = document.createElement('a');
+    link.href = targetUrl;
+    link.download = downloadFilename;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setTimeout(() => {
+      setDownloadState('completed');
+      setTimeout(() => {
+        setDownloadState('idle');
+      }, 2500);
+    }, 600);
+  }, [photo, downloadState]);
 
   return (
     <motion.div
@@ -40,6 +74,8 @@ const ScubaPhotoCard = React.memo<{
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.35, delay: Math.min(idx * 0.03, 0.4) }}
       onClick={handleClick}
+      onDoubleClick={handleTriggerDownload}
+      title="Double-click to download image for research"
       className="group relative bg-slate-900/90 border border-slate-800/80 rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-1.5 hover:border-slate-700 transition-all duration-300 shadow-lg hover:shadow-2xl flex flex-col w-full h-full"
     >
       <div className="relative overflow-hidden bg-slate-950 shrink-0 w-full h-[260px] sm:h-[280px] lg:h-[300px]">
@@ -60,8 +96,29 @@ const ScubaPhotoCard = React.memo<{
             </span>
           ) : <span />}
 
-          <div className="p-2 rounded-md bg-slate-950/90 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/10 shadow-sm">
-            <Maximize2 className="w-4 h-4" />
+          <div className="flex items-center gap-2 pointer-events-auto">
+            <button
+              type="button"
+              onClick={handleTriggerDownload}
+              title="Download image with academic citation"
+              className={`p-2 rounded-md border text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm ${
+                downloadState === 'completed'
+                  ? 'bg-emerald-500 text-slate-950 border-emerald-400'
+                  : 'bg-slate-950/90 hover:bg-[#e0ad5b] text-slate-300 hover:text-slate-950 border-white/10 hover:border-[#e0ad5b]'
+              }`}
+            >
+              {downloadState === 'downloading' ? (
+                <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+              ) : downloadState === 'completed' ? (
+                <CheckCircle2 className="w-4 h-4 text-slate-950" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+            </button>
+
+            <div className="p-2 rounded-md bg-slate-950/90 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/10 shadow-sm">
+              <Maximize2 className="w-4 h-4" />
+            </div>
           </div>
         </div>
       </div>
@@ -93,6 +150,36 @@ const ScubaPhotoCard = React.memo<{
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-normal font-sans line-clamp-3">
             {photo.description}
           </p>
+        </div>
+
+        <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
+          <span className="text-[11px] font-mono text-slate-500 italic">Double-click to download</span>
+          <button
+            type="button"
+            onClick={handleTriggerDownload}
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold flex items-center gap-1.5 transition-all cursor-pointer border ${
+              downloadState === 'completed'
+                ? 'bg-emerald-500 text-slate-950 border-emerald-400 font-bold'
+                : 'bg-[#e0ad5b]/10 hover:bg-[#e0ad5b] text-[#e0ad5b] hover:text-slate-950 border-[#e0ad5b]/30 hover:border-[#e0ad5b]'
+            }`}
+          >
+            {downloadState === 'downloading' ? (
+              <>
+                <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                <span>Preparing...</span>
+              </>
+            ) : downloadState === 'completed' ? (
+              <>
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Downloaded!</span>
+              </>
+            ) : (
+              <>
+                <Download className="w-3.5 h-3.5" />
+                <span>Download Citation</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
     </motion.div>
@@ -390,9 +477,30 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
                       <Info className="w-3.5 h-3.5 text-slate-400" />
                       Field Observation Notes
                     </h4>
-                    <p className="text-sm text-slate-300 leading-relaxed font-normal font-sans">
+                    <p className="text-sm text-slate-300 leading-relaxed font-normal font-sans mb-6">
                       {currentPhoto.description}
                     </p>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const cleanTitle = currentPhoto.title.replace(/[^a-zA-Z0-9_-]/g, '_');
+                        const downloadFilename = `${currentPhoto.id}_${cleanTitle}_citation.webp`;
+                        const targetUrl = currentPhoto.downloadUrl || currentPhoto.url;
+
+                        const link = document.createElement('a');
+                        link.href = targetUrl;
+                        link.download = downloadFilename;
+                        link.target = '_blank';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}
+                      className="w-full py-3 px-4 rounded-xl bg-[#e0ad5b] hover:bg-white text-slate-950 font-mono font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-lg cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>Download High-Res Specimen for Research</span>
+                    </button>
                   </div>
                 </div>
 

@@ -3,6 +3,7 @@ import { getAssetUrl } from '../utils/baseUrl';
 export interface ScubaPhoto {
   id: string;
   url: string;
+  downloadUrl?: string;
   title: string;
   scientificName?: string;
   category: 'Corals' | 'Fauna' | 'Expeditions';

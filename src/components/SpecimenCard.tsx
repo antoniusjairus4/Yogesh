@@ -62,7 +62,9 @@ export const SpecimenCard: React.FC<SpecimenCardProps> = ({
           alt={specimen.botanicalName}
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          draggable={false}
+          onContextMenu={(e) => e.preventDefault()}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 select-none pointer-events-none"
         />
 
         {/* Hover Action Overlay Buttons */}

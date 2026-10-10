@@ -60,14 +60,45 @@ def process_specimen(in_path, out_filename, specimen_id, botanical_name, family,
         img = img.convert('RGB')
         w, h = img.size
 
-        # --- 1. DISPLAY VERSION ---
-        # Resize to max width 1600px if larger, strip EXIF, clean WebP
+        # --- 1. DISPLAY VERSION WITH SUBTLE WATERMARK BANNER ---
         display_img = img.copy()
         if w > 1600:
             new_h = int(h * (1600 / w))
             display_img = display_img.resize((1600, new_h), Image.Resampling.LANCZOS)
         
-        display_img.save(display_path, 'WEBP', quality=82)
+        dw_disp, dh_disp = display_img.size
+        banner_h_disp = max(50, int(dh_disp * 0.055))
+        overlay_disp = Image.new('RGBA', (dw_disp, dh_disp), (0, 0, 0, 0))
+        draw_overlay_disp = ImageDraw.Draw(overlay_disp)
+
+        for y in range(dh_disp - banner_h_disp, dh_disp):
+            alpha = int(180 + 40 * ((y - (dh_disp - banner_h_disp)) / banner_h_disp))
+            draw_overlay_disp.line([(0, y), (dw_disp, y)], fill=(6, 16, 28, alpha))
+
+        display_img_rgba = display_img.convert('RGBA')
+        display_img_rgba = Image.alpha_composite(display_img_rgba, overlay_disp)
+        draw_disp = ImageDraw.Draw(display_img_rgba)
+
+        title_font_size_disp = max(12, int(banner_h_disp * 0.28))
+        sub_font_size_disp = max(10, int(banner_h_disp * 0.22))
+        try:
+            font_title_disp = ImageFont.truetype(FONT_BOLD_PATH, title_font_size_disp)
+            font_sub_disp = ImageFont.truetype(FONT_REGULAR_PATH, sub_font_size_disp)
+        except Exception:
+            font_title_disp = font_sub_disp = ImageFont.load_default()
+
+        line1_disp = f"{botanical_name} — {specimen_id}"
+        line2_disp = "© Dr. J.S. Yogesh Kumar • Educational Reference Only"
+
+        pad_x_disp = max(12, int(dw_disp * 0.015))
+        top_y1_disp = (dh_disp - banner_h_disp) + int(banner_h_disp * 0.16)
+        top_y2_disp = (dh_disp - banner_h_disp) + int(banner_h_disp * 0.52)
+
+        draw_disp.text((pad_x_disp, top_y1_disp), line1_disp, fill=(226, 186, 125, 230), font=font_title_disp)
+        draw_disp.text((pad_x_disp, top_y2_disp), line2_disp, fill=(203, 213, 225, 220), font=font_sub_disp)
+
+        final_display_img = display_img_rgba.convert('RGB')
+        final_display_img.save(display_path, 'WEBP', quality=84)
 
         # --- 2. DOWNLOAD VERSION WITH BURNED-IN WATERMARK & CITATION ---
         download_img = img.copy()

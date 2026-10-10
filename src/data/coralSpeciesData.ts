@@ -14,7 +14,7 @@ export interface CoralSpecies {
   image: string;
 }
 
-export const CORAL_SPECIES_DATA: CoralSpecies[] = Array.from({ length: 82 }, (_, i) => {
+export const CORAL_SPECIES_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_, i) => {
   const index = i + 1;
   const numStr = String(index).padStart(3, '0');
   

@@ -714,7 +714,7 @@ export const About: React.FC<AboutProps> = ({
                 Coral Taxonomy &amp; Specimen Archive
               </h4>
               <p className="text-slate-300 text-xs sm:text-sm max-w-xl leading-relaxed">
-                Explore the structured academic factsheet database of coral species featuring 82 WebP photographic specimen records, botanical taxonomy, habitat data, and diagnostic keys.
+                Explore the structured academic factsheet database of coral species featuring 80 WebP photographic specimen records, botanical taxonomy, habitat data, and diagnostic keys.
               </p>
             </div>
 

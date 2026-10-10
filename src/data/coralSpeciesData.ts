@@ -115,8 +115,8 @@ const CORALS_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_, i) => {
   };
 });
 
-// 2. 44 Octocoral & Gorgonian Specimen Records
-const OCTOCORALS_DATA: CoralSpecies[] = Array.from({ length: 44 }, (_, i) => {
+// 2. 39 Octocoral & Gorgonian Specimen Records
+const OCTOCORALS_DATA: CoralSpecies[] = Array.from({ length: 39 }, (_, i) => {
   const index = i + 1;
   const numStr = String(index).padStart(3, '0');
 

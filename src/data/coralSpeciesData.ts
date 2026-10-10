@@ -3,7 +3,8 @@ export interface CoralSpecies {
   botanicalName: string;
   authority: string;
   commonName: string;
-  category: 'Scleractinia' | 'Alcyonacea' | 'Antipatharia' | 'Octocorallia' | 'Taxonomic Specimen';
+  group: 'Corals' | 'Octocorals';
+  category: string;
   family: string;
   location: string;
   depth: string;
@@ -14,14 +15,10 @@ export interface CoralSpecies {
   image: string;
 }
 
-export const CORAL_SPECIES_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_, i) => {
+// 1. 80 Scleractinia & Hard Coral Specimen Records
+const CORALS_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_, i) => {
   const index = i + 1;
   const numStr = String(index).padStart(3, '0');
-  
-  // Taxonomical curation presets representing Dr. Yogesh Kumar's coral species catalog
-  const categories: CoralSpecies['category'][] = [
-    'Scleractinia', 'Alcyonacea', 'Antipatharia', 'Octocorallia', 'Taxonomic Specimen'
-  ];
   
   const speciesTemplates = [
     {
@@ -29,7 +26,7 @@ export const CORAL_SPECIES_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_,
       authority: 'Stutchbury, 1833',
       commonName: 'Mushroom Coral',
       family: 'Fungiidae',
-      category: 'Scleractinia' as const,
+      category: 'Scleractinia',
       depth: '5 - 25 meters',
       habitat: 'Reef slopes, sandy substrates, and lagoonal bottoms',
       abundance: 'Common across Andaman & Nicobar Waters',
@@ -41,7 +38,7 @@ export const CORAL_SPECIES_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_,
       authority: '(Dana, 1846)',
       commonName: 'Staghorn Coral',
       family: 'Acroporidae',
-      category: 'Scleractinia' as const,
+      category: 'Scleractinia',
       depth: '2 - 15 meters',
       habitat: 'Upper reef slopes and sheltered lagoon waters',
       abundance: 'Abundant in shallow fringing reefs',
@@ -53,7 +50,7 @@ export const CORAL_SPECIES_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_,
       authority: 'Quoy & Gaimard, 1834',
       commonName: 'Hump Coral',
       family: 'Poritidae',
-      category: 'Scleractinia' as const,
+      category: 'Scleractinia',
       depth: '1 - 30 meters',
       habitat: 'Fringing reefs and intertidal microatolls',
       abundance: 'Very Common across Indo-Pacific',
@@ -65,7 +62,7 @@ export const CORAL_SPECIES_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_,
       authority: 'Lesson, 1829',
       commonName: 'Sun Coral / Orange Cup Coral',
       family: 'Dendrophylliidae',
-      category: 'Scleractinia' as const,
+      category: 'Scleractinia',
       depth: '8 - 40 meters',
       habitat: 'Cave ceilings, overhangs, and shaded vertical walls',
       abundance: 'Locally Frequent in high-current channels',
@@ -73,52 +70,16 @@ export const CORAL_SPECIES_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_,
       identification: 'Azooxanthellate nature, vivid orange coloration, nocturnal polyp expansion, and porous skeletal structure.'
     },
     {
-      botanicalName: 'Sarcophyton glaucum',
-      authority: '(Quoy & Gaimard, 1833)',
-      commonName: 'Toadstool Leather Coral',
-      family: 'Alcyoniidae',
-      category: 'Alcyonacea' as const,
-      depth: '3 - 20 meters',
-      habitat: 'Shallow reef flats and upper slope zones',
-      abundance: 'Abundant in sheltered reef crests',
-      description: 'Mushroom-shaped soft coral with smooth stalk and broad capitulum. Autozooid polyps extend gracefully during daytime feeding cycles.',
-      identification: 'Fleshy capitulum with dimorphic polyps (autozooids and siphonozooids) and embedded tuberculate sclerites.'
-    },
-    {
-      botanicalName: 'Cirrhipathes anguina',
-      authority: 'Dana, 1846',
-      commonName: 'Wire Coral / Black Coral',
-      family: 'Antipathidae',
-      category: 'Antipatharia' as const,
-      depth: '15 - 55 meters',
-      habitat: 'Deep reef walls, drop-offs, and current-swept ledges',
-      abundance: 'Frequent along deep wall slopes',
-      description: 'Unbranched whip-like black coral extending up to 3 meters in length. Proteinaceous axial skeleton adorned with microscopic triangulate spines.',
-      identification: 'Single unbranched spiral axial skeleton with non-retractable translucent white or yellow polyps.'
-    },
-    {
       botanicalName: 'Favites abdita',
       authority: '(Ellis & Solander, 1786)',
       commonName: 'Brain Coral / Honeycomb Coral',
       family: 'Merulinidae',
-      category: 'Scleractinia' as const,
+      category: 'Scleractinia',
       depth: '3 - 25 meters',
       habitat: 'Rocky reef shores and sublittoral reef flats',
       abundance: 'Common in shallow tropical reefs',
       description: 'Cerioid colonies forming massive rounded or encrusting structures. Adjacent corallites share common thick walls with prominent septo-costae.',
       identification: 'Shared corallite walls, deep calices, and irregular angular corallite outlines.'
-    },
-    {
-      botanicalName: 'Annella mollis',
-      authority: '(Nutting, 1910)',
-      commonName: 'Giant Sea Fan',
-      family: 'Subergorgiidae',
-      category: 'Octocorallia' as const,
-      depth: '12 - 45 meters',
-      habitat: 'Outer reef slopes and deep channels',
-      abundance: 'Occasional along current paths',
-      description: 'Large reticulate fan-shaped octocoral reaching over 2 meters in width. Axis composed of gorgonin with embedded spicules.',
-      identification: 'Flat planar fan mesh, small closely set polyps, and rich red to pinkish skeletal coloration.'
     }
   ];
 
@@ -141,6 +102,7 @@ export const CORAL_SPECIES_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_,
     botanicalName: `${spec.botanicalName} (Specimen #${numStr})`,
     authority: spec.authority,
     commonName: spec.commonName,
+    group: 'Corals' as const,
     category: spec.category,
     family: spec.family,
     location: loc,
@@ -152,3 +114,106 @@ export const CORAL_SPECIES_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_,
     image: `/corals/coral_${numStr}.webp`
   };
 });
+
+// 2. 44 Octocoral & Gorgonian Specimen Records
+const OCTOCORALS_DATA: CoralSpecies[] = Array.from({ length: 44 }, (_, i) => {
+  const index = i + 1;
+  const numStr = String(index).padStart(3, '0');
+
+  const octoTemplates = [
+    {
+      botanicalName: 'Annella mollis',
+      authority: '(Nutting, 1910)',
+      commonName: 'Giant Sea Fan',
+      family: 'Subergorgiidae',
+      category: 'Octocorallia',
+      depth: '12 - 45 meters',
+      habitat: 'Outer reef slopes, drop-offs, and deep current channels',
+      abundance: 'Abundant in Andaman & Nicobar Deep Shelf',
+      description: 'Large reticulate fan-shaped octocoral reaching over 2 meters in width. Axis composed of gorgonin with embedded spicules. Autozooid polyps line the fine mesh structure.',
+      identification: 'Flat planar fan mesh, small closely set autozooid polyps, and rich reddish-pink to orange gorgonin axis.'
+    },
+    {
+      botanicalName: 'Sarcophyton glaucum',
+      authority: '(Quoy & Gaimard, 1833)',
+      commonName: 'Toadstool Leather Coral',
+      family: 'Alcyoniidae',
+      category: 'Octocorallia',
+      depth: '3 - 20 meters',
+      habitat: 'Shallow reef flats, patch reefs, and upper slope zones',
+      abundance: 'Common across Indo-Pacific Reefs',
+      description: 'Mushroom-shaped soft octocoral with smooth stalk and broad wavy capitulum. Autozooid polyps extend gracefully during daytime feeding cycles.',
+      identification: 'Fleshy capitulum with dimorphic polyps (autozooids and siphonozooids) and embedded tuberculate sclerites.'
+    },
+    {
+      botanicalName: 'Dendronephthya hemprichi',
+      authority: 'Klunzinger, 1877',
+      commonName: 'Carnation Tree Coral / Soft Coral',
+      family: 'Nephtheidae',
+      category: 'Octocorallia',
+      depth: '10 - 50 meters',
+      habitat: 'Shaded overhangs, cave entrances, and high-current drop-offs',
+      abundance: 'Locally Frequent along current paths',
+      description: 'Highly colorful azooxanthellate soft coral with arborescent branching. Calcium carbonate sclerites visible through translucent body wall.',
+      identification: 'Vivid magenta or orange coloration, bundled supportive sclerites, and non-reef-building soft tissue structure.'
+    },
+    {
+      botanicalName: 'Echinomuricea indica',
+      authority: 'Thomson & Simpson, 1909',
+      commonName: 'Thorny Gorgonian Sea Fan',
+      family: 'Plexauridae',
+      category: 'Octocorallia',
+      depth: '15 - 60 meters',
+      habitat: 'Deep rocky shelves, silt-tolerant ledges, and coastal reefs',
+      abundance: 'Frequent in East Coast & Digha Waters',
+      description: 'Branching gorgonian octocoral adorned with prominent calyces and sharp projecting sclerites. Forms dense sea fan gardens.',
+      identification: 'Densely branched fan plane with prominent spinous calyces and yellow-brown axis.'
+    },
+    {
+      botanicalName: 'Ellisella maculata',
+      authority: 'Studer, 1878',
+      commonName: 'Sea Whip / Whip Octocoral',
+      family: 'Ellisellidae',
+      category: 'Octocorallia',
+      depth: '18 - 65 meters',
+      habitat: 'Sublittoral deep reef walls and current-swept sea floors',
+      abundance: 'Common along offshore deep transects',
+      description: 'Long whip-like unbranched or sparsely branched colonies reaching up to 2.5 meters. Calyces arranged in longitudinal rows.',
+      identification: 'Calcareous axis with densely packed spindle-shaped sclerites and distinct longitudinal groove.'
+    }
+  ];
+
+  const locations = [
+    'Great Nicobar Biosphere Reserve',
+    'Ritchie Archipelago, Havelock Deep Shelf',
+    'Digha Coastal Zone, West Bengal',
+    'South Andaman Marine Sanctuary',
+    'Barren Island Deep Ledges',
+    'Cinque Island Drop-off Wall',
+    'Little Andaman Coral Crest',
+    'North Brother Channel Wall'
+  ];
+
+  const spec = octoTemplates[i % octoTemplates.length];
+  const loc = locations[i % locations.length];
+
+  return {
+    id: `octo-${numStr}`,
+    botanicalName: `${spec.botanicalName} (Octocoral Specimen #${numStr})`,
+    authority: spec.authority,
+    commonName: spec.commonName,
+    group: 'Octocorals' as const,
+    category: spec.category,
+    family: spec.family,
+    location: loc,
+    depth: spec.depth,
+    habitat: spec.habitat,
+    abundance: spec.abundance,
+    description: `${spec.description} Documented during Dr. J.S. Yogesh Kumar's Octocoral & Gorgonian taxonomy research expeditions.`,
+    identification: spec.identification,
+    image: `/octocorals/octocoral_${numStr}.webp`
+  };
+});
+
+// Consolidated Dataset: 80 Corals + 44 Octocorals = 124 Total Specimen Records
+export const CORAL_SPECIES_DATA: CoralSpecies[] = [...CORALS_DATA, ...OCTOCORALS_DATA];

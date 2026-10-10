@@ -24,7 +24,7 @@ interface CoralResearchPageProps {
 }
 
 export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPortfolio }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+  const [selectedGroup, setSelectedGroup] = useState<'ALL' | 'Corals' | 'Octocorals'>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCoral, setSelectedCoral] = useState<CoralSpecies>(CORAL_SPECIES_DATA[0]);
   const [activeTab, setActiveTab] = useState<'Summary' | 'Distribution' | 'Images' | 'Taxonomy'>('Summary');
@@ -33,7 +33,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
   // Filter logic
   const filteredCorals = useMemo(() => {
     return CORAL_SPECIES_DATA.filter((coral) => {
-      const matchesCategory = selectedCategory === 'ALL' || coral.category === selectedCategory;
+      const matchesGroup = selectedGroup === 'ALL' || coral.group === selectedGroup;
       const query = searchQuery.toLowerCase().trim();
       const matchesSearch = 
         !query || 
@@ -43,9 +43,9 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
         coral.location.toLowerCase().includes(query) ||
         coral.description.toLowerCase().includes(query);
 
-      return matchesCategory && matchesSearch;
+      return matchesGroup && matchesSearch;
     });
-  }, [selectedCategory, searchQuery]);
+  }, [selectedGroup, searchQuery]);
 
   // Update selected coral if current selected item is filtered out
   React.useEffect(() => {
@@ -128,21 +128,25 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0 scrollbar-thin">
-            <span className="text-xs text-slate-400 uppercase tracking-wider font-mono mr-1">Order:</span>
-            {['ALL', 'Scleractinia', 'Alcyonacea', 'Antipatharia', 'Octocorallia', 'Taxonomic Specimen'].map((cat) => {
-              const active = selectedCategory === cat;
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0 scrollbar-thin">
+            <span className="text-xs text-slate-400 uppercase tracking-wider font-mono mr-1">Taxa Group:</span>
+            {[
+              { id: 'ALL', label: 'ALL SPECIES', count: CORAL_SPECIES_DATA.length },
+              { id: 'Corals', label: 'CORALS (80)', count: 80 },
+              { id: 'Octocorals', label: 'OCTOCORALS (44)', count: 44 }
+            ].map((tab) => {
+              const active = selectedGroup === tab.id;
               return (
                 <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1.5 text-xs rounded font-medium whitespace-nowrap transition-colors border ${
+                  key={tab.id}
+                  onClick={() => setSelectedGroup(tab.id as any)}
+                  className={`px-4 py-1.5 text-xs rounded-md font-bold uppercase tracking-wide transition-all border cursor-pointer ${
                     active 
-                      ? 'bg-[#c5a880] text-slate-950 border-[#c5a880] font-bold' 
-                      : 'bg-[#060c14] text-slate-300 border-[#1c2e45] hover:border-slate-500'
+                      ? 'bg-[#c5a880] text-slate-950 border-[#c5a880] shadow-md' 
+                      : 'bg-[#060c14] text-slate-300 border-[#1c2e45] hover:border-slate-400 hover:text-white'
                   }`}
                 >
-                  {cat}
+                  {tab.label}
                 </button>
               );
             })}

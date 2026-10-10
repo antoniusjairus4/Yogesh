@@ -311,9 +311,9 @@ export const FIELD_PHOTOS: FieldPhoto[] = [
   },
   {
     url: getAssetUrl("/portfolio/DSC09721.webp"),
-    title: "Sunderbans Faunal Assessment",
-    caption: "Field exploration of mangrove-associated fauna and threatened species across Sunderban Biosphere Reserve.",
-    tag: "Mangrove Exploration"
+    title: "Coral Reef Ecosystem Study",
+    caption: "Field exploration, line transect sampling, and underwater videography of coral reef ecosystems.",
+    tag: "Reef Ecosystem Study"
   },
   {
     url: getAssetUrl("/portfolio/DSCN0271.webp"),

@@ -134,9 +134,8 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
           <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0 scrollbar-thin">
             <span className="text-xs text-slate-400 uppercase tracking-wider font-mono mr-1">Taxa Group:</span>
             {[
-              { id: 'ALL', label: 'ALL SPECIES', count: CORAL_SPECIES_DATA.length },
-              { id: 'Corals', label: 'CORALS (80)', count: 80 },
-              { id: 'Octocorals', label: 'OCTOCORALS (39)', count: 39 }
+              { id: 'ALL', label: `ALL SPECIES (${CORAL_SPECIES_DATA.length})` },
+              { id: 'Corals', label: 'CORALS (80)' }
             ].map((tab) => {
               const active = selectedGroup === tab.id;
               return (

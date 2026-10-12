@@ -135,7 +135,8 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
             <span className="text-xs text-slate-400 uppercase tracking-wider font-mono mr-1">Taxa Group:</span>
             {[
               { id: 'ALL', label: `ALL SPECIES (${CORAL_SPECIES_DATA.length})` },
-              { id: 'Corals', label: 'CORALS (80)' }
+              { id: 'Corals', label: 'CORALS (80)' },
+              { id: 'Octocorals', label: 'OCTORALS (87)' }
             ].map((tab) => {
               const active = selectedGroup === tab.id;
               return (

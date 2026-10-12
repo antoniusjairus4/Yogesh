@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 # Directory configuration
 CORALS_RAW_DIR = 'Corals'
-OCTORAL_RAW_DIR = 'Octoral'
+OCTORAL_RAW_DIR = 'Octorals'
 
 DISPLAY_DIR = 'public/specimens/display'
 DOWNLOADS_DIR = 'public/specimens/downloads'
@@ -42,7 +42,7 @@ OCTO_TEMPLATES = [
 
 # Excluded non-specimen indices (0-indexed)
 CORAL_EXCLUDE_INDICES = {79, 81}
-OCTO_EXCLUDE_INDICES = {28, 30, 36, 37, 40}
+OCTO_EXCLUDE_INDICES = set()
 
 def get_coral_raw_files():
     files = sorted([f for f in os.listdir(CORALS_RAW_DIR) if f.lower().endswith(('.jpeg', '.jpg', '.png'))])

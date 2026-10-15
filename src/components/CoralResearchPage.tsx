@@ -26,7 +26,7 @@ interface CoralResearchPageProps {
 }
 
 export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPortfolio }) => {
-  const [selectedGroup, setSelectedGroup] = useState<'ALL' | 'Corals' | 'Octocorals'>('ALL');
+  const [selectedGroup, setSelectedGroup] = useState<'ALL' | 'Corals' | 'Octocorals' | 'Mollusca'>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCoral, setSelectedCoral] = useState<CoralSpecies>(CORAL_SPECIES_DATA[0]);
   const [activeTab, setActiveTab] = useState<'Summary' | 'Distribution' | 'Images' | 'Taxonomy'>('Summary');
@@ -93,7 +93,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                 <span className="text-[#e2ba7d] font-outfit uppercase tracking-wider">Works of Dr. J.S. Yogesh Kumar</span>
               </h1>
               <p className="text-[11px] text-slate-400 font-mono">
-                Coral Taxonomy & Subsurface Specimen Archive • Zoological Survey of India
+                Coral Taxonomy, Octocorals & Mollusca Specimen Archive • Zoological Survey of India
               </p>
             </div>
           </div>
@@ -135,8 +135,9 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
             <span className="text-xs text-slate-400 uppercase tracking-wider font-mono mr-1">Taxa Group:</span>
             {[
               { id: 'ALL', label: `ALL SPECIES (${CORAL_SPECIES_DATA.length})` },
-              { id: 'Corals', label: 'CORALS (80)' },
-              { id: 'Octocorals', label: 'OCTORALS (87)' }
+              { id: 'Corals', label: `CORALS (${CORAL_SPECIES_DATA.filter(c => c.group === 'Corals').length})` },
+              { id: 'Octocorals', label: `OCTORALS (${CORAL_SPECIES_DATA.filter(c => c.group === 'Octocorals').length})` },
+              { id: 'Mollusca', label: `MOLLUSCA (${CORAL_SPECIES_DATA.filter(c => c.group === 'Mollusca').length})` }
             ].map((tab) => {
               const active = selectedGroup === tab.id;
               return (

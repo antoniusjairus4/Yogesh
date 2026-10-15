@@ -711,10 +711,10 @@ export const About: React.FC<AboutProps> = ({
                 <span>Works of Dr. J.S. Yogesh Kumar</span>
               </div>
               <h4 className="font-outfit font-black text-xl sm:text-2xl text-white tracking-tight">
-                Coral Taxonomy &amp; Specimen Archive
+                Taxonomy &amp; Marine Specimen Archive
               </h4>
               <p className="text-slate-300 text-xs sm:text-sm max-w-xl leading-relaxed">
-                Explore the structured academic factsheet database featuring 167 WebP photographic specimen records of Corals &amp; Octocorals, taxonomy, habitat data, and diagnostic keys.
+                Explore the structured academic factsheet database featuring 193 WebP photographic specimen records of Corals, Octocorals &amp; Mollusca, taxonomy, habitat data, and diagnostic keys.
               </p>
             </div>
 
@@ -729,7 +729,7 @@ export const About: React.FC<AboutProps> = ({
               }}
               className="flex-shrink-0 inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#c5a880] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest cursor-pointer border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 z-10 relative pointer-events-auto"
             >
-              <span>Explore Coral Research Catalog</span>
+              <span>Explore Specimen Research Catalog</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </motion.div>

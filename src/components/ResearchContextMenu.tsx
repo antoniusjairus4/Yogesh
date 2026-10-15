@@ -82,7 +82,7 @@ export const ResearchContextMenu: React.FC<ResearchContextMenuProps> = ({
     // Default download path logic matching Dual-Folder structure
     const targetUrl = downloadPath 
       ? getAssetUrl(downloadPath)
-      : getAssetUrl(`/specimens/downloads/${specimenId.startsWith('octo') ? 'octocoral' : 'coral'}_${specimenId.replace(/^(coral-|octo-)/, '')}.webp`);
+      : getAssetUrl(`/specimens/downloads/${specimenId.startsWith('octo') ? 'octocoral' : specimenId.startsWith('mollusc') ? 'mollusca' : 'coral'}_${specimenId.replace(/^(coral-|octo-|mollusc-)/, '')}.webp`);
 
     const link = document.createElement('a');
     link.href = targetUrl;

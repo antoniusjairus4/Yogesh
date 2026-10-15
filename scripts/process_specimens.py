@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 # Directory configuration
 CORALS_RAW_DIR = 'Corals'
 OCTORAL_RAW_DIR = 'Octorals'
+MOLLUSCA_RAW_DIR = 'Mollusca'
 
 DISPLAY_DIR = 'public/specimens/display'
 DOWNLOADS_DIR = 'public/specimens/downloads'
@@ -40,9 +41,21 @@ OCTO_TEMPLATES = [
     { 'botanicalName': 'Ellisella maculata', 'family': 'Ellisellidae', 'category': 'Octocorallia' },
 ]
 
+MOLLUSCA_TEMPLATES = [
+    { 'botanicalName': 'Trochus niloticus', 'family': 'Tegulidae', 'category': 'Gastropoda' },
+    { 'botanicalName': 'Conus marmoreus', 'family': 'Conidae', 'category': 'Gastropoda' },
+    { 'botanicalName': 'Mauritia mauritiana', 'family': 'Cypraeidae', 'category': 'Gastropoda' },
+    { 'botanicalName': 'Pleuroploca trapezium', 'family': 'Fasciolariidae', 'category': 'Gastropoda' },
+    { 'botanicalName': 'Conus ebraeus', 'family': 'Conidae', 'category': 'Gastropoda' },
+    { 'botanicalName': 'Turbo marmoratus', 'family': 'Turbinidae', 'category': 'Gastropoda' },
+    { 'botanicalName': 'Lyncina carneola', 'family': 'Cypraeidae', 'category': 'Gastropoda' },
+    { 'botanicalName': 'Tridacna maxima', 'family': 'Cardiidae', 'category': 'Bivalvia' },
+]
+
 # Excluded non-specimen indices (0-indexed)
 CORAL_EXCLUDE_INDICES = {79, 81}
 OCTO_EXCLUDE_INDICES = set()
+MOLLUSCA_EXCLUDE_INDICES = set()
 
 def get_coral_raw_files():
     files = sorted([f for f in os.listdir(CORALS_RAW_DIR) if f.lower().endswith(('.jpeg', '.jpg', '.png'))])
@@ -52,9 +65,17 @@ def get_octo_raw_files():
     files = sorted([f for f in os.listdir(OCTORAL_RAW_DIR) if f.lower().endswith(('.jpeg', '.jpg', '.png'))])
     return [os.path.join(OCTORAL_RAW_DIR, f) for i, f in enumerate(files) if i not in OCTO_EXCLUDE_INDICES]
 
-def process_specimen(in_path, out_filename, specimen_id, botanical_name, family, category):
+def get_mollusca_raw_files():
+    files = sorted([f for f in os.listdir(MOLLUSCA_RAW_DIR) if f.lower().endswith(('.jpeg', '.jpg', '.png'))])
+    return [os.path.join(MOLLUSCA_RAW_DIR, f) for i, f in enumerate(files) if i not in MOLLUSCA_EXCLUDE_INDICES]
+
+def process_specimen(in_path, out_filename, specimen_id, botanical_name, family, category, force=False):
     display_path = os.path.join(DISPLAY_DIR, out_filename)
     download_path = os.path.join(DOWNLOADS_DIR, out_filename)
+
+    if not force and os.path.exists(display_path) and os.path.exists(download_path):
+        print(f"Skipping already processed: {out_filename}")
+        return
 
     with Image.open(in_path) as img:
         img = img.convert('RGB')
@@ -192,6 +213,16 @@ def main():
         specimen_id = f"octo-{num_str}"
         out_filename = f"octocoral_{num_str}.webp"
         tmpl = OCTO_TEMPLATES[idx % len(OCTO_TEMPLATES)]
+        process_specimen(filepath, out_filename, specimen_id, tmpl['botanicalName'], tmpl['family'], tmpl['category'])
+
+    mollusca_files = get_mollusca_raw_files()
+    print(f"Ingesting {len(mollusca_files)} raw mollusca photos...")
+    for idx, filepath in enumerate(mollusca_files):
+        num = idx + 1
+        num_str = f"{num:03d}"
+        specimen_id = f"mollusc-{num_str}"
+        out_filename = f"mollusca_{num_str}.webp"
+        tmpl = MOLLUSCA_TEMPLATES[idx % len(MOLLUSCA_TEMPLATES)]
         process_specimen(filepath, out_filename, specimen_id, tmpl['botanicalName'], tmpl['family'], tmpl['category'])
 
     print("Batch pre-processing pipeline completed successfully!")

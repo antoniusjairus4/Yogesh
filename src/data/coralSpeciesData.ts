@@ -111,7 +111,7 @@ const CORALS_DATA: CoralSpecies[] = Array.from({ length: 80 }, (_, i) => {
     depth: spec.depth,
     habitat: spec.habitat,
     abundance: spec.abundance,
-    description: `${spec.description} High-resolution macroscopic photographic record documented during Dr. J.S. Yogesh Kumar's marine research expedition series.`,
+    description: '',
     identification: spec.identification,
     image: `/specimens/display/coral_${numStr}.webp`,
     displayImage: `/specimens/display/coral_${numStr}.webp`,
@@ -213,7 +213,7 @@ const OCTOCORALS_DATA: CoralSpecies[] = Array.from({ length: 87 }, (_, i) => {
     depth: spec.depth,
     habitat: spec.habitat,
     abundance: spec.abundance,
-    description: `${spec.description} Documented during Dr. J.S. Yogesh Kumar's Octocoral & Gorgonian taxonomy research expeditions.`,
+    description: '',
     identification: spec.identification,
     image: `/specimens/display/octocoral_${numStr}.webp`,
     displayImage: `/specimens/display/octocoral_${numStr}.webp`,
@@ -236,7 +236,7 @@ const MOLLUSCA_DATA: CoralSpecies[] = Array.from({ length: 26 }, (_, i) => {
       depth: '0 - 15 meters',
       habitat: 'Intertidal reef flats, coral rubble slopes, and high-energy surf zones',
       abundance: 'Protected Schedule IV Marine Species across Andaman & Nicobar',
-      description: 'Large heavy conical shell with distinctive reddish-crimson zebra stripes on a thick pearly nacreous background. Thick columellar fold with deep umbilical cavity.',
+      description: '',
       identification: 'Broad conical base up to 150mm, smooth whorls with crimson axial flammules, and brilliant mother-of-pearl interior.'
     },
     {

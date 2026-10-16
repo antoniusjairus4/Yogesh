@@ -108,7 +108,7 @@ def process_specimen(in_path, out_filename, specimen_id, botanical_name, family,
         except Exception:
             font_title_disp = font_sub_disp = ImageFont.load_default()
 
-        line1_disp = f"{botanical_name} — {specimen_id}"
+        line1_disp = ''
         line2_disp = "© Dr. J.S. Yogesh Kumar • Educational Reference Only"
 
         pad_x_disp = max(12, int(dw_disp * 0.015))
@@ -154,7 +154,7 @@ def process_specimen(in_path, out_filename, specimen_id, botanical_name, family,
             font_title = font_sub = font_badge = ImageFont.load_default()
 
         # Text lines
-        line1 = f"{botanical_name} ({family} / {category}) — {specimen_id}"
+        line1 = ''
         line2 = "© Dr. J.S. Yogesh Kumar • Marine Biodiversity & Coral Taxonomy Lab • Academic & Educational Reference Only"
         badge_text = "RESEARCH CITATION ARCHIVE"
 

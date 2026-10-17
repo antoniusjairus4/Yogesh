@@ -12,17 +12,30 @@ dist
 dist-ssr
 *.local
 
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+
 # Heavy media assets & videos
 Videos--1/
+Videos/
 public/videos/expeditions/
 *.MOV
 *.mov
+*.mp4
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj

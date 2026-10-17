@@ -120,17 +120,17 @@ export const ResearchContextMenu: React.FC<ResearchContextMenuProps> = ({
         className="fixed z-[9999] min-w-[240px] max-w-[280px] bg-[#091624]/95 border border-[#234263] backdrop-blur-2xl shadow-2xl rounded-2xl p-2 text-xs font-sans text-slate-200 select-none"
         onContextMenu={(e) => e.preventDefault()}
       >
-        {/* Header Header Info */}
+        {/* Header Info */}
         <div className="px-3 py-2 border-b border-[#1b3450] mb-1.5 flex items-center justify-between">
           <div className="truncate pr-2">
-            <div className="font-serif italic font-semibold text-slate-100 truncate text-sm">
-              {scientificName}
+            <div className="font-semibold text-slate-100 truncate text-xs font-mono">
+              Specimen Image
             </div>
             <div className="text-[10px] font-mono text-[#c5a880] truncate">
-              ID: {specimenId} {category ? `• ${category}` : ''}
+              ID: {specimenId}
             </div>
           </div>
-          <span title="Protected Academic Asset">
+          <span title="Protected Specimen Asset">
             <ShieldCheck className="w-4 h-4 text-[#c5a880] shrink-0" />
           </span>
         </div>
@@ -143,25 +143,7 @@ export const ResearchContextMenu: React.FC<ResearchContextMenuProps> = ({
             className="w-full px-3 py-2 rounded-xl text-left flex items-center gap-2.5 text-slate-200 hover:bg-[#183659] hover:text-white transition-all cursor-pointer group"
           >
             <Download className="w-4 h-4 text-[#c5a880] group-hover:scale-110 transition-transform" />
-            <span className="font-medium text-xs">Download Cited Specimen (WebP)</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleCopyCitation}
-            className="w-full px-3 py-2 rounded-xl text-left flex items-center gap-2.5 text-slate-200 hover:bg-[#183659] hover:text-white transition-all cursor-pointer group"
-          >
-            {copied ? (
-              <>
-                <Check className="w-4 h-4 text-emerald-400" />
-                <span className="font-medium text-xs text-emerald-400">Citation Copied!</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-4 h-4 text-slate-400 group-hover:text-slate-200 group-hover:scale-110 transition-transform" />
-                <span className="font-medium text-xs">Copy Taxonomic Citation</span>
-              </>
-            )}
+            <span className="font-medium text-xs">Download Image (WebP)</span>
           </button>
 
           {onViewDetails && (
@@ -174,15 +156,15 @@ export const ResearchContextMenu: React.FC<ResearchContextMenuProps> = ({
               }}
               className="w-full px-3 py-2 rounded-xl text-left flex items-center gap-2.5 text-slate-200 hover:bg-[#183659] hover:text-white transition-all cursor-pointer group"
             >
-              <Info className="w-4 h-4 text-slate-400 group-hover:text-slate-200 group-hover:scale-110 transition-transform" />
-              <span className="font-medium text-xs">View Specimen Details</span>
+              <Info className="w-4 h-4 text-[#e2ba7d] group-hover:scale-110 transition-transform" />
+              <span className="font-medium text-xs">View Fullscreen Image</span>
             </button>
           )}
         </div>
 
         {/* Footer Attribution Badge */}
         <div className="mt-1.5 pt-1.5 border-t border-[#1b3450] px-2 text-[9.5px] font-mono text-slate-400 text-center italic">
-          Dr. J.S. Yogesh Kumar Research Archive
+          Dr. J.S. Yogesh Kumar Specimen Archive
         </div>
       </motion.div>
     </AnimatePresence>,

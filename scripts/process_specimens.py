@@ -158,37 +158,41 @@ def process_specimen(in_path, out_filename, specimen_id, botanical_name, family,
         final_download_img = download_img_rgba.convert('RGB')
         final_download_img.save(download_path, 'WEBP', quality=92)
 
-def main():
+def main(force=False):
+    import sys
+    if '--force' in sys.argv:
+        force = True
+
     coral_files = get_coral_raw_files()
     octo_files = get_octo_raw_files()
 
-    print(f"Ingesting {len(coral_files)} raw coral photos...")
+    print(f"Ingesting {len(coral_files)} raw coral photos (force={force})...")
     for idx, filepath in enumerate(coral_files):
         num = idx + 1
         num_str = f"{num:03d}"
         specimen_id = f"coral-{num_str}"
         out_filename = f"coral_{num_str}.webp"
         tmpl = CORAL_TEMPLATES[idx % len(CORAL_TEMPLATES)]
-        process_specimen(filepath, out_filename, specimen_id, tmpl['botanicalName'], tmpl['family'], tmpl['category'])
+        process_specimen(filepath, out_filename, specimen_id, tmpl['botanicalName'], tmpl['family'], tmpl['category'], force=force)
 
-    print(f"Ingesting {len(octo_files)} raw octocoral photos...")
+    print(f"Ingesting {len(octo_files)} raw octocoral photos (force={force})...")
     for idx, filepath in enumerate(octo_files):
         num = idx + 1
         num_str = f"{num:03d}"
         specimen_id = f"octo-{num_str}"
         out_filename = f"octocoral_{num_str}.webp"
         tmpl = OCTO_TEMPLATES[idx % len(OCTO_TEMPLATES)]
-        process_specimen(filepath, out_filename, specimen_id, tmpl['botanicalName'], tmpl['family'], tmpl['category'])
+        process_specimen(filepath, out_filename, specimen_id, tmpl['botanicalName'], tmpl['family'], tmpl['category'], force=force)
 
     mollusca_files = get_mollusca_raw_files()
-    print(f"Ingesting {len(mollusca_files)} raw mollusca photos...")
+    print(f"Ingesting {len(mollusca_files)} raw mollusca photos (force={force})...")
     for idx, filepath in enumerate(mollusca_files):
         num = idx + 1
         num_str = f"{num:03d}"
         specimen_id = f"mollusc-{num_str}"
         out_filename = f"mollusca_{num_str}.webp"
         tmpl = MOLLUSCA_TEMPLATES[idx % len(MOLLUSCA_TEMPLATES)]
-        process_specimen(filepath, out_filename, specimen_id, tmpl['botanicalName'], tmpl['family'], tmpl['category'])
+        process_specimen(filepath, out_filename, specimen_id, tmpl['botanicalName'], tmpl['family'], tmpl['category'], force=force)
 
     print("Batch pre-processing pipeline completed successfully!")
 

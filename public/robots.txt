@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yogesh-teal.vercel.app/sitemap.xml
+

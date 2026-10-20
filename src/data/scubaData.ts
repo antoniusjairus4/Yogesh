@@ -432,11 +432,12 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   {
     id: 'photo-46',
     url: '/Images_gallery/20230921_092319.webp',
-    title: 'Field Dive Operation 2023',
-    category: 'Expeditions',
-    location: 'National Marine Survey Site',
-    depth: '19m',
-    description: 'Modern SCUBA research expedition documenting marine life in real-time.'
+    title: 'Terrestrial Tortoise',
+    scientificName: 'Testudinidae sp.',
+    category: 'Fauna',
+    location: 'Coastal Terrestrial Habitat',
+    depth: 'Terrestrial',
+    description: 'Documentation of a terrestrial tortoise observed during coastal and island biodiversity field surveys.'
   },
   {
     id: 'photo-47',

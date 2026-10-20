@@ -110,7 +110,7 @@ const ScubaPhotoCard = React.memo<{
         <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2 pointer-events-none z-20">
           {photo.depth ? (
             <span className="px-2.5 py-1 rounded-md bg-slate-950/90 text-xs font-mono font-medium text-slate-200 border border-white/10 shadow-sm">
-              Depth: {photo.depth}
+              {photo.depth.toLowerCase().includes('m') ? `Depth: ${photo.depth}` : photo.depth}
             </span>
           ) : <span />}
 
@@ -509,7 +509,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
                     </span>
                     {currentPhoto.depth && (
                       <span className="px-2.5 py-1 rounded-md bg-slate-900 text-slate-300 text-xs font-mono font-medium border border-slate-800">
-                        Depth: {currentPhoto.depth}
+                        {currentPhoto.depth.toLowerCase().includes('m') ? `Depth: ${currentPhoto.depth}` : currentPhoto.depth}
                       </span>
                     )}
                   </div>

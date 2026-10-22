@@ -215,7 +215,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                   >
                     <img 
                       src={getAssetUrl(coral.image)} 
-                      alt="" 
+                      alt={`${coral.group} Specimen ${coral.id}`} 
                       loading="lazy"
                       decoding="async"
                       className="w-14 h-11 object-cover rounded border border-white/10 shrink-0"
@@ -282,7 +282,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
               >
                 <img
                   src={getAssetUrl(selectedCoral.displayImage || selectedCoral.image)}
-                  alt="Marine Specimen"
+                  alt={`${selectedCoral.group} specimen ${selectedCoral.id} photographed during marine taxonomy research by Dr. J.S. Yogesh Kumar`}
                   decoding="async"
                   draggable={false}
                   onContextMenu={(e) => e.preventDefault()}
@@ -343,7 +343,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                       c.id === selectedCoral.id ? 'border-[#c5a880] ring-2 ring-[#c5a880]/50 scale-105' : 'border-[#1b2b3f] opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={getAssetUrl(c.image)} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                    <img src={getAssetUrl(c.image)} alt={`${c.group} specimen ${c.id}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -373,7 +373,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
             >
               <img
                 src={getAssetUrl(selectedCoral.displayImage || selectedCoral.image)}
-                alt="Specimen Full View"
+                alt={`${selectedCoral.group} specimen ${selectedCoral.id} - High resolution research archive`}
                 draggable={false}
                 onContextMenu={(e) => e.preventDefault()}
                 onDragStart={(e) => e.preventDefault()}

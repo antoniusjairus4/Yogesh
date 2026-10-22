@@ -85,3 +85,4 @@ export function usePerformanceMode(): PerformanceConfig {
 
   return config;
 }
+

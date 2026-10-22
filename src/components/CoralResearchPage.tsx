@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   CORAL_SPECIES_DATA, 
   CoralSpecies 
@@ -21,6 +21,7 @@ import { getAssetUrl } from '../utils/baseUrl';
 import { ResearchContextMenu } from './ResearchContextMenu';
 import { updateRouteSEO } from '../seo/metaManager';
 import { generatePersonSchema, generateSpecimenDetailSchema, generateBreadcrumbsSchema } from '../seo/schemas';
+import { usePerformanceMode } from '../utils/performanceMode';
 
 interface CoralResearchPageProps {
   onBackToPortfolio: () => void;
@@ -106,8 +107,33 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({
     });
   }, [selectedGroup, searchQuery]);
 
+  const [sidebarLimit, setSidebarLimit] = useState<number>(30);
+  const sidebarSentinelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setSidebarLimit(30);
+  }, [selectedGroup, searchQuery]);
+
+  const visibleCorals = useMemo(() => {
+    return filteredCorals.slice(0, sidebarLimit);
+  }, [filteredCorals, sidebarLimit]);
+
+  useEffect(() => {
+    const el = sidebarSentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && sidebarLimit < filteredCorals.length) {
+        setSidebarLimit((prev) => Math.min(prev + 30, filteredCorals.length));
+      }
+    }, { rootMargin: '200px' });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [sidebarLimit, filteredCorals.length]);
+
   // Update selected coral if current selected item is filtered out
-  React.useEffect(() => {
+  useEffect(() => {
     if (filteredCorals.length > 0 && !filteredCorals.find(c => c.id === selectedCoral.id)) {
       setSelectedCoral(filteredCorals[0]);
     }
@@ -264,9 +290,9 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({
               </div>
             </div>
 
-            {/* List of Specimen Thumbnails */}
+            {/* List of Specimen Thumbnails (Progressively Windowed) */}
             <div className="flex-1 overflow-y-auto space-y-1.5 pr-1 scrollbar-thin">
-              {filteredCorals.map((coral, idx) => {
+              {visibleCorals.map((coral, idx) => {
                 const isSelected = coral.id === selectedCoral.id;
                 return (
                   <a
@@ -302,6 +328,12 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({
                   </a>
                 );
               })}
+
+              <div ref={sidebarSentinelRef} className="h-6 w-full flex items-center justify-center">
+                {sidebarLimit < filteredCorals.length && (
+                  <span className="text-[10px] font-mono text-slate-500">Loading more specimens...</span>
+                )}
+              </div>
             </div>
           </div>
 

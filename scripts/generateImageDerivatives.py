@@ -57,3 +57,4 @@ if __name__ == '__main__':
         process_directory(news_src, news_thumb, news_med, thumb_width=640, med_width=1400)
 
     print("Image derivative generation complete!")
+

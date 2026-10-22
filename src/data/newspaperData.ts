@@ -3,6 +3,8 @@ import { getAssetUrl } from '../utils/baseUrl';
 export interface NewspaperFeature {
   id: string;
   image: string;
+  thumbnailImage?: string;
+  mediumImage?: string;
   newspaper: string;
   date: string;
   headlineTamil: string;
@@ -262,8 +264,13 @@ const RAW_NEWSPAPER_FEATURES: NewspaperFeature[] = [
   }
 ];
 
-export const NEWSPAPER_FEATURES: NewspaperFeature[] = RAW_NEWSPAPER_FEATURES.map(feat => ({
-  ...feat,
-  image: getAssetUrl(feat.image)
-}));
+export const NEWSPAPER_FEATURES: NewspaperFeature[] = RAW_NEWSPAPER_FEATURES.map(feat => {
+  const filename = feat.image.replace('/newspapers/', '');
+  return {
+    ...feat,
+    image: getAssetUrl(feat.image),
+    thumbnailImage: getAssetUrl(`/thumbnails/newspapers/${filename}`),
+    mediumImage: getAssetUrl(`/medium/newspapers/${filename}`)
+  };
+});
 

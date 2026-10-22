@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { ResearchContextMenu } from './ResearchContextMenu';
 import { updateRouteSEO } from '../seo/metaManager';
+import { usePerformanceMode } from '../utils/performanceMode';
 
 interface ScubaArchivePageProps {
   onBackToPortfolio: () => void;
@@ -88,7 +89,7 @@ const ScubaPhotoCard = React.memo<{
     >
       <div className="relative overflow-hidden bg-slate-950 shrink-0 w-full h-[260px] sm:h-[280px] lg:h-[300px]">
         <img
-          src={photo.url}
+          src={photo.thumbnailUrl || photo.url}
           alt={photo.title}
           loading="lazy"
           decoding="async"
@@ -222,10 +223,16 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
   onBackToPortfolio,
   initialPhotoId
 }) => {
+  const { isMobile } = usePerformanceMode();
   const [selectedCategory, setSelectedCategory] = useState<'All' | 'Corals' | 'Fauna' | 'Expeditions'>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
   const [lightboxMenuPos, setLightboxMenuPos] = useState<{ x: number; y: number } | null>(null);
+
+  const INITIAL_COUNT = isMobile ? 8 : 12;
+  const BATCH_SIZE = isMobile ? 8 : 12;
+  const [visibleCount, setVisibleCount] = useState<number>(INITIAL_COUNT);
+  const observerTargetRef = useRef<HTMLDivElement | null>(null);
 
   // Filtered dataset based on Category & Search Query
   const filteredPhotos = useMemo(() => {
@@ -241,6 +248,31 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
       return matchesCategory && matchesSearch;
     });
   }, [selectedCategory, searchQuery]);
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_COUNT);
+  }, [selectedCategory, searchQuery, INITIAL_COUNT]);
+
+  const visiblePhotos = useMemo(() => {
+    return filteredPhotos.slice(0, visibleCount);
+  }, [filteredPhotos, visibleCount]);
+
+  useEffect(() => {
+    const el = observerTargetRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && visibleCount < filteredPhotos.length) {
+          setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, filteredPhotos.length));
+        }
+      },
+      { rootMargin: '300px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [visibleCount, filteredPhotos.length, BATCH_SIZE]);
 
   // Reset scroll position to top on mount
   useEffect(() => {
@@ -409,20 +441,32 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
             </button>
           </div>
         ) : (
-          /* FULL EDITORIAL PHOTO GRID */
-          <motion.div 
-            layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full"
-          >
-            {filteredPhotos.map((photo, idx) => (
-              <ScubaPhotoCard
-                key={photo.id}
-                photo={photo}
-                idx={idx}
-                onOpenLightbox={handleOpenLightbox}
-              />
-            ))}
-          </motion.div>
+          /* PROGRESSIVE EDITORIAL PHOTO GRID */
+          <>
+            <motion.div 
+              layout={!isMobile}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full"
+            >
+              {visiblePhotos.map((photo, idx) => (
+                <ScubaPhotoCard
+                  key={photo.id}
+                  photo={photo}
+                  idx={idx}
+                  onOpenLightbox={handleOpenLightbox}
+                />
+              ))}
+            </motion.div>
+
+            {/* Infinite Sentinel & Load Indicator */}
+            <div ref={observerTargetRef} className="w-full py-8 flex items-center justify-center">
+              {visibleCount < filteredPhotos.length && (
+                <div className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-slate-400">
+                  <div className="w-4 h-4 border-2 border-[#e0ad5b] border-t-transparent rounded-full animate-spin" />
+                  <span>Loading additional marine photographs ({visibleCount}/{filteredPhotos.length})...</span>
+                </div>
+              )}
+            </div>
+          </>
         )}
 
       </div>
@@ -477,7 +521,7 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
                   title="Right-click for options or double-click to download image for research"
                 >
                   <img
-                    src={currentPhoto.url}
+                    src={currentPhoto.mediumUrl || currentPhoto.url}
                     alt={currentPhoto.title}
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}

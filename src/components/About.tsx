@@ -22,6 +22,7 @@ import AccordionGallery from './AccordionGallery';
 import { PDF_PUBLICATIONS } from '../data/pdfPublicationsData';
 import { PROFILE_DATA } from '../data/portfolioData';
 import { getAssetUrl } from '../utils/baseUrl';
+import { usePerformanceMode } from '../utils/performanceMode';
 
 
 interface AboutProps {
@@ -190,17 +191,18 @@ export const About: React.FC<AboutProps> = ({
     return 'blur-none opacity-100 scale-100 border-white/15 hover:border-white/40 transition-all duration-500 ease-out cursor-pointer';
   };
 
+  const { isMobile } = usePerformanceMode();
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (!isMobile && videoRef.current) {
       videoRef.current.muted = true;
       videoRef.current.playsInline = true;
       videoRef.current.play().catch(() => {});
     }
 
     const handleTouchStart = () => {
-      if (videoRef.current && videoRef.current.paused) {
+      if (!isMobile && videoRef.current && videoRef.current.paused) {
         videoRef.current.muted = true;
         videoRef.current.play().catch(() => {});
       }
@@ -211,38 +213,53 @@ export const About: React.FC<AboutProps> = ({
     return () => {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('scroll', handleTouchStart);
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.removeAttribute('src');
+        videoRef.current.load();
+      }
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-slate-950 text-slate-100 z-20">
       
-      {/* 1. FIXED BACKGROUND VIDEO (Stationary full-bleed behind entire page) */}
+      {/* 1. FIXED BACKGROUND (Poster on Mobile, Optimized Loop on Desktop) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover object-center transform scale-105 sm:scale-110 origin-center filter brightness-110 contrast-105"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="none"
-          onLoadedMetadata={(e) => {
-            e.currentTarget.muted = true;
-            e.currentTarget.play().catch(() => {});
-          }}
-          onCanPlay={(e) => {
-            e.currentTarget.muted = true;
-            e.currentTarget.play().catch(() => {});
-          }}
-          onEnded={(e) => {
-            e.currentTarget.currentTime = 0;
-            e.currentTarget.play().catch(() => {});
-          }}
-        >
-          <source src={getAssetUrl("/videos/2nd_page.mp4")} type="video/mp4" />
-          Your browser does not support HTML5 video background.
-        </video>
+        {isMobile ? (
+          <img
+            src={getAssetUrl("/portfolio/poster.webp")}
+            alt="Deep Ocean Background"
+            loading="eager"
+            decoding="async"
+            className="w-full h-full object-cover object-center filter brightness-90 contrast-105"
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover object-center transform scale-105 sm:scale-110 origin-center filter brightness-110 contrast-105"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            onLoadedMetadata={(e) => {
+              e.currentTarget.muted = true;
+              e.currentTarget.play().catch(() => {});
+            }}
+            onCanPlay={(e) => {
+              e.currentTarget.muted = true;
+              e.currentTarget.play().catch(() => {});
+            }}
+            onEnded={(e) => {
+              e.currentTarget.currentTime = 0;
+              e.currentTarget.play().catch(() => {});
+            }}
+          >
+            <source src={getAssetUrl("/videos/2nd_page.mp4")} type="video/mp4" />
+            Your browser does not support HTML5 video background.
+          </video>
+        )}
 
         {/* Dynamic Gradient Overlay */}
         <div className="absolute inset-0 z-5 bg-gradient-to-b from-slate-950/85 via-slate-950/75 via-[55%] to-slate-950/10 pointer-events-none" />

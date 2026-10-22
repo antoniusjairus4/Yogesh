@@ -54,7 +54,7 @@ const PressCard = React.memo<{
     >
       <div className="relative h-[270px] w-full overflow-hidden bg-[#09090b] shrink-0 border-b border-stone-800">
         <img
-          src={feature.image}
+          src={feature.thumbnailImage || feature.image}
           alt={feature.headlineEnglish}
           loading="lazy"
           decoding="async"
@@ -705,7 +705,7 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
               <div className="lg:w-1/2 w-full bg-[#09090b] relative flex flex-col items-center justify-center p-4 sm:p-6 min-h-[300px] lg:min-h-full border-b lg:border-b-0 lg:border-r border-stone-800">
                 <div className="relative w-full h-full max-h-[500px] lg:max-h-[75vh] flex items-center justify-center overflow-hidden rounded group">
                   <img
-                    src={selectedFeature.image}
+                    src={selectedFeature.mediumImage || selectedFeature.image}
                     alt={selectedFeature.headlineEnglish}
                     className="w-full h-full object-contain max-h-[550px] rounded border border-stone-800"
                   />

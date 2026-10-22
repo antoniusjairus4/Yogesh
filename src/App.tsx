@@ -5,6 +5,7 @@ import { Hero } from './components/Hero';
 import { getAssetUrl } from './utils/baseUrl';
 import { updateRouteSEO } from './seo/metaManager';
 import { PRIMARY_ROUTES_SEO } from './seo/routesData';
+import { usePerformanceMode } from './utils/performanceMode';
 
 const About = React.lazy(() => import('./components/About'));
 const FeaturedMedia = React.lazy(() => import('./components/FeaturedMedia'));
@@ -29,9 +30,11 @@ const PageFallback: React.FC = () => (
 );
 
 export const App: React.FC = () => {
+  const { isMobile } = usePerformanceMode();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVideoEnded, setIsVideoEnded] = useState(false);
   const [activePage, setActivePage] = useState<1 | 2 | 3 | 4 | 5 | 6>(1);
+  const [outgoingPage, setOutgoingPage] = useState<1 | 2 | 3 | 4 | 5 | 6 | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [navTargetSection, setNavTargetSection] = useState<{ section: string; timestamp: number } | null>(null);
   const [selectedScubaPhotoId, setSelectedScubaPhotoId] = useState<string | null>(null);
@@ -39,7 +42,11 @@ export const App: React.FC = () => {
   const [activeGroup, setActiveGroup] = useState<'ALL' | 'Corals' | 'Octocorals' | 'Mollusca'>('ALL');
 
   const touchStartY = useRef<number | null>(null);
-  const TRANSITION_DURATION = 1100;
+  const TRANSITION_DURATION = isMobile ? 800 : 1100;
+
+  const isPageMounted = (pageNumber: 1 | 2 | 3 | 4 | 5 | 6) => {
+    return activePage === pageNumber || outgoingPage === pageNumber;
+  };
 
   const parseRouteFromUrl = useCallback(() => {
     if (typeof window === 'undefined') return;
@@ -47,24 +54,26 @@ export const App: React.FC = () => {
     const params = new URLSearchParams(window.location.search);
     const hash = window.location.hash.replace('#', '');
 
+    let target: 1 | 2 | 3 | 4 | 5 | 6 = 1;
+
     if (path === '/about') {
-      setActivePage(2);
+      target = 2;
       if (hash) setNavTargetSection({ section: hash, timestamp: Date.now() });
       if (PRIMARY_ROUTES_SEO['/about']) updateRouteSEO(PRIMARY_ROUTES_SEO['/about']());
     } else if (path === '/press' || path === '/featured') {
-      setActivePage(3);
+      target = 3;
       if (PRIMARY_ROUTES_SEO['/press']) updateRouteSEO(PRIMARY_ROUTES_SEO['/press']());
     } else if (path === '/publications' || path === '/research') {
-      setActivePage(4);
+      target = 4;
       if (PRIMARY_ROUTES_SEO['/publications']) updateRouteSEO(PRIMARY_ROUTES_SEO['/publications']());
     } else if (path.startsWith('/expeditions') || path.startsWith('/scuba')) {
-      setActivePage(5);
+      target = 5;
       const match = path.match(/\/(?:expeditions|scuba)\/([^/]+)/);
       const photoId = params.get('photo') || (match ? match[1] : null);
       if (photoId) setSelectedScubaPhotoId(photoId);
       if (PRIMARY_ROUTES_SEO['/expeditions']) updateRouteSEO(PRIMARY_ROUTES_SEO['/expeditions']());
     } else if (path.startsWith('/specimens') || path.startsWith('/corals')) {
-      setActivePage(6);
+      target = 6;
       const match = path.match(/\/(?:specimens|corals)\/([^/]+)/);
       if (match) {
         const seg = match[1].toLowerCase();
@@ -76,9 +85,11 @@ export const App: React.FC = () => {
         if (PRIMARY_ROUTES_SEO['/specimens']) updateRouteSEO(PRIMARY_ROUTES_SEO['/specimens']());
       }
     } else {
-      setActivePage(1);
+      target = 1;
       if (PRIMARY_ROUTES_SEO['/']) updateRouteSEO(PRIMARY_ROUTES_SEO['/']());
     }
+
+    setActivePage(target);
   }, []);
 
   useEffect(() => {
@@ -112,9 +123,11 @@ export const App: React.FC = () => {
       return;
     }
 
+    setOutgoingPage(activePage);
     setIsTransitioning(true);
     setActivePage(targetPage);
     setTimeout(() => {
+      setOutgoingPage(null);
       setIsTransitioning(false);
     }, TRANSITION_DURATION);
   };
@@ -177,199 +190,209 @@ export const App: React.FC = () => {
       <main className="relative w-full h-full overflow-hidden flex items-center justify-center">
         
         {/* Page 1: Hero Section */}
-        <motion.div
-          initial={false}
-          animate={{
-            scale: activePage === 1 ? 1 : 0.96,
-            opacity: activePage === 1 ? 1 : 0,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 w-full h-full flex items-center justify-center origin-center transform-gpu ${
-            activePage === 1 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
-          }`}
-        >
-          <Hero 
-            videoRef={videoRef}
-            isVideoEnded={isVideoEnded}
-            setIsVideoEnded={setIsVideoEnded}
-            handleReplay={handleReplayVideo}
-            onDiveDeeper={() => handleNavigateTo(2)}
-          />
-        </motion.div>
+        {isPageMounted(1) && (
+          <motion.div
+            initial={false}
+            animate={{
+              scale: activePage === 1 ? 1 : 0.96,
+              opacity: activePage === 1 ? 1 : 0,
+            }}
+            transition={{
+              duration: 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className={`absolute inset-0 w-full h-full flex items-center justify-center origin-center transform-gpu ${
+              activePage === 1 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
+            }`}
+          >
+            <Hero 
+              videoRef={videoRef}
+              isVideoEnded={isVideoEnded}
+              setIsVideoEnded={setIsVideoEnded}
+              handleReplay={handleReplayVideo}
+              onDiveDeeper={() => handleNavigateTo(2)}
+            />
+          </motion.div>
+        )}
 
-        {/* Hardware-Accelerated Frosted Blur Overlay */}
+        {/* Hardware-Accelerated Frosted Blur Overlay (Adapted for Mobile) */}
         <motion.div
           initial={false}
           animate={{
-            opacity: isTransitioning ? 0.85 : 0,
-            backdropFilter: isTransitioning ? 'blur(12px)' : 'blur(0px)',
+            opacity: isTransitioning ? (isMobile ? 0.92 : 0.85) : 0,
+            backdropFilter: isTransitioning && !isMobile ? 'blur(12px)' : 'none',
           }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0 z-40 bg-black/50 pointer-events-none transform-gpu"
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0 z-40 bg-black/60 pointer-events-none transform-gpu"
         />
 
         {/* Page 2: About & Career Portfolio + SCUBA Gallery */}
-        <motion.div
-          initial={false}
-          animate={{
-            scale: activePage === 2 ? 1 : 0.95,
-            opacity: activePage === 2 ? 1 : 0,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 w-full h-full overflow-hidden origin-center transform-gpu ${
-            activePage === 2 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
-          }`}
-        >
-          <Suspense fallback={<PageFallback />}>
-            <About 
-              onScrollBackToHero={() => handleNavigateTo(1)} 
-              onViewPressArchives={() => handleNavigateTo(3)}
-              onViewResearchPage={() => handleNavigateTo(4)}
-              onViewScubaArchive={(photoId?: string) => {
-                setSelectedScubaPhotoId(photoId || null);
-                handleNavigateTo(5);
-              }}
-              onViewCoralResearch={() => handleNavigateTo(6)}
-              navTargetSection={navTargetSection?.section}
-              navTargetKey={navTargetSection?.timestamp}
-            />
-          </Suspense>
-        </motion.div>
+        {isPageMounted(2) && (
+          <motion.div
+            initial={false}
+            animate={{
+              scale: activePage === 2 ? 1 : 0.95,
+              opacity: activePage === 2 ? 1 : 0,
+            }}
+            transition={{
+              duration: 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className={`absolute inset-0 w-full h-full overflow-hidden origin-center transform-gpu ${
+              activePage === 2 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
+            }`}
+          >
+            <Suspense fallback={<PageFallback />}>
+              <About 
+                onScrollBackToHero={() => handleNavigateTo(1)} 
+                onViewPressArchives={() => handleNavigateTo(3)}
+                onViewResearchPage={() => handleNavigateTo(4)}
+                onViewScubaArchive={(photoId?: string) => {
+                  setSelectedScubaPhotoId(photoId || null);
+                  handleNavigateTo(5);
+                }}
+                onViewCoralResearch={() => handleNavigateTo(6)}
+                navTargetSection={navTargetSection?.section}
+                navTargetKey={navTargetSection?.timestamp}
+              />
+            </Suspense>
+          </motion.div>
+        )}
 
         {/* Page 3: Featured in... Newspapers & Press Coverage */}
-        <motion.div
-          initial={false}
-          animate={{
-            scale: activePage === 3 ? 1 : 0.95,
-            opacity: activePage === 3 ? 1 : 0,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 w-full h-full overflow-hidden origin-center transform-gpu ${
-            activePage === 3 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
-          }`}
-        >
-          <Suspense fallback={<PageFallback />}>
-            <FeaturedMedia 
-              onScrollBackToAbout={() => handleNavigateTo(2)} 
-            />
-          </Suspense>
-        </motion.div>
+        {isPageMounted(3) && (
+          <motion.div
+            initial={false}
+            animate={{
+              scale: activePage === 3 ? 1 : 0.95,
+              opacity: activePage === 3 ? 1 : 0,
+            }}
+            transition={{
+              duration: 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className={`absolute inset-0 w-full h-full overflow-hidden origin-center transform-gpu ${
+              activePage === 3 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
+            }`}
+          >
+            <Suspense fallback={<PageFallback />}>
+              <FeaturedMedia 
+                onScrollBackToAbout={() => handleNavigateTo(2)} 
+              />
+            </Suspense>
+          </motion.div>
+        )}
 
-        {/* Fixed Library Background for Page 4 */}
-        <div 
-          className={`fixed inset-0 pointer-events-none transition-opacity duration-700 z-35 overflow-hidden ${
-            activePage === 4 ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <img 
-            src={getAssetUrl("/background_paper_publication.webp")} 
-            alt="Library Background" 
-            loading="lazy"
-            decoding="async"
-            className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/60 pointer-events-none" />
-        </div>
+        {/* Page 4: Scientific Research & Academic Publications */}
+        {isPageMounted(4) && (
+          <>
+            {/* Fixed Library Background for Page 4 */}
+            <div 
+              className={`fixed inset-0 pointer-events-none transition-opacity duration-700 z-35 overflow-hidden ${
+                activePage === 4 ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <img 
+                src={getAssetUrl("/background_paper_publication.webp")} 
+                alt="Library Background" 
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/60 pointer-events-none" />
+            </div>
 
-        {/* Page 4: Scientific Research & Academic Publications Demo Page */}
-        <motion.div
-          initial={false}
-          animate={{
-            scale: activePage === 4 ? 1 : 0.95,
-            opacity: activePage === 4 ? 1 : 0,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 w-full h-full overflow-y-auto origin-center transform-gpu ${
-            activePage === 4 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
-          }`}
-        >
-          <Suspense fallback={<PageFallback />}>
-            <ResearchPage 
-              onBackToPortfolio={() => handleNavigateTo(2)} 
-            />
-          </Suspense>
-        </motion.div>
-
-        {/* Fixed Shipwreck Underwater Background for Page 5 */}
-        <div 
-          className={`fixed inset-0 pointer-events-none transition-opacity duration-700 z-42 overflow-hidden ${
-            activePage === 5 ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <img 
-            src={getAssetUrl("/scuba_archive_bg.webp")} 
-            alt="Underwater Shipwreck Background" 
-            loading="lazy"
-            decoding="async"
-            className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/70 pointer-events-none" />
-        </div>
+            <motion.div
+              initial={false}
+              animate={{
+                scale: activePage === 4 ? 1 : 0.95,
+                opacity: activePage === 4 ? 1 : 0,
+              }}
+              transition={{
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className={`absolute inset-0 w-full h-full overflow-y-auto origin-center transform-gpu ${
+                activePage === 4 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
+              }`}
+            >
+              <Suspense fallback={<PageFallback />}>
+                <ResearchPage 
+                  onBackToPortfolio={() => handleNavigateTo(2)} 
+                />
+              </Suspense>
+            </motion.div>
+          </>
+        )}
 
         {/* Page 5: Full Subsurface SCUBA Image Archive Page */}
-        <motion.div
-          initial={false}
-          animate={{
-            scale: activePage === 5 ? 1 : 0.95,
-            opacity: activePage === 5 ? 1 : 0,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 w-full h-full overflow-y-auto origin-center transform-gpu ${
-            activePage === 5 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
-          }`}
-        >
-          <Suspense fallback={<PageFallback />}>
-            <ScubaArchivePage 
-              onBackToPortfolio={() => handleNavigateTo(2)} 
-              initialPhotoId={selectedScubaPhotoId}
-            />
-          </Suspense>
-        </motion.div>
+        {isPageMounted(5) && (
+          <>
+            {/* Fixed Shipwreck Underwater Background for Page 5 */}
+            <div 
+              className={`fixed inset-0 pointer-events-none transition-opacity duration-700 z-42 overflow-hidden ${
+                activePage === 5 ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <img 
+                src={getAssetUrl("/scuba_archive_bg.webp")} 
+                alt="Underwater Shipwreck Background" 
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/70 pointer-events-none" />
+            </div>
+
+            <motion.div
+              initial={false}
+              animate={{
+                scale: activePage === 5 ? 1 : 0.95,
+                opacity: activePage === 5 ? 1 : 0,
+              }}
+              transition={{
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className={`absolute inset-0 w-full h-full overflow-y-auto origin-center transform-gpu ${
+                activePage === 5 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
+              }`}
+            >
+              <Suspense fallback={<PageFallback />}>
+                <ScubaArchivePage 
+                  onBackToPortfolio={() => handleNavigateTo(2)} 
+                  initialPhotoId={selectedScubaPhotoId}
+                />
+              </Suspense>
+            </motion.div>
+          </>
+        )}
 
         {/* Page 6: Corals of the World Species Factsheet & Research Database */}
-        <motion.div
-          initial={false}
-          animate={{
-            scale: activePage === 6 ? 1 : 0.95,
-            opacity: activePage === 6 ? 1 : 0,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          style={{ willChange: 'transform, opacity' }}
-          className={`absolute inset-0 w-full h-full overflow-y-auto origin-center transform-gpu ${
-            activePage === 6 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
-          }`}
-        >
-          <Suspense fallback={<PageFallback />}>
-            <CoralResearchPage 
-              onBackToPortfolio={() => handleNavigateTo(2)} 
-              initialSpecimenId={activeSpecimenId}
-              initialGroup={activeGroup}
-            />
-          </Suspense>
-        </motion.div>
+        {isPageMounted(6) && (
+          <motion.div
+            initial={false}
+            animate={{
+              scale: activePage === 6 ? 1 : 0.95,
+              opacity: activePage === 6 ? 1 : 0,
+            }}
+            transition={{
+              duration: 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className={`absolute inset-0 w-full h-full overflow-y-auto origin-center transform-gpu ${
+              activePage === 6 ? 'z-50 pointer-events-auto' : 'z-10 pointer-events-none'
+            }`}
+          >
+            <Suspense fallback={<PageFallback />}>
+              <CoralResearchPage 
+                onBackToPortfolio={() => handleNavigateTo(2)} 
+                initialSpecimenId={activeSpecimenId}
+                initialGroup={activeGroup}
+              />
+            </Suspense>
+          </motion.div>
+        )}
 
       </main>
     </div>

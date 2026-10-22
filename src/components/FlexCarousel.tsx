@@ -455,8 +455,11 @@ export const FlexCarousel = ({
     const container = containerRef.current;
     if (!container) return undefined;
 
+    const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
+    const targetMaxDpr = isMobileDevice ? 1.2 : (typeof window !== 'undefined' && window.innerWidth < 1024 ? 1.5 : 2.0);
+
     const renderer = new Renderer({
-      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      dpr: Math.min(window.devicePixelRatio || 1, targetMaxDpr),
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
@@ -813,7 +816,9 @@ export const FlexCarousel = ({
     const resize = () => {
       width = Math.max(1, container.clientWidth);
       height = Math.max(1, container.clientHeight);
-      renderer.dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(PIXEL_BUDGET / (width * height)));
+      const isMobileNow = width < 768;
+      const targetDpr = isMobileNow ? 1.2 : (width < 1024 ? 1.5 : 2.0);
+      renderer.dpr = Math.min(window.devicePixelRatio || 1, targetDpr, Math.sqrt(PIXEL_BUDGET / (width * height)));
       renderer.setSize(width, height);
       target.setSize(Math.max(2, Math.round(width * renderer.dpr)), Math.max(2, Math.round(height * renderer.dpr)));
       lensUniforms.tScene.value = target.texture;

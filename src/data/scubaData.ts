@@ -3,6 +3,8 @@ import { getAssetUrl } from '../utils/baseUrl';
 export interface ScubaPhoto {
   id: string;
   url: string;
+  thumbnailUrl?: string;
+  mediumUrl?: string;
   downloadUrl?: string;
   title: string;
   scientificName?: string;
@@ -576,8 +578,14 @@ const RAW_SCUBA_PHOTOS: ScubaPhoto[] = [
   }
 ];
 
-export const SCUBA_PHOTOS: ScubaPhoto[] = RAW_SCUBA_PHOTOS.map(photo => ({
-  ...photo,
-  url: getAssetUrl(photo.url)
-}));
+export const SCUBA_PHOTOS: ScubaPhoto[] = RAW_SCUBA_PHOTOS.map(photo => {
+  const filename = photo.url.replace('/Images_gallery/', '');
+  return {
+    ...photo,
+    url: getAssetUrl(photo.url),
+    thumbnailUrl: getAssetUrl(`/thumbnails/Images_gallery/${filename}`),
+    mediumUrl: getAssetUrl(`/medium/Images_gallery/${filename}`),
+    downloadUrl: getAssetUrl(photo.downloadUrl || photo.url)
+  };
+});
 

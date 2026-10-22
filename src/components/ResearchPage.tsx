@@ -21,12 +21,14 @@ import {
 } from 'lucide-react';
 import FlipCard from './FlipCard';
 import { updateRouteSEO } from '../seo/metaManager';
+import { usePerformanceMode } from '../utils/performanceMode';
 
 interface ResearchPageProps {
   onBackToPortfolio: () => void;
 }
 
 export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio }) => {
+  const { isMobile } = usePerformanceMode();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedPdf, setSelectedPdf] = useState<PdfPublication | null>(null);
@@ -336,13 +338,24 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
                 <X className="w-5 h-5" />
               </button>
 
-              {/* Left Column: Embedded PDF Viewer Frame */}
-              <div className="lg:w-3/4 w-full h-[60vh] lg:h-full bg-black relative flex flex-col border-b lg:border-b-0 lg:border-r border-[#173841]">
-                <iframe
-                  src={selectedPdf.pdfUrl}
-                  title={selectedPdf.title}
-                  className="w-full h-full border-0 bg-white"
-                />
+              {/* Left Column: Embedded PDF Viewer Frame (Desktop) or Mobile Document Preview */}
+              <div className="lg:w-3/4 w-full h-[320px] lg:h-full bg-black relative flex flex-col border-b lg:border-b-0 lg:border-r border-[#173841]">
+                {isMobile ? (
+                  <div className="w-full h-full bg-[#061115] flex flex-col items-center justify-center p-6 text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-[#0e242c] border border-[#1d4552] flex items-center justify-center text-[#e0ad5b] mb-3 shadow-inner">
+                      <FileText className="w-8 h-8" />
+                    </div>
+                    <span className="text-xs font-mono font-bold text-stone-200">Official Scientific PDF Publication</span>
+                    <span className="text-[11px] font-mono text-stone-400 mt-1 max-w-xs truncate">{selectedPdf.filename}</span>
+                    <span className="text-[10px] font-mono text-[#e0ad5b] mt-3 uppercase tracking-wider">Tap download or open full tab below</span>
+                  </div>
+                ) : (
+                  <iframe
+                    src={selectedPdf.pdfUrl}
+                    title={selectedPdf.title}
+                    className="w-full h-full border-0 bg-white"
+                  />
+                )}
               </div>
 
               {/* Right Column: PDF Metadata & Download Sidebar */}

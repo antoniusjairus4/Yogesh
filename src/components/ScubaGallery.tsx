@@ -9,14 +9,17 @@ import {
   Search, 
   X, 
   ArrowRight,
-  Sparkles
+  Sparkles,
+  MapPin
 } from 'lucide-react';
+import { usePerformanceMode } from '../utils/performanceMode';
 
 interface ScubaGalleryProps {
   onViewScubaArchive?: (photoId?: string) => void;
 }
 
 export const ScubaGallery: React.FC<ScubaGalleryProps> = ({ onViewScubaArchive }) => {
+  const { isMobile } = usePerformanceMode();
   const [selectedCategory, setSelectedCategory] = useState<'All' | 'Corals' | 'Fauna' | 'Expeditions'>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -35,15 +38,20 @@ export const ScubaGallery: React.FC<ScubaGalleryProps> = ({ onViewScubaArchive }
     });
   }, [selectedCategory, searchQuery]);
 
-  // Map filtered photos for FlexCarousel
+  // Cap at 8 representative photos for homepage preview showcase
+  const curatedPhotos = useMemo(() => {
+    return filteredPhotos.slice(0, 8);
+  }, [filteredPhotos]);
+
+  // Map curated photos for FlexCarousel using lightweight thumbnails
   const carouselItems = useMemo<FlexCarouselItem[]>(() => {
-    return filteredPhotos.map((photo) => ({
-      src: photo.url,
+    return curatedPhotos.map((photo) => ({
+      src: photo.thumbnailUrl || photo.url,
       alt: photo.title,
       title: photo.title,
       subtitle: photo.scientificName || (photo.location ? `${photo.location} · ${photo.category}` : photo.category)
     }));
-  }, [filteredPhotos]);
+  }, [curatedPhotos]);
 
   return (
     <section id="scuba-gallery" className="relative w-full pt-16 pb-20 border-t border-white/10 mt-16 text-slate-100">
@@ -117,26 +125,68 @@ export const ScubaGallery: React.FC<ScubaGalleryProps> = ({ onViewScubaArchive }
 
         </div>
 
-        {/* FlexCarousel Interactive WebGL Showcase - Full Edge-to-Edge Page Width */}
+        {/* Mobile-Native Scroll-Snap Carousel (<768px) or Liquid WebGL FlexCarousel (Desktop) */}
         {carouselItems.length > 0 && (
-          <div className="mb-10 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] h-[500px] sm:h-[600px] overflow-hidden bg-transparent border-none">
-            <FlexCarousel
-              items={carouselItems}
-              preset="liquid"
-              intro="rise"
-              cardHeight={0.56}
-              gap={16}
-              squeeze={0.2}
-              focusOnClick
-              captions
-              captureWheel={false}
-              onSelect={(index) => {
-                if (onViewScubaArchive) {
-                  onViewScubaArchive(filteredPhotos[index]?.id);
-                }
-              }}
-            />
-          </div>
+          isMobile ? (
+            <div className="mb-10 w-full overflow-hidden">
+              <div className="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory scrollbar-none px-1">
+                {curatedPhotos.map((photo) => (
+                  <div
+                    key={photo.id}
+                    onClick={() => onViewScubaArchive && onViewScubaArchive(photo.id)}
+                    className="snap-center shrink-0 w-[280px] bg-[#0c1828] border border-[#1b2f48] hover:border-[#c5a880] rounded-xl overflow-hidden shadow-lg cursor-pointer transition-all active:scale-[0.98]"
+                  >
+                    <div className="relative h-44 w-full bg-black overflow-hidden">
+                      <img
+                        src={photo.thumbnailUrl || photo.url}
+                        alt={photo.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/75 text-[#c5a880] text-[10px] font-mono border border-white/10 uppercase">
+                        {photo.category}
+                      </div>
+                      {photo.depth && (
+                        <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded bg-black/75 text-slate-200 text-[10px] font-mono border border-white/10">
+                          {photo.depth}
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-3.5">
+                      <h4 className="font-serif font-bold text-sm text-white truncate">{photo.title}</h4>
+                      {photo.scientificName && (
+                        <p className="text-xs text-slate-400 italic truncate mt-0.5">{photo.scientificName}</p>
+                      )}
+                      <div className="text-[11px] text-[#c5a880] font-mono mt-2 flex items-center justify-between border-t border-white/10 pt-2">
+                        <span className="truncate max-w-[170px]">{photo.location || 'Marine Survey'}</span>
+                        <span className="text-white/70">View →</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="mb-10 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] h-[500px] sm:h-[600px] overflow-hidden bg-transparent border-none">
+              <FlexCarousel
+                items={carouselItems}
+                preset="liquid"
+                intro="rise"
+                cardHeight={0.56}
+                gap={16}
+                squeeze={0.2}
+                focusOnClick
+                captions
+                captureWheel={false}
+                onSelect={(index) => {
+                  if (onViewScubaArchive) {
+                    onViewScubaArchive(curatedPhotos[index]?.id);
+                  }
+                }}
+              />
+            </div>
+          )
         )}
 
         {/* Callout Button leading to the Full SCUBA Image Archive Page */}

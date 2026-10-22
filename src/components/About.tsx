@@ -743,10 +743,10 @@ export const About: React.FC<AboutProps> = ({
                 <span>Works of Dr. J.S. Yogesh Kumar</span>
               </div>
               <h4 className="font-outfit font-black text-xl sm:text-2xl text-white tracking-tight">
-                Taxonomy &amp; Marine Specimen Archive
+                Marine Specimen Image Archive
               </h4>
               <p className="text-slate-300 text-xs sm:text-sm max-w-xl leading-relaxed">
-                Explore the structured academic factsheet database featuring 193 WebP photographic specimen records of Corals, Octocorals &amp; Mollusca, taxonomy, habitat data, and diagnostic keys.
+                Explore the high-resolution photographic specimen collection featuring 193 specimen records of Corals, Octocorals &amp; Mollusca documented by Dr. J.S. Yogesh Kumar.
               </p>
             </div>
 

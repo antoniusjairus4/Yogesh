@@ -11,11 +11,7 @@ import {
   Download, 
   ChevronLeft, 
   ChevronRight,
-  Sparkles,
-  MapPin,
-  Layers,
-  Compass,
-  FileText
+  Sparkles
 } from 'lucide-react';
 import { getAssetUrl } from '../utils/baseUrl';
 import { ResearchContextMenu } from './ResearchContextMenu';
@@ -228,11 +224,11 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({
 
           {/* Category Filter Pills */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0 scrollbar-thin">
-            <span className="text-xs text-slate-400 uppercase tracking-wider font-mono mr-1">Taxa Group:</span>
+            <span className="text-xs text-slate-400 uppercase tracking-wider font-mono mr-1">Category:</span>
             {[
               { id: 'ALL', label: `ALL (${CORAL_SPECIES_DATA.length})` },
               { id: 'Corals', label: `CORALS (${CORAL_SPECIES_DATA.filter(c => c.group === 'Corals').length})` },
-              { id: 'Octocorals', label: `OCTORALS (${CORAL_SPECIES_DATA.filter(c => c.group === 'Octocorals').length})` },
+              { id: 'Octocorals', label: `OCTOCORALS (${CORAL_SPECIES_DATA.filter(c => c.group === 'Octocorals').length})` },
               { id: 'Mollusca', label: `MOLLUSCA (${CORAL_SPECIES_DATA.filter(c => c.group === 'Mollusca').length})` }
             ].map((tab) => {
               const active = selectedGroup === tab.id;
@@ -458,68 +454,6 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({
               </div>
 
             </div>
-
-            {/* Scientific Specimen Factsheet for Search Crawlers and Researchers */}
-            <article className="mt-2 bg-[#091524] border border-[#1b2f48] rounded-lg p-5 flex flex-col gap-4 text-slate-200">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[#1b2f48] pb-3">
-                <div>
-                  <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#c5a880] flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5" />
-                    <span>Taxonomic Entity • {selectedCoral.group} • {selectedCoral.category}</span>
-                  </span>
-                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-tight mt-1">
-                    {selectedCoral.botanicalName}
-                  </h2>
-                  <div className="text-xs text-slate-400 font-mono mt-0.5">
-                    Authority: <span className="text-slate-200">{selectedCoral.authority}</span> • Family: <span className="text-slate-200">{selectedCoral.family}</span>
-                  </div>
-                </div>
-                <div className="text-right flex md:flex-col items-center md:items-end justify-between md:justify-center">
-                  <span className="text-[10px] font-mono text-slate-400 uppercase">Archival Specimen ID</span>
-                  <span className="text-sm font-mono font-bold text-[#e2ba7d] bg-[#12243a] px-2.5 py-1 rounded border border-[#233f63]">
-                    {selectedCoral.id}
-                  </span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
-                <div className="bg-[#050e18] p-3 rounded border border-[#16273c]">
-                  <span className="text-slate-400 block text-[10px] uppercase">Common Name</span>
-                  <span className="text-slate-200 font-semibold">{selectedCoral.commonName || 'N/A'}</span>
-                </div>
-                <div className="bg-[#050e18] p-3 rounded border border-[#16273c]">
-                  <span className="text-slate-400 block text-[10px] uppercase">Location / Station</span>
-                  <span className="text-slate-200 font-semibold">{selectedCoral.location}</span>
-                </div>
-                <div className="bg-[#050e18] p-3 rounded border border-[#16273c]">
-                  <span className="text-slate-400 block text-[10px] uppercase">Recorded Depth</span>
-                  <span className="text-slate-200 font-semibold">{selectedCoral.depth}</span>
-                </div>
-                <div className="bg-[#050e18] p-3 rounded border border-[#16273c]">
-                  <span className="text-slate-400 block text-[10px] uppercase">Abundance Status</span>
-                  <span className="text-slate-200 font-semibold">{selectedCoral.abundance}</span>
-                </div>
-              </div>
-
-              {selectedCoral.habitat && (
-                <div className="bg-[#050e18] p-3.5 rounded border border-[#16273c] text-xs leading-relaxed">
-                  <span className="text-slate-400 font-mono block text-[10px] uppercase mb-1">Ecological Habitat</span>
-                  <p className="text-slate-300 font-sans">{selectedCoral.habitat}</p>
-                </div>
-              )}
-
-              {selectedCoral.identification && (
-                <div className="bg-[#050e18] p-3.5 rounded border border-[#16273c] text-xs leading-relaxed">
-                  <span className="text-slate-400 font-mono block text-[10px] uppercase mb-1">Diagnostic Taxonomic Identification</span>
-                  <p className="text-slate-300 font-sans">{selectedCoral.identification}</p>
-                </div>
-              )}
-
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] font-mono text-slate-400 border-t border-[#1b2f48] pt-3 gap-2">
-                <span>Principal Investigator: <strong className="text-slate-200">Dr. J.S. Yogesh Kumar</strong> (Scientist E, ZSI / MoEFCC)</span>
-                <span className="italic text-slate-500">© Dr. J.S. Yogesh Kumar • Zoological Survey of India</span>
-              </div>
-            </article>
 
           </div>
 

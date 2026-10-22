@@ -12,7 +12,7 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { id: 'career', label: 'Career', page: 2, href: '/about#career' },
   { id: 'scuba', label: 'Scuba Visuals', page: 2, href: '/about#scuba' },
-  { id: 'coral-research', label: 'Coral Taxonomy', page: 6, href: '/specimens' },
+  { id: 'coral-research', label: 'Specimen Archive', page: 6, href: '/specimens' },
   { id: 'featured', label: 'Featured Press', page: 3, href: '/press' },
   { id: 'research', label: 'Research Papers (PDFs)', page: 4, href: '/publications' },
   { id: 'contact', label: 'Contact', page: 2, href: '/about#contact' },

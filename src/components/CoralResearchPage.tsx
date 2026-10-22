@@ -16,7 +16,7 @@ import {
 import { getAssetUrl } from '../utils/baseUrl';
 import { ResearchContextMenu } from './ResearchContextMenu';
 import { updateRouteSEO } from '../seo/metaManager';
-import { generatePersonSchema, generateSpecimenDetailSchema, generateBreadcrumbsSchema } from '../seo/schemas';
+import { generatePersonSchema, generateSpecimenDetailSchema, generateSpecimenImageSchema, generateBreadcrumbsSchema } from '../seo/schemas';
 import { usePerformanceMode } from '../utils/performanceMode';
 
 interface CoralResearchPageProps {
@@ -63,9 +63,12 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({
       window.history.replaceState({ page: 6, specimenId: selectedCoral.id }, '', specimenUrl);
     }
 
+    const targetedTitle = `${selectedCoral.commonName ? `${selectedCoral.commonName} (${selectedCoral.botanicalName})` : selectedCoral.botanicalName} Specimen #${selectedCoral.id} | Indian Marine Fauna Archive`;
+    const targetedDesc = `High-resolution marine specimen photograph of ${selectedCoral.botanicalName} (${selectedCoral.commonName || selectedCoral.group}) from ${selectedCoral.location}, depth ${selectedCoral.depth}. Documented & cataloged by Dr. J.S. Yogesh Kumar, Scientist E, Zoological Survey of India (ZSI).`;
+
     updateRouteSEO({
-      title: `${selectedCoral.botanicalName} (${selectedCoral.group} Specimen #${selectedCoral.id}) | Dr. J.S. Yogesh Kumar Archive`,
-      description: `${selectedCoral.group} specimen (${selectedCoral.id}) identified as ${selectedCoral.botanicalName} (${selectedCoral.family}). Recorded at ${selectedCoral.location} at depth of ${selectedCoral.depth}. Habitat: ${selectedCoral.habitat}. Identification criteria: ${selectedCoral.identification}. Research archive by Dr. J.S. Yogesh Kumar, Zoological Survey of India.`,
+      title: targetedTitle,
+      description: targetedDesc,
       canonicalPath: specimenUrl,
       ogImage: selectedCoral.displayImage || selectedCoral.image,
       ogType: 'article',
@@ -74,6 +77,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({
         '@graph': [
           generatePersonSchema(),
           generateSpecimenDetailSchema(selectedCoral),
+          generateSpecimenImageSchema(selectedCoral),
           generateBreadcrumbsSchema([
             { name: 'Home', path: '/' },
             { name: 'Marine Specimen Archive', path: '/specimens' },

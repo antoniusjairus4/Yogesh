@@ -104,7 +104,7 @@ export const generateSpecimenDetailSchema = (coral: CoralSpecies) => ({
   '@id': `${SITE_CONFIG.baseUrl}/specimens/${coral.id}#taxon`,
   url: `${SITE_CONFIG.baseUrl}/specimens/${coral.id}`,
   name: coral.botanicalName,
-  alternateName: coral.commonName,
+  alternateName: [coral.commonName, coral.group, coral.category].filter(Boolean),
   taxonRank: 'Species',
   scientificName: coral.botanicalName.replace(/\s*\(Specimen\s*#[^)]+\)/i, ''),
   parentTaxon: {
@@ -113,7 +113,7 @@ export const generateSpecimenDetailSchema = (coral: CoralSpecies) => ({
     taxonRank: 'Family'
   },
   image: `${SITE_CONFIG.baseUrl}${coral.displayImage || coral.image}`,
-  description: `${coral.group} specimen (${coral.id}) identified as ${coral.botanicalName} (${coral.family}). Recorded at ${coral.location} at depth of ${coral.depth}. Habitat: ${coral.habitat}. Diagnostic identification: ${coral.identification}`,
+  description: `${coral.group} specimen (${coral.id}) cataloged as ${coral.botanicalName} (${coral.family}). Recorded at ${coral.location} at depth of ${coral.depth}. Habitat: ${coral.habitat}. Diagnostic identification: ${coral.identification}`,
   locationCreated: {
     '@type': 'Place',
     name: coral.location
@@ -122,6 +122,52 @@ export const generateSpecimenDetailSchema = (coral: CoralSpecies) => ({
     '@id': `${SITE_CONFIG.baseUrl}/#person`
   }
 });
+
+export const generateSpecimenImageSchema = (coral: CoralSpecies) => {
+  const loc = coral.location.toLowerCase();
+  const isAndaman = loc.includes('andaman') || loc.includes('nicobar') || loc.includes('havelock') || loc.includes('neil');
+  const isMannar = loc.includes('mannar') || loc.includes('thoothukudi') || loc.includes('vembar') || loc.includes('mandapam');
+  const isLakshadweep = loc.includes('lakshadweep') || loc.includes('kavaratti');
+
+  const geo = isAndaman
+    ? { '@type': 'GeoCoordinates', latitude: '11.6670', longitude: '92.7350' }
+    : isMannar
+    ? { '@type': 'GeoCoordinates', latitude: '9.2876', longitude: '79.3129' }
+    : isLakshadweep
+    ? { '@type': 'GeoCoordinates', latitude: '10.5667', longitude: '72.6417' }
+    : { '@type': 'GeoCoordinates', latitude: '13.0827', longitude: '80.2707' };
+
+  return {
+    '@type': 'ImageObject',
+    '@id': `${SITE_CONFIG.baseUrl}/specimens/${coral.id}#image`,
+    url: `${SITE_CONFIG.baseUrl}${coral.displayImage || coral.image}`,
+    contentUrl: `${SITE_CONFIG.baseUrl}${coral.displayImage || coral.image}`,
+    caption: `${coral.commonName ? `${coral.commonName} (${coral.botanicalName})` : coral.botanicalName} Specimen #${coral.id} photographed at ${coral.location}`,
+    description: `High-resolution marine biodiversity photograph of ${coral.botanicalName} (${coral.commonName || coral.group}) from ${coral.location}, depth ${coral.depth}. Photographed and cataloged by Dr. J.S. Yogesh Kumar, Zoological Survey of India.`,
+    creditText: 'Dr. J.S. Yogesh Kumar / Zoological Survey of India',
+    copyrightNotice: '© Dr. J.S. Yogesh Kumar, Zoological Survey of India (ZSI), MoEFCC',
+    license: `${SITE_CONFIG.baseUrl}/specimens`,
+    acquireLicensePage: `${SITE_CONFIG.baseUrl}/specimens/${coral.id}`,
+    creator: {
+      '@type': 'Person',
+      name: 'Dr. J.S. Yogesh Kumar',
+      jobTitle: 'Scientist E & Officer-in-Charge',
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Zoological Survey of India',
+        url: 'https://zsi.gov.in'
+      }
+    },
+    copyrightHolder: {
+      '@id': `${SITE_CONFIG.baseUrl}/#person`
+    },
+    contentLocation: {
+      '@type': 'Place',
+      name: coral.location,
+      geo: geo
+    }
+  };
+};
 
 export const generatePublicationsSchema = (publications: PdfPublication[]) => ({
   '@type': 'CollectionPage',

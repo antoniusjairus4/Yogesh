@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   CORAL_SPECIES_DATA, 
   CoralSpecies 
@@ -11,21 +11,86 @@ import {
   Download, 
   ChevronLeft, 
   ChevronRight,
-  Sparkles
+  Sparkles,
+  MapPin,
+  Layers,
+  Compass,
+  FileText
 } from 'lucide-react';
 import { getAssetUrl } from '../utils/baseUrl';
 import { ResearchContextMenu } from './ResearchContextMenu';
+import { updateRouteSEO } from '../seo/metaManager';
+import { generatePersonSchema, generateSpecimenDetailSchema, generateBreadcrumbsSchema } from '../seo/schemas';
 
 interface CoralResearchPageProps {
   onBackToPortfolio: () => void;
+  initialSpecimenId?: string | null;
+  initialGroup?: 'ALL' | 'Corals' | 'Octocorals' | 'Mollusca';
+  onSpecimenChange?: (coral: CoralSpecies) => void;
 }
 
-export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPortfolio }) => {
-  const [selectedGroup, setSelectedGroup] = useState<'ALL' | 'Corals' | 'Octocorals' | 'Mollusca'>('ALL');
+export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ 
+  onBackToPortfolio,
+  initialSpecimenId,
+  initialGroup = 'ALL',
+  onSpecimenChange
+}) => {
+  const [selectedGroup, setSelectedGroup] = useState<'ALL' | 'Corals' | 'Octocorals' | 'Mollusca'>(initialGroup);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedCoral, setSelectedCoral] = useState<CoralSpecies>(CORAL_SPECIES_DATA[0]);
+  const [selectedCoral, setSelectedCoral] = useState<CoralSpecies>(() => {
+    if (initialSpecimenId) {
+      const found = CORAL_SPECIES_DATA.find(c => c.id.toLowerCase() === initialSpecimenId.toLowerCase());
+      if (found) return found;
+    }
+    return CORAL_SPECIES_DATA[0];
+  });
   const [isFullscreenModalOpen, setIsFullscreenModalOpen] = useState<boolean>(false);
   const [modalMenuPos, setModalMenuPos] = useState<{ x: number; y: number } | null>(null);
+
+  // Sync if initialSpecimenId changes
+  useEffect(() => {
+    if (initialSpecimenId) {
+      const match = CORAL_SPECIES_DATA.find(c => c.id.toLowerCase() === initialSpecimenId.toLowerCase());
+      if (match && match.id !== selectedCoral.id) {
+        setSelectedCoral(match);
+      }
+    }
+  }, [initialSpecimenId]);
+
+  // Update URL and SEO Meta on specimen change
+  useEffect(() => {
+    if (!selectedCoral) return;
+
+    const specimenUrl = `/specimens/${selectedCoral.id}`;
+    if (window.location.pathname !== specimenUrl) {
+      window.history.replaceState({ page: 6, specimenId: selectedCoral.id }, '', specimenUrl);
+    }
+
+    updateRouteSEO({
+      title: `${selectedCoral.botanicalName} (${selectedCoral.group} Specimen #${selectedCoral.id}) | Dr. J.S. Yogesh Kumar Archive`,
+      description: `${selectedCoral.group} specimen (${selectedCoral.id}) identified as ${selectedCoral.botanicalName} (${selectedCoral.family}). Recorded at ${selectedCoral.location} at depth of ${selectedCoral.depth}. Habitat: ${selectedCoral.habitat}. Identification criteria: ${selectedCoral.identification}. Research archive by Dr. J.S. Yogesh Kumar, Zoological Survey of India.`,
+      canonicalPath: specimenUrl,
+      ogImage: selectedCoral.displayImage || selectedCoral.image,
+      ogType: 'article',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@graph': [
+          generatePersonSchema(),
+          generateSpecimenDetailSchema(selectedCoral),
+          generateBreadcrumbsSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Marine Specimen Archive', path: '/specimens' },
+            { name: selectedCoral.group, path: `/specimens?group=${selectedCoral.group.toLowerCase()}` },
+            { name: selectedCoral.botanicalName, path: specimenUrl }
+          ])
+        ]
+      }
+    });
+
+    if (onSpecimenChange) {
+      onSpecimenChange(selectedCoral);
+    }
+  }, [selectedCoral, onSpecimenChange]);
 
   // Filter logic
   const filteredCorals = useMemo(() => {
@@ -204,10 +269,16 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
               {filteredCorals.map((coral, idx) => {
                 const isSelected = coral.id === selectedCoral.id;
                 return (
-                  <button
+                  <a
                     key={coral.id}
-                    onClick={() => setSelectedCoral(coral)}
-                    className={`w-full text-left p-2 rounded text-xs transition-colors flex items-center gap-3 border cursor-pointer ${
+                    href={`/specimens/${coral.id}`}
+                    onClick={(e) => {
+                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                      e.preventDefault();
+                      setSelectedCoral(coral);
+                    }}
+                    aria-label={`View ${coral.group} Specimen ${coral.id}`}
+                    className={`w-full text-left p-2 rounded text-xs transition-colors flex items-center gap-3 border cursor-pointer no-underline block ${
                       isSelected 
                         ? 'bg-[#15273d] border-[#c5a880] text-white font-medium shadow-md' 
                         : 'bg-[#060c14] border-[#132133] text-slate-300 hover:border-[#203652] hover:bg-[#0a1524]'
@@ -228,7 +299,7 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
                         {coral.id}
                       </div>
                     </div>
-                  </button>
+                  </a>
                 );
               })}
             </div>
@@ -336,19 +407,87 @@ export const CoralResearchPage: React.FC<CoralResearchPageProps> = ({ onBackToPo
               {/* Bottom Adjacent Thumbnails Carousel */}
               <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin pt-1">
                 {filteredCorals.slice(Math.max(0, currentIndex - 3), Math.min(filteredCorals.length, currentIndex + 5)).map((c) => (
-                  <button
+                  <a
                     key={c.id}
-                    onClick={() => setSelectedCoral(c)}
-                    className={`relative flex-shrink-0 w-20 h-14 rounded overflow-hidden border transition-all cursor-pointer ${
+                    href={`/specimens/${c.id}`}
+                    onClick={(e) => {
+                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                      e.preventDefault();
+                      setSelectedCoral(c);
+                    }}
+                    aria-label={`View specimen ${c.id}`}
+                    className={`relative flex-shrink-0 w-20 h-14 rounded overflow-hidden border transition-all cursor-pointer block ${
                       c.id === selectedCoral.id ? 'border-[#c5a880] ring-2 ring-[#c5a880]/50 scale-105' : 'border-[#1b2b3f] opacity-60 hover:opacity-100'
                     }`}
                   >
                     <img src={getAssetUrl(c.image)} alt={`${c.group} specimen ${c.id}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
-                  </button>
+                  </a>
                 ))}
               </div>
 
             </div>
+
+            {/* Scientific Specimen Factsheet for Search Crawlers and Researchers */}
+            <article className="mt-2 bg-[#091524] border border-[#1b2f48] rounded-lg p-5 flex flex-col gap-4 text-slate-200">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[#1b2f48] pb-3">
+                <div>
+                  <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#c5a880] flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>Taxonomic Entity • {selectedCoral.group} • {selectedCoral.category}</span>
+                  </span>
+                  <h2 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-tight mt-1">
+                    {selectedCoral.botanicalName}
+                  </h2>
+                  <div className="text-xs text-slate-400 font-mono mt-0.5">
+                    Authority: <span className="text-slate-200">{selectedCoral.authority}</span> • Family: <span className="text-slate-200">{selectedCoral.family}</span>
+                  </div>
+                </div>
+                <div className="text-right flex md:flex-col items-center md:items-end justify-between md:justify-center">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase">Archival Specimen ID</span>
+                  <span className="text-sm font-mono font-bold text-[#e2ba7d] bg-[#12243a] px-2.5 py-1 rounded border border-[#233f63]">
+                    {selectedCoral.id}
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
+                <div className="bg-[#050e18] p-3 rounded border border-[#16273c]">
+                  <span className="text-slate-400 block text-[10px] uppercase">Common Name</span>
+                  <span className="text-slate-200 font-semibold">{selectedCoral.commonName || 'N/A'}</span>
+                </div>
+                <div className="bg-[#050e18] p-3 rounded border border-[#16273c]">
+                  <span className="text-slate-400 block text-[10px] uppercase">Location / Station</span>
+                  <span className="text-slate-200 font-semibold">{selectedCoral.location}</span>
+                </div>
+                <div className="bg-[#050e18] p-3 rounded border border-[#16273c]">
+                  <span className="text-slate-400 block text-[10px] uppercase">Recorded Depth</span>
+                  <span className="text-slate-200 font-semibold">{selectedCoral.depth}</span>
+                </div>
+                <div className="bg-[#050e18] p-3 rounded border border-[#16273c]">
+                  <span className="text-slate-400 block text-[10px] uppercase">Abundance Status</span>
+                  <span className="text-slate-200 font-semibold">{selectedCoral.abundance}</span>
+                </div>
+              </div>
+
+              {selectedCoral.habitat && (
+                <div className="bg-[#050e18] p-3.5 rounded border border-[#16273c] text-xs leading-relaxed">
+                  <span className="text-slate-400 font-mono block text-[10px] uppercase mb-1">Ecological Habitat</span>
+                  <p className="text-slate-300 font-sans">{selectedCoral.habitat}</p>
+                </div>
+              )}
+
+              {selectedCoral.identification && (
+                <div className="bg-[#050e18] p-3.5 rounded border border-[#16273c] text-xs leading-relaxed">
+                  <span className="text-slate-400 font-mono block text-[10px] uppercase mb-1">Diagnostic Taxonomic Identification</span>
+                  <p className="text-slate-300 font-sans">{selectedCoral.identification}</p>
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] font-mono text-slate-400 border-t border-[#1b2f48] pt-3 gap-2">
+                <span>Principal Investigator: <strong className="text-slate-200">Dr. J.S. Yogesh Kumar</strong> (Scientist E, ZSI / MoEFCC)</span>
+                <span className="italic text-slate-500">© Dr. J.S. Yogesh Kumar • Zoological Survey of India</span>
+              </div>
+            </article>
 
           </div>
 

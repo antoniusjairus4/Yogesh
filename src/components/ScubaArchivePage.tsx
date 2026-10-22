@@ -19,6 +19,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { ResearchContextMenu } from './ResearchContextMenu';
+import { updateRouteSEO } from '../seo/metaManager';
 
 interface ScubaArchivePageProps {
   onBackToPortfolio: () => void;
@@ -292,6 +293,20 @@ export const ScubaArchivePage: React.FC<ScubaArchivePageProps> = ({
   }, [filteredPhotos]);
 
   const currentPhoto = activePhotoIndex !== null ? filteredPhotos[activePhotoIndex] : null;
+
+  useEffect(() => {
+    if (currentPhoto) {
+      const photoUrl = `/expeditions/${currentPhoto.id}`;
+      window.history.replaceState({ page: 5, photoId: currentPhoto.id }, '', photoUrl);
+      updateRouteSEO({
+        title: `${currentPhoto.title} | SCUBA Expeditions | Dr. J.S. Yogesh Kumar`,
+        description: `${currentPhoto.title} (${currentPhoto.scientificName || currentPhoto.category}) photographed at ${currentPhoto.location || 'Indian marine waters'} at depth ${currentPhoto.depth || 'benthic reef'}. ${currentPhoto.description}`,
+        canonicalPath: photoUrl,
+        ogImage: currentPhoto.url,
+        ogType: 'article'
+      });
+    }
+  }, [currentPhoto]);
 
   return (
     <div className="relative w-full min-h-screen bg-transparent text-slate-100 z-20 font-sans pt-20 pb-36 px-4 sm:px-8 lg:px-12">

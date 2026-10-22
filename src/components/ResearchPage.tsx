@@ -20,6 +20,7 @@ import {
   RotateCw
 } from 'lucide-react';
 import FlipCard from './FlipCard';
+import { updateRouteSEO } from '../seo/metaManager';
 
 interface ResearchPageProps {
   onBackToPortfolio: () => void;
@@ -37,6 +38,17 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({ onBackToPortfolio })
   const handleClosePdf = useCallback(() => {
     setSelectedPdf(null);
   }, []);
+
+  useEffect(() => {
+    if (selectedPdf) {
+      updateRouteSEO({
+        title: `${selectedPdf.title} (${selectedPdf.year}) | Dr. J.S. Yogesh Kumar Publications`,
+        description: `Research paper by ${selectedPdf.authors} published in ${selectedPdf.journal} (${selectedPdf.year}). Area: ${selectedPdf.location}. ${selectedPdf.description}`,
+        canonicalPath: `/publications?paper=${selectedPdf.id}`,
+        ogType: 'article'
+      });
+    }
+  }, [selectedPdf]);
 
   // Reset scroll position to top on mount
   useEffect(() => {

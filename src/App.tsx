@@ -1,14 +1,25 @@
-import React, { useRef, useState, useEffect, Suspense } from 'react';
+import React, { useRef, useState, useEffect, useCallback, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { getAssetUrl } from './utils/baseUrl';
+import { updateRouteSEO } from './seo/metaManager';
+import { PRIMARY_ROUTES_SEO } from './seo/routesData';
 
 const About = React.lazy(() => import('./components/About'));
 const FeaturedMedia = React.lazy(() => import('./components/FeaturedMedia'));
 const ResearchPage = React.lazy(() => import('./components/ResearchPage'));
 const ScubaArchivePage = React.lazy(() => import('./components/ScubaArchivePage'));
 const CoralResearchPage = React.lazy(() => import('./components/CoralResearchPage'));
+
+const PAGE_ROUTES: Record<1 | 2 | 3 | 4 | 5 | 6, string> = {
+  1: '/',
+  2: '/about',
+  3: '/press',
+  4: '/publications',
+  5: '/expeditions',
+  6: '/specimens',
+};
 
 const PageFallback: React.FC = () => (
   <div className="w-full h-full min-h-[400px] bg-[#050b14] flex flex-col items-center justify-center gap-4 text-slate-300">
@@ -24,13 +35,77 @@ export const App: React.FC = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [navTargetSection, setNavTargetSection] = useState<{ section: string; timestamp: number } | null>(null);
   const [selectedScubaPhotoId, setSelectedScubaPhotoId] = useState<string | null>(null);
+  const [activeSpecimenId, setActiveSpecimenId] = useState<string | null>(null);
+  const [activeGroup, setActiveGroup] = useState<'ALL' | 'Corals' | 'Octocorals' | 'Mollusca'>('ALL');
 
   const touchStartY = useRef<number | null>(null);
   const TRANSITION_DURATION = 1100;
 
+  const parseRouteFromUrl = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    const path = window.location.pathname.replace(/\/+$/, '') || '/';
+    const params = new URLSearchParams(window.location.search);
+    const hash = window.location.hash.replace('#', '');
+
+    if (path === '/about') {
+      setActivePage(2);
+      if (hash) setNavTargetSection({ section: hash, timestamp: Date.now() });
+      if (PRIMARY_ROUTES_SEO['/about']) updateRouteSEO(PRIMARY_ROUTES_SEO['/about']());
+    } else if (path === '/press' || path === '/featured') {
+      setActivePage(3);
+      if (PRIMARY_ROUTES_SEO['/press']) updateRouteSEO(PRIMARY_ROUTES_SEO['/press']());
+    } else if (path === '/publications' || path === '/research') {
+      setActivePage(4);
+      if (PRIMARY_ROUTES_SEO['/publications']) updateRouteSEO(PRIMARY_ROUTES_SEO['/publications']());
+    } else if (path.startsWith('/expeditions') || path.startsWith('/scuba')) {
+      setActivePage(5);
+      const match = path.match(/\/(?:expeditions|scuba)\/([^/]+)/);
+      const photoId = params.get('photo') || (match ? match[1] : null);
+      if (photoId) setSelectedScubaPhotoId(photoId);
+      if (PRIMARY_ROUTES_SEO['/expeditions']) updateRouteSEO(PRIMARY_ROUTES_SEO['/expeditions']());
+    } else if (path.startsWith('/specimens') || path.startsWith('/corals')) {
+      setActivePage(6);
+      const match = path.match(/\/(?:specimens|corals)\/([^/]+)/);
+      if (match) {
+        const seg = match[1].toLowerCase();
+        if (seg === 'corals') setActiveGroup('Corals');
+        else if (seg === 'octocorals') setActiveGroup('Octocorals');
+        else if (seg === 'mollusca') setActiveGroup('Mollusca');
+        else setActiveSpecimenId(match[1]);
+      } else {
+        if (PRIMARY_ROUTES_SEO['/specimens']) updateRouteSEO(PRIMARY_ROUTES_SEO['/specimens']());
+      }
+    } else {
+      setActivePage(1);
+      if (PRIMARY_ROUTES_SEO['/']) updateRouteSEO(PRIMARY_ROUTES_SEO['/']());
+    }
+  }, []);
+
+  useEffect(() => {
+    parseRouteFromUrl();
+
+    const handlePopState = () => {
+      parseRouteFromUrl();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [parseRouteFromUrl]);
+
   const handleNavigateTo = (targetPage: 1 | 2 | 3 | 4 | 5 | 6, navId?: string) => {
     if (navId) {
       setNavTargetSection({ section: navId, timestamp: Date.now() });
+    }
+
+    const targetPath = PAGE_ROUTES[targetPage] || '/';
+    const fullUrl = navId ? `${targetPath}#${navId}` : targetPath;
+
+    if (window.location.pathname !== targetPath || (navId && window.location.hash !== `#${navId}`)) {
+      window.history.pushState({ page: targetPage, navId }, '', fullUrl);
+    }
+
+    if (PRIMARY_ROUTES_SEO[targetPath]) {
+      updateRouteSEO(PRIMARY_ROUTES_SEO[targetPath]());
     }
 
     if (activePage === targetPage) {
@@ -290,6 +365,8 @@ export const App: React.FC = () => {
           <Suspense fallback={<PageFallback />}>
             <CoralResearchPage 
               onBackToPortfolio={() => handleNavigateTo(2)} 
+              initialSpecimenId={activeSpecimenId}
+              initialGroup={activeGroup}
             />
           </Suspense>
         </motion.div>

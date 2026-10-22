@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/generateSitemap.js && tsc -b && vite build",
+    "generate:sitemap": "node scripts/generateSitemap.js",
     "preview": "vite preview",
     "share": "cloudflared tunnel --url http://localhost:5173 --protocol http2"
   },

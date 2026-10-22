@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NEWSPAPER_FEATURES, NewspaperFeature } from '../data/newspaperData';
 import { getAssetUrl } from '../utils/baseUrl';
+import { updateRouteSEO } from '../seo/metaManager';
 import { 
   FileText, 
   Calendar, 
@@ -253,6 +254,18 @@ export const FeaturedMedia: React.FC<FeaturedMediaProps> = ({ onScrollBackToAbou
     setSelectedFeature(NEWSPAPER_FEATURES[nextIndex]);
     setIsZoomedImage(false);
   };
+
+  useEffect(() => {
+    if (selectedFeature) {
+      updateRouteSEO({
+        title: `${selectedFeature.headlineEnglish} | Press Coverage | Dr. J.S. Yogesh Kumar`,
+        description: `${selectedFeature.summary} Published in ${selectedFeature.newspaper} (${selectedFeature.date}). Location: ${selectedFeature.location}.`,
+        canonicalPath: `/press?scan=${selectedFeature.id}`,
+        ogImage: selectedFeature.image,
+        ogType: 'article'
+      });
+    }
+  }, [selectedFeature]);
 
   // Click handlers for interactive step un-folding
   const handleUnfoldStepClick = () => {

@@ -525,13 +525,18 @@ export const About: React.FC<AboutProps> = ({
                   Explore Press Archives &amp; National News Coverage
                 </p>
 
-                <button
-                  onClick={onViewPressArchives}
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-base tracking-wide border border-white/80 cursor-pointer tactile-btn shadow-lg"
+                <a
+                  href="/press"
+                  onClick={(e) => {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                    e.preventDefault();
+                    if (onViewPressArchives) onViewPressArchives();
+                  }}
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-outfit font-black text-base tracking-wide border border-white/80 cursor-pointer tactile-btn shadow-lg no-underline"
                 >
                   <span>View Featured Newspaper Clippings</span>
                   <span className="text-lg">→</span>
-                </button>
+                </a>
               </div>
             </motion.div>
           )}
@@ -563,13 +568,18 @@ export const About: React.FC<AboutProps> = ({
                   </p>
                 </div>
 
-                <button
-                  onClick={onViewResearchPage}
-                  className="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#e0ad5b]/90 hover:bg-[#e0ad5b] text-slate-950 font-outfit font-bold text-xs tracking-wider uppercase cursor-pointer tactile-btn"
+                <a
+                  href="/publications"
+                  onClick={(e) => {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                    e.preventDefault();
+                    if (onViewResearchPage) onViewResearchPage();
+                  }}
+                  className="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#e0ad5b]/90 hover:bg-[#e0ad5b] text-slate-950 font-outfit font-bold text-xs tracking-wider uppercase cursor-pointer tactile-btn no-underline"
                 >
                   <span>View All Papers</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                </a>
               </div>
 
               {/* 3 Featured Paper Cards Grid */}
@@ -657,13 +667,18 @@ export const About: React.FC<AboutProps> = ({
 
               {/* Bottom Centered Small Button to View All Papers */}
               <div className="text-center pt-2">
-                <button
-                  onClick={onViewResearchPage}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#e0ad5b] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest cursor-pointer border border-white/50 tactile-btn"
+                <a
+                  href="/publications"
+                  onClick={(e) => {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                    e.preventDefault();
+                    if (onViewResearchPage) onViewResearchPage();
+                  }}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#e0ad5b] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest cursor-pointer border border-white/50 tactile-btn no-underline"
                 >
                   <span>Explore Full Research Publications Library</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                </a>
               </div>
             </motion.div>
           )}
@@ -718,20 +733,21 @@ export const About: React.FC<AboutProps> = ({
               </p>
             </div>
 
-            <button
-              type="button"
+            <a
+              href="/specimens"
               onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
                 e.preventDefault();
                 e.stopPropagation();
                 if (onViewCoralResearch) {
                   onViewCoralResearch();
                 }
               }}
-              className="flex-shrink-0 inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#c5a880] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest cursor-pointer border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 z-10 relative pointer-events-auto"
+              className="flex-shrink-0 inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#c5a880] hover:bg-white text-slate-950 font-outfit font-extrabold text-xs uppercase tracking-widest cursor-pointer border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 z-10 relative pointer-events-auto no-underline"
             >
               <span>Explore Specimen Research Catalog</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </a>
           </motion.div>
 
           {/* Footer Contact Section with Interactive FolderFloat */}

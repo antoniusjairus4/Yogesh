@@ -269,7 +269,7 @@ export const Hero: React.FC<HeroProps> = ({ videoRef, setIsVideoEnded, onDiveDee
       </div>
 
       {/* Bottom Scroll Indicator */}
-      <ScrollIndicator />
+      <ScrollIndicator onClick={onDiveDeeper} />
 
     </section>
   );

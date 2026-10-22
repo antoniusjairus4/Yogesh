@@ -6,15 +6,16 @@ export interface NavItem {
   id: string;
   label: string;
   page: 1 | 2 | 3 | 4 | 5 | 6;
+  href: string;
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { id: 'career', label: 'Career', page: 2 },
-  { id: 'scuba', label: 'Scuba Visuals', page: 2 },
-  { id: 'coral-research', label: 'Coral Taxonomy', page: 6 },
-  { id: 'featured', label: 'Featured Press', page: 3 },
-  { id: 'research', label: 'Research Papers (PDFs)', page: 4 },
-  { id: 'contact', label: 'Contact', page: 2 },
+  { id: 'career', label: 'Career', page: 2, href: '/about#career' },
+  { id: 'scuba', label: 'Scuba Visuals', page: 2, href: '/about#scuba' },
+  { id: 'coral-research', label: 'Coral Taxonomy', page: 6, href: '/specimens' },
+  { id: 'featured', label: 'Featured Press', page: 3, href: '/press' },
+  { id: 'research', label: 'Research Papers (PDFs)', page: 4, href: '/publications' },
+  { id: 'contact', label: 'Contact', page: 2, href: '/about#contact' },
 ];
 
 interface NavbarProps {
@@ -64,6 +65,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }
   }, [isMobileOpen]);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, item: NavItem) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) {
+      return;
+    }
     e.preventDefault();
     setIsMobileOpen(false);
     if (onNavigatePage) {
@@ -79,8 +83,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }
         
         {/* Brand / Wordmark */}
         <a
-          href="#"
+          href="/"
           onClick={(e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
             e.preventDefault();
             if (onNavigatePage) onNavigatePage(1);
           }}
@@ -98,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }
             return (
               <a
                 key={item.id}
-                href={`#${item.id}`}
+                href={item.href}
                 onClick={(e) => handleNavClick(e, item)}
                 className={`relative text-base font-bold tracking-wide transition-colors duration-200 py-2 focus:outline-none rounded ${
                   isActive ? 'text-white font-black' : 'text-white/75 hover:text-white'
@@ -154,11 +159,11 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage = 1, onNavigatePage }
                 return (
                   <motion.a
                     key={item.id}
-                    href={`#${item.id}`}
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item)}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.05 * index, duration: 0.3 }}
-                    onClick={(e) => handleNavClick(e, item)}
                     className={`text-2xl font-outfit font-bold tracking-wide transition-colors py-2.5 px-6 rounded-xl w-full ${
                       isActive
                         ? 'text-white bg-white/10 border border-white/20 font-black'

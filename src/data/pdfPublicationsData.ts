@@ -15,6 +15,30 @@ export interface PdfPublication {
 
 const RAW_PDF_PUBLICATIONS: PdfPublication[] = [
   {
+    id: "paper-iucn-rle-2026",
+    title: "Red List of Ecosystems Assessment of South Asian Coral Reefs",
+    category: "Corals & Black Corals",
+    journal: "IUCN Global Red List of Coral Reef Ecosystems / EcoEvoRxiv",
+    year: "2026",
+    authors: "M.H. Htike, S. Aboud, M. Gudka, A. Najeeb, C. Raghunathan, F. Smith, C. Rethinaraj, J.S. Yogesh Kumar, K.D. Raj, M.S. Afzal, M.S.N. Chowdhury, N. Perera, R. Arthur, R. Roche, T. Mondal",
+    location: "South Asia (India, Andaman, Lakshadweep, Maldives, Chagos)",
+    filename: "IUCN_South_Asian_Coral_Reefs_RLE_Assessment_2026.pdf",
+    pdfUrl: "/PDFs/IUCN_South_Asian_Coral_Reefs_RLE_Assessment_2026.pdf",
+    description: "Comprehensive IUCN Red List of Ecosystems (RLE) evaluation across 13 South Asian coral reef ecoregions assessing collapse risks from thermal stress, mass bleaching, and anthropogenic pressures."
+  },
+  {
+    id: "paper-iucn-summary-2026",
+    title: "Coral Reefs of South Asia: Regional Summary",
+    category: "Corals & Black Corals",
+    journal: "IUCN Global Red List of Coral Reef Ecosystems (DOI: 10.32942/X29H6V)",
+    year: "2026",
+    authors: "M.H. Htike, S. Aboud, M. Gudka, A. Najeeb, C. Raghunathan, F. Smith, C. Rethinaraj, J.S. Yogesh Kumar, K.D. Raj, M.S. Afzal, M.S.N. Chowdhury, N. Perera, R. Arthur, R. Roche, T. Mondal",
+    location: "South Asia Regional Policy Summary",
+    filename: "IUCN_Coral_Reefs_of_South_Asia_Regional_Summary_2026.pdf",
+    pdfUrl: "/PDFs/IUCN_Coral_Reefs_of_South_Asia_Regional_Summary_2026.pdf",
+    description: "Executive policy brief and regional summary of the IUCN Red List of Ecosystems assessment for 13 South Asian coral reef ecoregions under future climate scenarios."
+  },
+  {
     id: "paper-01",
     title: "Annotated Checklist of Octocorallia (Cnidaria: Anthozoa) from Indian Seas",
     category: "Octocorals",
